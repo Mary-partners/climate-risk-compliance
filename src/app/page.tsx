@@ -97,11 +97,16 @@ export default function HomePage() {
               <span className="text-2xl font-bold gradient-text tracking-tight">CFOIP</span>
               <span className="hidden sm:inline text-sm text-gray-500 border-l border-gray-300 pl-3">Climate Risk &amp; Compliance</span>
             </div>
-            <div className="hidden md:flex items-center gap-2">
-              <span className="badge">IFRS S1/S2</span>
-              <span className="badge">TCFD/PCAF</span>
-              <span className="badge-amber">KGFT Mapped</span>
-              <span className="badge">DFI Ready</span>
+            <div className="flex items-center gap-3">
+              <div className="hidden md:flex items-center gap-2">
+                <span className="badge">IFRS S1/S2</span>
+                <span className="badge">TCFD/PCAF</span>
+                <span className="badge-amber">KGFT Mapped</span>
+                <span className="badge">DFI Ready</span>
+              </div>
+              <a href="/auth" className="inline-flex items-center px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold rounded-lg transition-colors shadow-sm">
+                Login
+              </a>
             </div>
           </div>
 
