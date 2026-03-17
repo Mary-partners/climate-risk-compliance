@@ -2,7 +2,7 @@
 
 import { useState, useEffect, FormEvent } from 'react'
 
-const TABS = ['Overview', 'Get Started', 'Free Diagnostic', 'For Banks', 'Market', 'Timeline', 'Africa', 'Blog', 'Why Us'] as const
+const TABS = ['Overview', 'Services', 'For Banks', 'Market', 'Timeline', 'Africa', 'Blog', 'Why Us', 'Get Started'] as const
 type Tab = typeof TABS[number]
 
 const BANKS_TIER1 = [
@@ -857,6 +857,662 @@ Investing in climate risk compliance isn't a cost centre — it's an investment 
 
 The question isn't whether you can afford to invest in climate compliance. It's whether you can afford not to.`
   },
+  {
+    id: 'pension-funds-climate',
+    title: "Kenya's Pension Funds Hold KSH 2 Trillion — And Climate Risk Could Wipe Out Billions",
+    date: 'February 2026',
+    readTime: '7 min read',
+    category: 'Pensions',
+    summary: "RBA-regulated pension funds are the largest institutional investors in Kenya. Most have zero visibility into their climate exposure.",
+    content: `Kenya's retirement benefits sector manages over KSH 2 trillion in assets. That money belongs to millions of Kenyans who are counting on it being there when they retire. And right now, a growing portion of those assets is exposed to climate risks that nobody is measuring.
+
+**Where Pension Money Is Invested**
+
+The Retirement Benefits Authority (RBA) data shows that Kenya's pension funds are heavily invested in:
+- **Government securities** (about 40-50%): Relatively safe from direct climate risk, but government fiscal capacity could be strained by climate disasters
+- **Real estate** (15-20%): Directly exposed to physical risks — floods, heat stress, water scarcity
+- **Equities** (15-20%): Many NSE-listed companies are in climate-sensitive sectors
+- **Fixed deposits and corporate bonds** (10-15%): Credit risk affected by borrowers' climate exposure
+- **Infrastructure and alternatives** (5-10%): Long-lived assets with 20-30 year horizons, most exposed to climate change
+
+The challenge? Most pension fund trustees and fund managers have no idea which portions of their portfolio are climate-exposed.
+
+**Why This Matters Now**
+
+Three forces are converging:
+
+1. **Fiduciary duty is evolving**: Globally, courts and regulators are ruling that fiduciary duty includes consideration of material climate risks. Ignoring climate risk when making investment decisions is increasingly seen as a breach of duty.
+
+2. **IFRS S1/S2 is coming**: From January 2027, large pension schemes will need to make sustainability disclosures. This means quantifying climate exposure, reporting on governance, and showing how climate risk is integrated into investment decision-making.
+
+3. **Asset stranding is real**: Investments in sectors that fail to adapt — coal, oil and gas, water-intensive agriculture, coastal real estate without resilience — could lose significant value. A pension fund holding these assets is holding risk it hasn't priced.
+
+**What Fund Managers Should Do**
+
+The most forward-thinking pension fund managers in Kenya are already taking action:
+
+**Portfolio climate screening**: Map every holding against climate risk factors. Which equities are in emission-intensive sectors? Which real estate is in flood or drought zones? Which bonds are issued by companies with high transition risk?
+
+**Climate-adjusted return expectations**: Factor climate risks into your return assumptions. A real estate portfolio in a flood-prone area shouldn't be modelled the same way as one in a low-risk zone.
+
+**Engagement with investee companies**: Use your influence as shareholders to push investee companies toward better climate risk management and disclosure.
+
+**Green investment pipeline**: Actively seek climate-aligned investment opportunities — green bonds, renewable energy infrastructure, climate-resilient real estate, impact funds.
+
+**Trustee education**: Your trustees need to understand climate risk. Not in scientific detail, but enough to ask the right questions and make informed allocation decisions.
+
+**The Competitive Edge**
+
+Pension funds that embrace climate risk management aren't just being responsible — they're being smart. They'll:
+- Identify and avoid stranded assets before they lose value
+- Access growing pools of green investment opportunities
+- Meet evolving regulatory requirements without last-minute scrambles
+- Build trust with members who increasingly care about where their money goes
+- Attract partnerships with DFIs looking for institutional co-investors
+
+The pension funds that act now protect their members' futures. The ones that wait are gambling with retirement savings.`
+  },
+  {
+    id: 'microfinance-climate',
+    title: "Microfinance Banks and Climate Risk: Small Institutions, Big Exposure",
+    date: 'January 2026',
+    readTime: '6 min read',
+    category: 'Microfinance',
+    summary: "Kenya's 13 MFBs serve the most climate-vulnerable borrowers. Here's why climate risk management is survival, not compliance.",
+    content: `Kenya's microfinance banks serve a unique niche: the borrowers that commercial banks often overlook. Small traders, farmers, women's groups, youth entrepreneurs, and micro-enterprises in both urban and rural areas. These are also the people most vulnerable to climate change.
+
+**Why MFBs Face Outsized Climate Risk**
+
+Your average MFB borrower doesn't have the financial buffers that larger businesses do. When a climate event hits, the impact is immediate and severe:
+
+- A smallholder farmer whose crops fail due to drought has no reserves to fall back on. Your agricultural loan becomes an NPL overnight.
+- A market trader in a flood-prone area loses their entire stock in one afternoon. That working capital loan? Gone.
+- A transport operator facing rising fuel costs due to carbon policies can't absorb the margin squeeze.
+
+The numbers are stark: MFBs with significant agricultural exposure in drought-affected counties have seen NPL ratios spike by 5-10 percentage points during recent drought cycles. For institutions with thin capital buffers, that's an existential threat.
+
+**The Data Challenge**
+
+MFBs face a unique version of the data challenge:
+- Your borrowers are unlikely to have any formal climate or emissions data
+- Many operate informally or semi-formally
+- Geographic data may be imprecise
+- Loan sizes are small, making per-loan data collection costly
+
+But here's the good news: proxy-based approaches work well for microfinance. You can estimate climate risk exposure using:
+- **County and sub-county location** (mapped to climate hazard data)
+- **Sector of activity** (agriculture, trade, transport, services)
+- **Loan product type** (crop input loans, livestock, working capital, housing)
+- **Seasonal patterns** (when are defaults highest, and do they correlate with weather events?)
+
+You already have this data in your core banking system. You just haven't connected it to climate risk.
+
+**What CBK Expects from MFBs**
+
+The CBK CRDF applies to all CBK-supervised institutions — including microfinance banks. The requirements are the same, but CBK has indicated that proportionality will apply: smaller institutions won't be expected to produce the same depth of analysis as a Tier 1 bank.
+
+What MFBs need at minimum:
+- A governance statement on climate risk oversight
+- A basic assessment of physical risk exposure in your lending areas
+- Some view of how climate events have affected your portfolio historically
+- Steps you're taking to manage the risk going forward
+
+**Building Climate Resilience — Not Just Compliance**
+
+For MFBs, climate risk management isn't about checking regulatory boxes. It's about survival. Here's a practical playbook:
+
+1. **Map your portfolio by geography**: Overlay your loan book onto Kenya's county climate hazard maps. Where are your most concentrated exposures?
+
+2. **Analyse historical weather-default correlations**: Look at your NPL data alongside rainfall and temperature data for the past 5 years. You'll likely find patterns you didn't know existed.
+
+3. **Adjust your credit scoring**: Add climate risk factors to your credit assessment. A borrower in a high-drought county growing rain-fed crops is a different risk than one with irrigated farmland.
+
+4. **Develop climate-resilient products**: Flexible repayment schedules tied to harvest seasons. Insurance-linked loans. Climate adaptation micro-loans (solar, water harvesting, drought-resistant seeds).
+
+5. **Partner for data and tools**: You don't need to build everything yourself. Platforms like ours provide climate risk tools designed for institutions of all sizes.
+
+MFBs have always been closer to the ground than larger institutions. That proximity is an advantage — you understand your borrowers' realities better than anyone. Use that understanding to build climate resilience into everything you do.`
+  },
+  {
+    id: 'greenwashing-risk',
+    title: "The Greenwashing Trap: How Kenyan Institutions Can Avoid Costly Missteps",
+    date: 'December 2025',
+    readTime: '6 min read',
+    category: 'Risk',
+    summary: "Calling something 'green' without the data to back it up is risky. Here's how to stay on the right side of the line.",
+    content: `Every financial institution in Kenya wants to look green right now. DFIs are offering green credit lines. Regulators are promoting sustainable finance. Customers are asking about environmental responsibility. And so the temptation is strong: slap a "green" label on your products and hope nobody looks too closely.
+
+This is greenwashing. And it's about to become very expensive.
+
+**What Greenwashing Looks Like in Practice**
+
+Greenwashing isn't always intentional fraud. Often it's well-meaning but poorly executed green claims:
+
+- **The relabelled loan**: Taking an existing agricultural loan product and calling it "green" without changing the criteria or tracking the environmental impact.
+- **The vague commitment**: Publishing a sustainability statement full of aspirational language ("we are committed to a sustainable future") with zero data, targets, or accountability.
+- **The cherry-picked disclosure**: Highlighting one solar project while ignoring the 95% of your portfolio that's in carbon-intensive sectors.
+- **The borrowed credibility**: Referencing international frameworks (TCFD, ISSB) in your annual report without actually implementing them.
+- **The misleading product**: Marketing a "climate-resilient" insurance product that doesn't actually cover climate-related losses.
+
+**Why Greenwashing Is Getting Riskier**
+
+Several developments are raising the stakes:
+
+1. **Regulatory scrutiny**: CBK's CRDF will require structured disclosures with actual data. You can't hide vague claims in a compliance report.
+
+2. **DFI due diligence**: When IFC, FMO, or KfW gives you a green credit line, they audit how you use it. Misusing green funds can result in clawbacks and blacklisting.
+
+3. **Legal risk**: Globally, greenwashing litigation is exploding. Companies are being sued by investors, consumers, and regulators for misleading environmental claims. This is coming to Africa.
+
+4. **Reputational damage**: In the age of social media, being called out for greenwashing can destroy trust overnight. Ask DWS (fined $25M by the SEC) or HSBC (UK advertising ban).
+
+5. **IFRS S2 auditing**: When sustainability disclosures sit alongside financial statements, auditors will scrutinise them. Unsupported claims will be flagged.
+
+**How to Stay on the Right Side**
+
+The good news is that avoiding greenwashing is straightforward — it just requires discipline:
+
+**Use the Kenya Green Finance Taxonomy (KGFT)**: Don't invent your own definition of "green." Use the KGFT criteria to classify your lending and investment activities. If it doesn't meet the taxonomy criteria, don't call it green.
+
+**Measure before you claim**: Before saying "X% of our portfolio is green," make sure you have the data and methodology to back it up. Use PCAF for emissions, KGFT for classification.
+
+**Be honest about where you are**: It's better to say "we're at the beginning of our climate risk journey" than to pretend you're further along. Regulators, DFIs, and sophisticated investors respect honesty.
+
+**Set targets you can track**: Vague commitments are worse than no commitments. Set specific, time-bound, measurable targets: "Increase green lending to 20% of our portfolio by 2028."
+
+**Build internal capability**: Greenwashing often happens because institutions lack the expertise to know what's genuinely green. Invest in training and tools.
+
+**Document everything**: Every green claim should be backed by data, methodology, and a paper trail. If you can't document it, don't claim it.
+
+**The Positive Alternative**
+
+Instead of greenwashing, focus on genuine progress — even if it's small. An honest story of a bank that's at 3% green lending but has a credible plan to reach 15% is far more compelling than a bank claiming 50% without evidence.
+
+Authenticity builds trust. Trust builds partnerships. Partnerships build business. That's the virtuous cycle of genuine climate action — and it's far more valuable than any green label.`
+  },
+  {
+    id: 'nse-listed-climate',
+    title: "NSE-Listed Companies: Your Shareholders Will Soon Demand Climate Disclosure — Are You Ready?",
+    date: 'November 2025',
+    readTime: '7 min read',
+    category: 'Listed Companies',
+    summary: "CMA and NSE are tightening sustainability disclosure rules. Listed companies need to prepare now.",
+    content: `If your company is listed on the Nairobi Securities Exchange, climate disclosure is about to become non-negotiable. Not because it's trendy. Because your shareholders, regulators, and the market will demand it.
+
+**The Regulatory Landscape for Listed Companies**
+
+Multiple regulatory forces are converging on NSE-listed companies:
+
+- **CMA ESG Reporting**: The Capital Markets Authority has already issued guidelines for ESG disclosure by listed companies. Currently voluntary, but the direction is clear.
+- **NSE ESG Guidance**: The Nairobi Securities Exchange has published its own ESG guidance for issuers, increasingly referenced in listing requirements.
+- **IFRS S1/S2**: Kenya's adoption from January 2027 will apply to all Public Interest Entities — which includes every listed company.
+- **International investors**: Foreign institutional investors (who hold significant portions of NSE-listed stocks) are already screening for climate disclosure.
+
+**What's Changing**
+
+The shift from voluntary to mandatory climate disclosure changes everything:
+
+**Before**: You could publish a few pages of sustainability content in your annual report, mention your tree-planting initiatives, and call it a day.
+
+**After**: You'll need structured disclosures on climate governance, strategy, risk management, and metrics — consistent with your financial statements, auditable, and comparable to your peers.
+
+This isn't a minor addition to your annual report. It's a fundamental change in how you report on your business.
+
+**Sector-Specific Risks**
+
+Different NSE sectors face different climate risks:
+
+**Banking and financial services**: Financed emissions, credit risk from climate-exposed borrowers, transition risk in investment portfolios.
+
+**Manufacturing (BAT, Bamburi, EAPC)**: Direct operational emissions, energy costs, carbon pricing exposure, supply chain disruption from climate events.
+
+**Agriculture (Kakuzi, Sasini, Williamson Tea)**: Physical risk from changing rainfall and temperature patterns, pest and disease shifts, water scarcity, land degradation.
+
+**Energy (KenGen, KPLC)**: Transition opportunities (geothermal, solar, wind) but also risks from changing hydrological patterns affecting hydropower.
+
+**Real estate and construction (Centum, Home Afrika)**: Physical risk to properties, changing building codes, insurance cost increases.
+
+**Telecommunications and services (Safaricom, others)**: Relatively lower direct climate risk, but supply chain and infrastructure vulnerability.
+
+**What Investors Are Asking**
+
+Institutional investors — both local and international — are increasingly including climate risk in their investment analysis:
+
+- **Climate Action 100+**: A coalition of investors with $68 trillion in assets is engaging the world's largest emitters. African companies are on their list.
+- **FTSE Russell and MSCI ESG Ratings**: These ratings agencies assess climate disclosure and performance. Poor scores affect your inclusion in ESG indices and cost of capital.
+- **Proxy voting**: Shareholders are filing and voting on climate-related resolutions at AGMs worldwide. This trend is reaching African markets.
+
+**A Practical Preparation Guide**
+
+Here's what every NSE-listed company should do in the next 12 months:
+
+1. **Conduct a materiality assessment**: Which climate risks and opportunities are most material to your specific business? Don't try to disclose everything — focus on what matters most.
+
+2. **Measure your emissions**: Start with Scope 1 (direct) and Scope 2 (electricity). Scope 3 can come later for most companies, but financial institutions need to start on financed emissions now.
+
+3. **Identify physical and transition risks**: Map your operations, assets, and supply chains against climate hazards and transition scenarios.
+
+4. **Establish governance**: Assign board-level responsibility for climate risk. Create a management committee. Set reporting cadences.
+
+5. **Build your data infrastructure**: You'll need systems to collect, track, and report climate data on an ongoing basis. Manual processes won't scale.
+
+6. **Start with a TCFD-aligned report**: Even before IFRS S2 becomes mandatory, publishing a TCFD-aligned climate report signals leadership and builds your capabilities.
+
+7. **Engage your value chain**: Talk to your suppliers, customers, and investees about climate risk. Your disclosure will eventually need to cover your broader value chain impacts.
+
+The listed companies that lead on climate disclosure will attract capital, build investor confidence, and set the standard for Kenya's capital markets. The laggards will find themselves increasingly shut out of ESG-screened investment flows.`
+  },
+  {
+    id: 'county-climate-mapping',
+    title: "Kenya's 47 Counties, 47 Different Climate Risks: Why Location Data Is Everything",
+    date: 'November 2025',
+    readTime: '6 min read',
+    category: 'Data',
+    summary: "Climate risk in Kenya is hyperlocal. A bank's exposure in Turkana looks nothing like its exposure in Kiambu. Here's why county-level data matters.",
+    content: `Kenya is one of the most climatically diverse countries in Africa. Within 580,000 square kilometres, you have coastal humidity, highland cold, arid deserts, lake basins, and everything in between. This means climate risk is fundamentally local — and any financial institution that tries to assess climate risk without county-level data is flying blind.
+
+**The Climate Risk Diversity of Kenya**
+
+Let's take a quick tour:
+
+**Arid and Semi-Arid Counties (Turkana, Marsabit, Mandera, Wajir, Garissa, Isiolo, Samburu)**: These counties face severe drought risk. Rainfall has become increasingly unpredictable, and pastoral livelihoods are under existential threat. Livestock losses during the 2021-2023 drought exceeded KSH 50 billion.
+
+**Coastal Counties (Mombasa, Kilifi, Kwale, Lamu)**: Sea-level rise, saltwater intrusion, coastal flooding, and coral reef degradation. Mombasa's commercial district faces increasing flood risk. Tourism and fishing livelihoods are exposed.
+
+**Highland Counties (Kiambu, Nyeri, Murang'a, Kericho, Nandi)**: Temperature increases are shifting agricultural zones. Tea and coffee — Kenya's export cash crops — are sensitive to temperature changes. Some tea-growing areas are already seeing yield declines.
+
+**Lake Basin Counties (Kisumu, Siaya, Homabay, Busia)**: Lake Victoria flooding, waterborne disease, and agricultural disruption. The lake's water levels have fluctuated dramatically in recent years.
+
+**Urban Counties (Nairobi, Mombasa, Kisumu)**: Urban heat islands, flash flooding (Nairobi's 2024 floods were devastating), water scarcity, and infrastructure vulnerability.
+
+**Rift Valley (Nakuru, Baringo, Kajiado)**: Drought, human-wildlife conflict exacerbated by habitat loss, landslides in escarpment areas.
+
+**Why This Matters for Financial Institutions**
+
+When you assess the climate risk of your portfolio, you need to know where your borrowers operate. Two identical loans — same amount, same sector, same borrower profile — can have completely different climate risk profiles based on location:
+
+- A KSH 5 million agricultural loan in Turkana (drought-prone) versus Kiambu (relatively water-secure)
+- A KSH 50 million property loan in Mombasa's flood zone versus Nairobi's upland suburbs
+- A KSH 10 million SME loan in Garissa (extreme heat stress) versus Nyeri (moderate climate)
+
+Without location data, you're averaging across these vastly different risk profiles — which means you're underpricing risk in some areas and overpricing it in others.
+
+**Building a County-Level Risk Map**
+
+Here's how to create a useful climate risk map for your portfolio:
+
+**Step 1: Geocode your portfolio**
+Tag every borrower with their county (and ideally sub-county) of operation. Most institutions have this data in some form — addresses, branch locations, or KRA PIN registrations.
+
+**Step 2: Overlay climate hazard data**
+Use publicly available data to map climate hazards by county:
+- Kenya Meteorological Department rainfall and temperature data
+- National Drought Management Authority drought severity classifications
+- County Integrated Development Plans (CIDPs) climate risk sections
+- FEWS NET food security and climate bulletins
+- Kenya's National Adaptation Plan county-level assessments
+
+**Step 3: Score risk by county**
+Create a simple scoring system: Low / Medium / High / Very High for each major hazard (drought, flood, heat stress, sea-level rise, landslide) by county.
+
+**Step 4: Map your portfolio exposure**
+Cross-reference your loan book with county risk scores. What percentage of your portfolio is in high-risk counties? Which sectors in which counties are most exposed?
+
+**Step 5: Visualise and act**
+A heat map of your climate exposure is one of the most powerful tools for board reporting, risk committee discussions, and strategic planning. It makes abstract climate risk tangible.
+
+**The Technology Advantage**
+
+Modern platforms can automate this entire process — taking your loan data, mapping it to county-level hazard profiles, and generating risk-scored portfolio views in minutes rather than months. The data exists. The tools exist. What's been missing is the connection between financial portfolios and climate geography.
+
+Kenya's 47 counties are 47 different climate risk environments. Your portfolio risk management needs to reflect that reality.`
+  },
+  {
+    id: 'tcfd-vs-issb',
+    title: "TCFD, ISSB, IFRS S2, CBK CRDF — A Plain English Guide to the Alphabet Soup",
+    date: 'November 2025',
+    readTime: '5 min read',
+    category: 'Standards',
+    summary: "Confused by all the climate reporting frameworks? You're not alone. Here's how they all fit together.",
+    content: `If you've been in any meeting about climate risk in the past year, you've probably heard a dozen acronyms thrown around: TCFD, ISSB, IFRS S1, IFRS S2, CRDF, KGFT, PCAF, GHG Protocol, SASB, GRI... It's enough to make anyone's head spin.
+
+Let's cut through the noise. Here's what actually matters for Kenyan financial institutions, and how it all connects.
+
+**The Framework Family Tree**
+
+Think of it as a family:
+
+**TCFD** (Task Force on Climate-related Financial Disclosures) was the grandfather. Created by the Financial Stability Board in 2015, it established the four-pillar structure: Governance, Strategy, Risk Management, Metrics & Targets. Almost every climate framework since has built on this structure.
+
+**ISSB** (International Sustainability Standards Board) is the TCFD's successor. In 2023, the TCFD was officially absorbed into the ISSB. Same structure, but now with the authority of an international standards-setting body (under the IFRS Foundation).
+
+**IFRS S1** (General Sustainability Disclosures) and **IFRS S2** (Climate-Related Disclosures) are the actual standards issued by the ISSB. IFRS S2 is essentially the TCFD framework turned into an enforceable standard with more specific requirements.
+
+**CBK CRDF** (Climate-Related Disclosures Framework) is Kenya's version. It takes the TCFD/IFRS S2 structure and applies it specifically to CBK-supervised institutions (banks, MFBs, mortgage companies). Think of it as the Kenyan translation of the global standard.
+
+**KGFT** (Kenya Green Finance Taxonomy) is complementary — it classifies which activities count as "green." It doesn't tell you how to disclose; it tells you what to classify.
+
+**PCAF** (Partnership for Carbon Accounting Financials) provides the methodology for measuring financed emissions — a key metric required by IFRS S2 and CBK CRDF.
+
+**The Key Takeaway: They All Say the Same Thing**
+
+Here's what nobody tells you: these frameworks are fundamentally the same. They all ask four questions:
+
+1. **Governance**: Who in your organisation is responsible for climate risk?
+2. **Strategy**: How does climate risk affect your business?
+3. **Risk Management**: How do you identify and manage climate risks?
+4. **Metrics**: What are the numbers?
+
+If you build your climate risk management around these four pillars, you're simultaneously addressing TCFD, IFRS S2, CBK CRDF, and most DFI requirements. You don't need separate compliance programmes for each framework.
+
+**What Kenya Specifically Requires**
+
+For most Kenyan financial institutions, the binding requirements are:
+
+- **CBK CRDF** (October 2026): If you're a bank, MFB, or mortgage company supervised by CBK
+- **IFRS S1/S2** (January 2027): If you're a Public Interest Entity (listed company, bank, insurer, large SACCO, etc.)
+- **IRA Climate Risk Guidelines** (expected 2027): If you're an insurance company
+- **RBA/SASRA** (timeline TBD): If you're a pension fund or SACCO
+
+**The Practical Translation**
+
+Here's what you actually need to do, regardless of which framework you're reporting against:
+
+1. **Put climate risk on the board agenda** → Satisfies the Governance pillar of all frameworks
+2. **Assess how climate affects your portfolio** → Satisfies Strategy for all frameworks
+3. **Integrate climate into your risk management** → Satisfies Risk Management for all frameworks
+4. **Measure your emissions and set targets** → Satisfies Metrics for all frameworks
+
+Don't get lost in the acronyms. Focus on the substance. Build a solid foundation across these four pillars, and you'll be compliant with whatever specific framework applies to you.
+
+The alphabet soup is less complicated than it looks — and understanding this saves you time, money, and headaches.`
+  },
+  {
+    id: 'audit-firms-opportunity',
+    title: "For Audit and Consulting Firms: Climate Risk Is Your Next Big Revenue Stream",
+    date: 'October 2025',
+    readTime: '6 min read',
+    category: 'Advisory',
+    summary: "Every financial institution in Kenya will need climate risk support. Audit and consulting firms are perfectly positioned to deliver — if they move now.",
+    content: `If you run or work at an audit firm, consulting practice, or advisory business in Kenya, pay attention: climate risk compliance is about to create the biggest advisory market since IFRS adoption. And the firms that position themselves now will dominate it.
+
+**The Size of the Opportunity**
+
+Let's do the maths:
+
+- 38 commercial banks, 13 MFBs, and 56 insurance companies need CBK/IRA climate risk compliance
+- 175+ deposit-taking SACCOs will need climate risk guidance as SASRA follows CBK
+- 65+ NSE-listed companies need IFRS S2 compliance
+- Hundreds of large non-listed entities classified as PIEs
+- Every one of these institutions needs: gap assessments, governance setup, data infrastructure, scenario analysis, report preparation, and potentially assurance
+
+Conservative estimate: the climate risk advisory market in Kenya is worth KSH 5-10 billion over the next 3-5 years. That's new revenue, not cannibalisation of existing services.
+
+**Why Audit Firms Are Uniquely Positioned**
+
+You already have three things that are hard to replicate:
+
+1. **Trusted client relationships**: Your clients — banks, insurers, listed companies — already trust you with their most sensitive financial data. Climate risk is a natural extension.
+
+2. **Technical credibility**: Your brand carries weight. When you tell a client's board that their climate risk governance needs improvement, they listen in a way they might not with a pure-play sustainability consultant.
+
+3. **Assurance capability**: Eventually, climate disclosures will need assurance (IFRS S2 is designed for it). Only audit firms with the right capabilities will be able to provide this.
+
+**What Services to Offer**
+
+The climate advisory practice can start generating revenue quickly:
+
+**Gap Assessment** (KSH 500K - 2M per engagement): Compare the client's current state against CBK CRDF and IFRS S2 requirements. Identify gaps and prioritise actions. This is the entry point for most engagements.
+
+**Governance Setup** (KSH 300K - 1M): Help clients establish board-level climate oversight, management committees, policies, and reporting structures.
+
+**Climate Risk Assessment** (KSH 1-5M): Portfolio-level physical and transition risk analysis. Scenario analysis. Sector and county-level exposure mapping.
+
+**Report Preparation** (KSH 1-3M): Prepare the actual CBK CRDF submission or IFRS S2 disclosure. Data gathering, narrative drafting, metrics calculation.
+
+**Training and Capacity Building** (KSH 200K - 500K per session): Board briefings, management training, credit officer education on climate risk.
+
+**Climate Assurance** (KSH 1-3M): When assurance requirements kick in, this becomes a recurring annual engagement — just like financial statement audits.
+
+**How to Build the Practice**
+
+1. **Invest in expertise**: Send 2-3 partners/managers through the GARP Sustainability and Climate Risk (SCR) certification. It takes 3-6 months and costs roughly $600 per person.
+
+2. **Start with existing clients**: Don't cold-call. Approach your audit and advisory clients with a climate risk gap assessment offer. Many will say yes because they trust you and know they need to act.
+
+3. **Partner with technology**: You don't need to build your own climate risk platform. Partner with a technology provider that can supply the data, analytics, and reporting tools. You bring the client relationships and advisory expertise; the technology partner brings the engine.
+
+4. **Create scalable methodologies**: Develop standardised gap assessment templates, governance frameworks, and report formats that can be deployed across multiple clients efficiently.
+
+5. **Position early**: Write thought leadership, speak at KBA and ICPAK events, publish climate risk guides. The firms that are visible now will be the first calls when institutions start their compliance programmes.
+
+**The Window Is Open**
+
+Right now, very few Kenyan audit and consulting firms have dedicated climate risk practices. The big four (PwC, EY, Deloitte, KPMG) are building globally but haven't fully localised for the Kenyan market. Mid-tier and local firms that move quickly can capture significant market share.
+
+The window won't stay open forever. As the October 2026 CRDF deadline approaches, demand will surge. The firms that have built their capabilities by then will capture the work. The ones that haven't will watch from the sidelines.`
+  },
+  {
+    id: 'climate-smart-agriculture',
+    title: "Climate-Smart Agriculture Lending: The Biggest Green Finance Opportunity for Kenyan Banks",
+    date: 'October 2025',
+    readTime: '7 min read',
+    category: 'Green Finance',
+    summary: "Agriculture is 22% of Kenya's GDP and massively climate-exposed. Climate-smart agriculture lending is a trillion-shilling opportunity.",
+    content: `Agriculture contributes 22% of Kenya's GDP, employs over 40% of the total population, and accounts for 65% of export earnings. It's also the sector most vulnerable to climate change. For Kenyan financial institutions, this intersection creates the single largest green finance opportunity in the market.
+
+**The Problem**
+
+Kenya's agricultural sector is overwhelmingly rain-fed. When the rains fail — as they have with increasing frequency — the sector contracts. The 2021-2023 drought wiped an estimated 2-3 percentage points off GDP growth. Crop failures cascade through the economy: farmers default on loans, rural incomes collapse, food prices spike, and urban consumers suffer.
+
+Traditional agricultural lending has always been risky. Climate change is making it riskier. But here's the twist: the solution — climate-smart agriculture (CSA) — creates a massive lending opportunity.
+
+**What Is Climate-Smart Agriculture?**
+
+CSA is agriculture that:
+- **Increases productivity sustainably** (more output without more environmental damage)
+- **Builds resilience to climate impacts** (withstands droughts, floods, and temperature changes)
+- **Reduces greenhouse gas emissions** (less methane, less deforestation, more carbon sequestration)
+
+In practical terms for Kenya, CSA includes:
+
+**Irrigation**: Moving from rain-fed to irrigated agriculture. Solar-powered drip irrigation systems can transform a farmer's resilience to drought. A single system costs KSH 200-500K and pays for itself in 2-3 seasons.
+
+**Drought-resistant seeds and crops**: Breeding and distributing crop varieties that can tolerate heat and water stress. This is an input financing opportunity.
+
+**Soil health management**: Cover cropping, composting, conservation tillage. Improves yields and sequesters carbon.
+
+**Agroforestry**: Integrating trees into farming systems. Provides shade, prevents soil erosion, diversifies income, and sequesters carbon.
+
+**Post-harvest infrastructure**: Storage and cold chain facilities that reduce the 30-40% of food lost post-harvest in Kenya. Climate-controlled storage is especially valuable as temperatures rise.
+
+**Livestock management**: Improved breeds, fodder management, biogas from animal waste. Reduces emissions while improving productivity.
+
+**The Lending Opportunity**
+
+The financing gap for climate-smart agriculture in Kenya is estimated at KSH 100+ billion annually. Current lending covers a fraction of this. Here's where the money goes:
+
+- **Solar irrigation systems**: KSH 200K - 5M per system, depending on scale
+- **Greenhouse and shade net installation**: KSH 500K - 3M per unit
+- **Post-harvest storage facilities**: KSH 1-10M per facility
+- **Agroforestry establishment**: KSH 100K - 500K per hectare
+- **Climate-resilient livestock**: KSH 200K - 2M per enterprise
+- **Biogas digesters**: KSH 100K - 500K per installation
+
+These are bankable investments with clear returns and relatively short payback periods. They also qualify as green lending under the Kenya Green Finance Taxonomy.
+
+**Why DFIs Are Pouring Money Into This**
+
+DFIs see climate-smart agriculture as a triple win: climate adaptation, food security, and economic development. That's why:
+
+- IFC has dedicated CSA credit lines available for Kenyan FIs
+- KfW funds multiple agricultural climate resilience programmes in Kenya
+- IFAD and the World Bank have active CSA projects in 30+ Kenyan counties
+- The Green Climate Fund finances agricultural adaptation through accredited entities
+
+When you build a CSA lending portfolio, you're not just creating a product — you're positioning your institution to access some of the most attractive funding in the market.
+
+**How to Build a CSA Lending Portfolio**
+
+1. **Define your CSA products**: Create specific loan products for solar irrigation, greenhouses, post-harvest storage, and other CSA activities. These need tailored terms — seasonal repayment, longer tenors, grace periods during establishment.
+
+2. **Train your agricultural lending team**: Your relationship managers in rural branches need to understand what CSA looks like on the ground. Partner with agricultural extension services for joint training.
+
+3. **Use the KGFT to classify**: Tag every CSA loan as taxonomy-aligned from origination. This creates the data trail you need for green reporting and DFI compliance.
+
+4. **Partner with technology providers**: Satellite imagery, weather data, and agronomic analytics can help you assess and monitor CSA investments remotely.
+
+5. **Build the DFI case**: Package your CSA pipeline and approach DFIs with a clear proposition: "We have X thousand farmers in Y counties ready for Z in CSA investment."
+
+Climate-smart agriculture isn't just good for the environment. It's good for farmers, good for food security, and good for your institution's bottom line. In a country where agriculture is everything, this is the green finance opportunity of the decade.`
+  },
+  {
+    id: 'east-africa-compliance',
+    title: "Beyond Kenya: Climate Risk Regulation Is Coming to All of East Africa",
+    date: 'October 2025',
+    readTime: '6 min read',
+    category: 'Africa',
+    summary: "Uganda, Tanzania, Rwanda, and Ethiopia are all developing climate finance frameworks. Pan-regional institutions need to prepare now.",
+    content: `If your institution operates across East Africa — and many Kenyan financial groups do — climate risk regulation isn't just a Kenyan issue. Every major economy in the East African Community is developing its own climate finance framework. Here's what's happening and what it means for regional players.
+
+**Country-by-Country Snapshot**
+
+**Uganda**
+The Bank of Uganda issued Environmental, Social and Governance Guidelines for financial institutions in 2023. While not yet as prescriptive as CBK's CRDF, the direction is clear. The Capital Markets Authority of Uganda is also developing ESG disclosure requirements for listed entities. Uganda's National Adaptation Programme of Action identifies financial sector resilience as a priority.
+
+**Tanzania**
+The Bank of Tanzania has been engaging with the Sustainable Banking Network (SBN) and has signalled intentions to develop climate-related guidance for supervised institutions. Tanzania's capital markets regulator (CMSA) is working on sustainability disclosure requirements. The country's heavy dependence on rain-fed agriculture makes climate risk especially material.
+
+**Rwanda**
+Rwanda is arguably the most progressive in the region after Kenya. The National Bank of Rwanda (BNR) has integrated ESG considerations into its supervisory framework. The Rwanda Green Fund (FONERWA) is one of Africa's most successful national climate funds. Rwanda's CMA issued Green Bond and Sustainability-Linked Bond Guidelines in December 2024. Rwanda is positioning Kigali as East Africa's green finance hub.
+
+**Ethiopia**
+Ethiopia is in the early stages of financial sector liberalisation, but climate risk awareness is growing. The National Bank of Ethiopia is developing risk management guidelines that may include environmental risk. Ethiopia's Green Economy Strategy provides a policy foundation. The country's vulnerability to drought and food insecurity makes climate risk oversight critical for financial stability.
+
+**What This Means for Regional Players**
+
+Several Kenyan financial groups operate across these markets: KCB Group (Uganda, Tanzania, Rwanda, Burundi, DRC, South Sudan), Equity Group (Uganda, Tanzania, Rwanda, DRC, South Sudan), NCBA (Tanzania), I&M Group (Uganda, Tanzania, Rwanda).
+
+For these groups, climate risk compliance is a regional challenge:
+- Different countries will have different timelines and specific requirements
+- Group-level climate governance needs to cover all subsidiaries
+- Data collection must work across different markets
+- Reporting will need to be consolidated at group level while meeting local requirements
+
+**The Advantage of Moving Early**
+
+Regional players that build climate risk capability now get:
+
+- **Scalable systems**: A platform deployed for the Kenyan operation can be adapted for Uganda, Tanzania, and Rwanda with localised data and regulatory mapping.
+- **Group-level efficiency**: One methodology, one governance framework, adapted for each jurisdiction.
+- **DFI attractiveness**: DFIs love regional financial groups that demonstrate climate awareness across their footprint.
+- **Regulatory goodwill**: Being ahead of local requirements in each market builds regulatory trust.
+
+**The EAC Opportunity**
+
+The East African Community as a bloc is also engaging with climate finance:
+- EAC partner states have committed to harmonising sustainable finance frameworks
+- Regional development banks (like the East African Development Bank) are developing climate strategies
+- Cross-border investments and trade linkages mean that climate risk in one EAC country affects financial institutions in others
+
+**Practical Next Steps for Regional Groups**
+
+1. **Establish group-level climate governance**: The group board and risk committee should oversee climate risk across all markets, not just Kenya.
+2. **Map regulatory timelines**: Create a matrix of climate risk requirements and deadlines across each country you operate in.
+3. **Build a regional data platform**: Deploy climate risk tools that can ingest data from all your markets and produce both local and consolidated reports.
+4. **Start with Kenya, then replicate**: Use your Kenya CRDF compliance programme as the template. Adapt it for each subsequent market.
+5. **Engage with local regulators**: In markets where regulation is still developing, engage proactively. Being part of the conversation is better than reacting to the outcome.
+
+East Africa is one of the world's most climate-vulnerable regions. Financial institutions that operate here have both a responsibility and an opportunity to lead on climate risk management. The ones that build regional capability now will define the standard for decades to come.`
+  },
+  {
+    id: 'transition-planning',
+    title: "Transition Plans: Why Every Kenyan Bank Needs One (And What to Put in It)",
+    date: 'September 2025',
+    readTime: '7 min read',
+    category: 'Strategy',
+    summary: "A transition plan isn't just a document — it's your institution's roadmap for navigating the shift to a low-carbon economy.",
+    content: `You'll hear the term "transition plan" increasingly in climate risk discussions. CBK's CRDF mentions it. IFRS S2 references it. DFIs ask about it. But what exactly is a transition plan, and why does your institution need one?
+
+**What Is a Transition Plan?**
+
+A transition plan is a time-bound, action-oriented strategy that sets out how your institution will manage its response to the transition to a low-carbon economy. It covers both the risks you need to manage and the opportunities you want to capture.
+
+Think of it as your institution's answer to the question: "As the world moves away from fossil fuels and toward green energy, as carbon prices rise and regulations tighten, how will you adapt your business to thrive?"
+
+**Why Kenyan Banks Need One**
+
+"But Kenya already has 90% renewable electricity — we're not like a coal-dependent economy."
+
+True. Kenya's grid is one of the greenest in Africa. But transition risk goes far beyond electricity:
+
+- **Agricultural transformation**: As climate change disrupts rain-fed agriculture, banks with large agricultural portfolios need to plan for how their lending will evolve. Which crops will remain viable? Which regions will need different agricultural models?
+
+- **Transport electrification**: Kenya is planning for electric vehicle adoption. Banks financing petrol-dependent transport businesses are financing transition risk.
+
+- **Building standards**: Green building codes are coming. Real estate portfolios need to factor in the cost of compliance and the risk of stranded assets.
+
+- **Carbon markets**: Kenya's participation in international carbon markets is growing. This creates opportunities for banks that understand carbon credit financing and risks for those that don't.
+
+- **International supply chain requirements**: Kenya's export sectors (tea, coffee, flowers, textiles) face increasing sustainability requirements from European and US buyers. Exporters that can't demonstrate climate action will lose market access.
+
+**What Goes Into a Transition Plan**
+
+A good transition plan has six components:
+
+**1. Ambition and targets**
+Where do you want to be? Set specific, time-bound targets:
+- Green portfolio as a percentage of total lending (e.g., 15% by 2028, 30% by 2030)
+- Financed emissions reduction trajectory (e.g., aligned with Kenya's NDC)
+- Sector-specific targets for high-emitting exposures
+
+**2. Current state assessment**
+Where are you now? Baseline your:
+- Current green lending portfolio
+- Financed emissions by sector
+- High-carbon exposure concentration
+- Climate risk governance maturity
+
+**3. Sector strategies**
+For each significant sector in your portfolio:
+- What are the transition risks and opportunities?
+- Which subsectors will grow, shrink, or transform?
+- How will you adjust your lending strategy?
+- What engagement will you undertake with borrowers?
+
+**4. Products and services**
+What new offerings will you develop?
+- Green loan products
+- Sustainability-linked loans
+- Climate adaptation financing
+- Carbon market services
+- Advisory services for borrowers on their own transitions
+
+**5. Internal capabilities**
+What do you need to build?
+- Staff training and awareness
+- Data and technology systems
+- Risk model adjustments
+- Board and management competencies
+
+**6. Implementation timeline**
+When will each element be delivered? Map actions to quarters and years, with clear milestones and accountability.
+
+**Making It Real**
+
+The biggest risk with transition plans is that they become impressive documents that sit on shelves. To avoid this:
+
+- **Embed it in strategy**: The transition plan should be part of your strategic plan, not a separate sustainability exercise.
+- **Link it to incentives**: Connect management KPIs and bonus structures to transition plan milestones.
+- **Report on progress**: Include transition plan updates in your quarterly board reporting and annual disclosures.
+- **Review and update**: Transition plans should be living documents, updated annually as climate science, regulation, and market conditions evolve.
+
+**The DFI Connection**
+
+Here's the business case that gets the most attention in boardrooms: DFIs are increasingly requiring transition plans as a condition for facilities. When IFC or FMO evaluates your institution for a climate credit line, one of the first things they'll ask is: "What's your transition strategy?"
+
+Having a credible transition plan doesn't just satisfy regulators — it opens doors to the most attractive capital in the market. Build the plan, live the plan, and the capital follows.`
+  },
 ]
 
 export default function HomePage() {
@@ -957,6 +1613,7 @@ export default function HomePage() {
           --teal-light: #ccfbf1;
           --text: #1e293b;
           --text2: #64748b;
+          --bg2: #eef1f6;
           --border: #e2e8f0;
           --radius: 12px;
           --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
@@ -1036,16 +1693,19 @@ export default function HomePage() {
       )}
 
       {/* Header */}
-      <header style={{ background: 'var(--card)', borderBottom: '1px solid var(--border)', position: 'sticky', top: 0, zIndex: 100 }}>
-        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '12px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <div>
-            <div style={{ fontWeight: 800, fontSize: 18, color: 'var(--dark)' }}>CFOIP</div>
-            <div style={{ fontSize: 11, color: 'var(--text2)' }}>Climate Risk &amp; Compliance Platform</div>
+      <header style={{ background: 'var(--card)', borderBottom: '1px solid var(--border)', position: 'sticky', top: 0, zIndex: 100, boxShadow: '0 1px 8px rgba(0,0,0,0.04)' }}>
+        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '10px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <div style={{ width: 36, height: 36, borderRadius: 8, background: 'linear-gradient(135deg, var(--accent), var(--accent2))', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontWeight: 900, fontSize: 14 }}>CR</div>
+            <div>
+              <div style={{ fontWeight: 800, fontSize: 16, color: 'var(--dark)', lineHeight: 1.2 }}>Climate Risk &amp; Compliance</div>
+              <div style={{ fontSize: 11, color: 'var(--text2)', lineHeight: 1.2 }}>by CFO Innovation Partners</div>
+            </div>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <span className="badge badge-red hide-mobile">Oct 2026: CBK CRDF</span>
-            <span className="badge badge-amber hide-mobile">Jan 2027: IFRS S1/S2</span>
-            <a href="/auth" className="btn btn-primary" style={{ padding: '8px 16px', fontSize: 13 }}>Login</a>
+            <span className="badge badge-red hide-mobile" style={{ fontSize: 11 }}>CBK CRDF: Oct 2026</span>
+            <span className="badge badge-amber hide-mobile" style={{ fontSize: 11 }}>IFRS S1/S2: Jan 2027</span>
+            <a href="/auth" className="btn btn-primary" style={{ padding: '7px 16px', fontSize: 13 }}>Sign In</a>
             <button className="mobile-menu-btn" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               style={{ background: 'none', border: '1px solid var(--border)', borderRadius: 8, padding: '8px 12px', cursor: 'pointer', fontSize: 18, alignItems: 'center', justifyContent: 'center' }}>
               {mobileMenuOpen ? '\u2715' : '\u2630'}
@@ -1057,9 +1717,14 @@ export default function HomePage() {
           {TABS.map(tab => (
             <button key={tab} onClick={() => switchTab(tab)}
               style={{
-                padding: '8px 12px', border: 'none', borderBottom: activeTab === tab ? '3px solid var(--accent)' : '3px solid transparent',
-                background: 'none', cursor: 'pointer', fontWeight: activeTab === tab ? 700 : 500,
-                color: activeTab === tab ? 'var(--accent)' : 'var(--text2)', fontSize: 13, whiteSpace: 'nowrap', transition: 'all 0.2s'
+                padding: '10px 14px', border: 'none',
+                borderBottom: activeTab === tab ? '3px solid var(--accent)' : '3px solid transparent',
+                background: activeTab === tab ? 'var(--accent-light)' : 'none',
+                borderRadius: activeTab === tab ? '8px 8px 0 0' : 0,
+                cursor: 'pointer', fontWeight: activeTab === tab ? 700 : 500,
+                color: activeTab === tab ? 'var(--accent)' : 'var(--text2)',
+                fontSize: 13, whiteSpace: 'nowrap', transition: 'all 0.2s',
+                ...(tab === 'Get Started' ? { background: activeTab === tab ? 'var(--accent)' : 'var(--accent)', color: 'white', borderRadius: 6, margin: '4px 0', fontWeight: 700, borderBottom: 'none' } : {})
               }}>{tab}</button>
           ))}
         </div>
@@ -1070,8 +1735,9 @@ export default function HomePage() {
               <button key={tab} onClick={() => switchTab(tab)}
                 style={{
                   display: 'block', width: '100%', padding: '12px 16px', border: 'none', textAlign: 'left',
-                  background: activeTab === tab ? 'var(--accent-light)' : 'transparent',
-                  color: activeTab === tab ? 'var(--accent)' : 'var(--text)', fontWeight: activeTab === tab ? 700 : 400,
+                  background: activeTab === tab ? 'var(--accent-light)' : (tab === 'Get Started' ? 'var(--accent)' : 'transparent'),
+                  color: activeTab === tab ? 'var(--accent)' : (tab === 'Get Started' ? 'white' : 'var(--text)'),
+                  fontWeight: activeTab === tab || tab === 'Get Started' ? 700 : 400,
                   cursor: 'pointer', borderRadius: 8, fontSize: 15
                 }}>{tab}</button>
             ))}
@@ -1526,6 +2192,121 @@ export default function HomePage() {
             <p style={{ fontSize: 14, color: 'var(--text2)' }}>
               With CBK CRDF reporting starting October 2026 and IFRS S1/S2 from January 2027, every financial institution in Kenya needs to understand their readiness gap. This diagnostic is free, confidential, and takes about 5 minutes. No commitment required.
             </p>
+          </div>
+        </div>
+      )}
+
+      {/* ============ SERVICES ============ */}
+      {activeTab === 'Services' && (
+        <div className="section">
+          <h2 style={{ fontSize: 26, fontWeight: 800, marginBottom: 4, color: 'var(--accent)' }}>Our Services</h2>
+          <p style={{ color: 'var(--text2)', marginBottom: 24, fontSize: 14, maxWidth: 700 }}>
+            End-to-end climate risk compliance and green finance infrastructure for Kenya&apos;s financial sector. Technology-first, human-supported.
+          </p>
+
+          <div className="grid-2" style={{ marginBottom: 32 }}>
+            {[
+              {
+                icon: '📊',
+                title: 'Climate Risk Assessment & Reporting',
+                desc: 'Automated CBK CRDF and IFRS S2 report generation. Portfolio-level physical and transition risk analysis. Scenario modelling across multiple climate pathways.',
+                features: ['CBK CRDF report builder', 'IFRS S2 disclosure templates', 'Physical risk heat maps by county', 'Transition risk sector scoring', 'Board-ready dashboards']
+              },
+              {
+                icon: '📈',
+                title: 'Financed Emissions Measurement (PCAF)',
+                desc: 'Calculate your portfolio\'s carbon footprint using the PCAF standard. Track emissions intensity across sectors and set science-based reduction targets.',
+                features: ['Scope 3 Category 15 calculation', 'Sector emission factors for Kenya', 'Data quality scoring (1-5)', 'Year-on-year tracking', 'Benchmarking against peers']
+              },
+              {
+                icon: '🏗️',
+                title: 'Green Finance Taxonomy Tagging (KGFT)',
+                desc: 'Classify your loan portfolio against the Kenya Green Finance Taxonomy. Identify green lending opportunities and track your green portfolio ratio.',
+                features: ['KGFT sector classification', 'Green portfolio ratio tracking', 'Do No Significant Harm screening', 'DFI eligibility reporting', 'Green bond use-of-proceeds verification']
+              },
+              {
+                icon: '🔍',
+                title: 'Free Climate Readiness Diagnostic',
+                desc: 'A comprehensive 6-pillar assessment that benchmarks your institution\'s climate risk readiness against regulatory requirements and best practices.',
+                features: ['15-minute online assessment', 'Instant readiness score', 'Gap analysis by pillar', 'Prioritised action plan', 'Peer benchmarking'],
+                cta: true
+              },
+              {
+                icon: '📋',
+                title: 'Borrower Climate Data Collection',
+                desc: 'Digital questionnaires, proxy-based estimation, and progressive data quality improvement. Get borrower-level climate data without manual spreadsheets.',
+                features: ['Digital borrower questionnaires', 'Proxy estimation from sector data', 'County-level hazard mapping', 'Integration with core banking', 'PCAF data quality ladder']
+              },
+              {
+                icon: '🎓',
+                title: 'Board & Management Training',
+                desc: 'Practical climate risk training for boards, risk committees, credit teams, and compliance officers. Tailored to Kenya\'s regulatory context.',
+                features: ['Board climate governance briefings', 'Credit officer climate training', 'Risk committee workshops', 'Customised to your institution', 'Ongoing learning modules']
+              },
+              {
+                icon: '🤝',
+                title: 'DFI Partnership Facilitation',
+                desc: 'Position your institution to access green credit lines, concessional capital, and technical assistance from IFC, FMO, KfW, AfDB, and other DFIs.',
+                features: ['Green pipeline development', 'DFI proposal preparation', 'Impact measurement setup', 'ESMS development', 'Ongoing reporting support']
+              },
+              {
+                icon: '🏢',
+                title: 'Channel & White-Label Partnerships',
+                desc: 'For audit firms, consulting practices, industry associations, and DFIs: deploy our platform across your client base or portfolio companies.',
+                features: ['White-label platform', 'Co-branded solutions', 'Bulk licensing', 'Partner training & certification', 'Revenue sharing models']
+              },
+            ].map(service => (
+              <div key={service.title} className="card" style={{ borderTop: '3px solid var(--accent)' }}>
+                <div style={{ fontSize: 28, marginBottom: 8 }}>{service.icon}</div>
+                <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 8 }}>{service.title}</h3>
+                <p style={{ fontSize: 13, color: 'var(--text2)', marginBottom: 12, lineHeight: 1.5 }}>{service.desc}</p>
+                <ul style={{ fontSize: 13, color: 'var(--text)', listStyle: 'none', padding: 0 }}>
+                  {service.features.map(f => (
+                    <li key={f} style={{ padding: '3px 0', borderBottom: '1px solid var(--bg)' }}>&#10003; {f}</li>
+                  ))}
+                </ul>
+                {service.cta && (
+                  <button className="btn btn-primary" style={{ marginTop: 12, width: '100%' }} onClick={() => switchTab('Get Started')}>Take Free Diagnostic</button>
+                )}
+              </div>
+            ))}
+          </div>
+
+          {/* Open Source Tools Integration */}
+          <div style={{ marginBottom: 32 }}>
+            <h3 style={{ fontSize: 20, fontWeight: 700, marginBottom: 16, color: 'var(--dark)' }}>Integrated Open-Source Climate Tools</h3>
+            <p style={{ color: 'var(--text2)', fontSize: 14, marginBottom: 16 }}>
+              Our platform integrates leading open-source climate risk tools to provide institutional-grade analytics without the institutional price tag.
+            </p>
+            <div className="grid-3">
+              {[
+                { name: 'PACTA (RMI)', desc: 'Portfolio alignment analysis against Paris Agreement targets. Measures your lending portfolio against 2°C-aligned sector pathways.', use: 'Portfolio alignment' },
+                { name: 'CLIMADA (ETH Zurich)', desc: 'Probabilistic natural catastrophe risk modelling. Calculates expected losses from droughts, floods, and tropical storms.', use: 'Physical risk modelling' },
+                { name: 'OS-Climate', desc: 'Open-source physical and transition risk analytics platform backed by Linux Foundation. Scenario analysis and data integration.', use: 'Scenario analysis' },
+                { name: '1in1000 (PRISK)', desc: 'Sovereign climate risk assessment tool. Evaluates how climate change affects country-level economic performance and debt sustainability.', use: 'Sovereign risk' },
+                { name: 'WRI Aqueduct', desc: 'Global water risk mapping tool by World Resources Institute. Maps water stress, flood risk, and drought severity at sub-national level.', use: 'Water risk mapping' },
+                { name: 'WWF Risk Filter', desc: 'Biodiversity and water risk screening for investment portfolios. Maps deforestation and water stress across supply chains.', use: 'Biodiversity screening' },
+              ].map(tool => (
+                <div key={tool.name} className="card card-blue">
+                  <h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 4 }}>{tool.name}</h4>
+                  <span className="badge badge-blue" style={{ marginBottom: 8, display: 'inline-block' }}>{tool.use}</span>
+                  <p style={{ fontSize: 13, color: 'var(--text2)', lineHeight: 1.5 }}>{tool.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Pricing CTA */}
+          <div style={{ textAlign: 'center', padding: 32, background: 'var(--bg2)', borderRadius: 12 }}>
+            <h3 style={{ fontSize: 20, fontWeight: 700, marginBottom: 8 }}>Ready to Get Started?</h3>
+            <p style={{ color: 'var(--text2)', marginBottom: 16, maxWidth: 500, margin: '0 auto 16px' }}>
+              Start with a free climate readiness diagnostic, or talk to us about a full implementation.
+            </p>
+            <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
+              <a href="/diagnostic" className="btn btn-primary">Free Diagnostic</a>
+              <button className="btn btn-outline" onClick={() => switchTab('Get Started')}>Request Demo</button>
+            </div>
+            <p style={{ color: 'var(--text2)', fontSize: 13, marginTop: 12 }}>partner@cfopartners.fund &nbsp;|&nbsp; +254 748 918 910</p>
           </div>
         </div>
       )}
