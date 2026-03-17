@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback, useMemo, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import AuthGate from '@/lib/AuthGate'
+import { useAuth } from '@/lib/AuthContext'
 
 // ============================================================
 // TYPES
@@ -492,6 +493,7 @@ const CRITICAL_CHECKS: CriticalCheck[] = [
 // ============================================================
 function getSections(mode: 'bank' | 'internal') {
   const sections = [
+    { id: 'intro', label: 'Welcome & Guide' },
     { id: 'info', label: 'Client Info' },
     ...PILLARS.map((p) => ({ id: p.id, label: p.name })),
   ]
@@ -502,6 +504,7 @@ function getSections(mode: 'bank' | 'internal') {
       { id: 'checks', label: 'Critical Checks' }
     )
   }
+  sections.push({ id: 'next-steps', label: 'Next Steps & CTA' })
   sections.push({ id: 'dashboard', label: 'Dashboard' })
   return sections
 }
@@ -576,18 +579,34 @@ function DiagnosticPage() {
     cbk: {},
     pcaf: {},
     checks: {},
-    activeSection: 'info',
+    activeSection: 'intro',
   })
 
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const { user } = useAuth()
 
-  // Load from localStorage
+  // Auto-populate from logged-in user profile
+  useEffect(() => {
+    if (user && !state.info.bankName) {
+      setState((prev) => ({
+        ...prev,
+        info: {
+          ...prev.info,
+          bankName: user.organisation || '',
+          lead: user.name || '',
+        },
+      }))
+    }
+  }, [user]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Load from localStorage but always start on 'info'
   useEffect(() => {
     try {
       const saved = localStorage.getItem('climate-diagnostic-state')
       if (saved) {
         const parsed = JSON.parse(saved) as DiagnosticState
         parsed.mode = isInternal ? 'internal' : 'bank'
+        parsed.activeSection = 'intro' // Always start at intro
         setState(parsed)
       }
     } catch {
@@ -1355,10 +1374,184 @@ function DiagnosticPage() {
   }
 
   // ============================================================
+  // RENDER: INTRO / WELCOME
+  // ============================================================
+  function renderIntro() {
+    return (
+      <div className="space-y-8">
+        <div>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">Welcome to the Climate Risk Readiness Diagnostic</h2>
+          <p className="text-gray-600 leading-relaxed">
+            This diagnostic assesses your institution&apos;s readiness for climate risk reporting against Kenya&apos;s regulatory requirements.
+            It takes approximately 15-20 minutes and covers 6 pillars with 36 questions.
+          </p>
+        </div>
+
+        <div className="bg-red-50 border border-red-200 rounded-xl p-5">
+          <h3 className="text-base font-bold text-red-800 mb-2">Why You Need This Diagnostic</h3>
+          <ul className="text-sm text-red-700 space-y-2">
+            <li><strong>CBK CRDF deadline: October 2026</strong> — All CBK-supervised institutions must submit their first Climate-Related Disclosures Framework report.</li>
+            <li><strong>IFRS S1/S2: January 2027</strong> — Public Interest Entities in Kenya must comply with the new sustainability disclosure standards.</li>
+            <li><strong>Non-compliance risks</strong> — CAMELS rating impact, supervisory action, loss of DFI partnerships, and reputational damage.</li>
+          </ul>
+        </div>
+
+        <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-5">
+          <h3 className="text-base font-bold text-emerald-800 mb-2">What You&apos;ll Get</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-emerald-700">
+            <div className="flex gap-2"><span className="text-emerald-500 font-bold">&#10003;</span> Readiness score across 6 pillars (1-5 scale)</div>
+            <div className="flex gap-2"><span className="text-emerald-500 font-bold">&#10003;</span> RAG-rated gap analysis (Red / Amber / Green)</div>
+            <div className="flex gap-2"><span className="text-emerald-500 font-bold">&#10003;</span> Prioritised action plan by severity</div>
+            <div className="flex gap-2"><span className="text-emerald-500 font-bold">&#10003;</span> Exportable assessment report (JSON)</div>
+            <div className="flex gap-2"><span className="text-emerald-500 font-bold">&#10003;</span> Benchmarking against peer institutions</div>
+            <div className="flex gap-2"><span className="text-emerald-500 font-bold">&#10003;</span> Direct path to automated CBK CRDF reporting</div>
+          </div>
+        </div>
+
+        <div className="border border-gray-200 rounded-xl p-5">
+          <h3 className="text-base font-bold text-gray-900 mb-3">Key Frameworks &amp; Terminology</h3>
+          <div className="space-y-3 text-sm">
+            <div className="border-l-3 border-emerald-500 pl-3" style={{borderLeftWidth: 3}}>
+              <strong className="text-gray-900">CBK CRDF</strong> <span className="text-gray-400">|</span> <span className="text-gray-500">Climate-Related Disclosures Framework</span>
+              <p className="text-gray-500 mt-0.5">CBK&apos;s mandatory reporting framework for all supervised institutions. Covers governance, strategy, risk management, and metrics. Based on TCFD/ISSB structure.</p>
+            </div>
+            <div className="border-l-3 border-blue-500 pl-3" style={{borderLeftWidth: 3}}>
+              <strong className="text-gray-900">IFRS S1 / S2</strong> <span className="text-gray-400">|</span> <span className="text-gray-500">International Sustainability Disclosure Standards</span>
+              <p className="text-gray-500 mt-0.5">Global standards issued by the ISSB. S1 covers general sustainability risks; S2 focuses specifically on climate-related risks and opportunities. Adopted in Kenya from January 2027.</p>
+            </div>
+            <div className="border-l-3 border-amber-500 pl-3" style={{borderLeftWidth: 3}}>
+              <strong className="text-gray-900">KGFT</strong> <span className="text-gray-400">|</span> <span className="text-gray-500">Kenya Green Finance Taxonomy</span>
+              <p className="text-gray-500 mt-0.5">Kenya&apos;s classification system defining which economic activities qualify as &quot;green&quot;. Used for portfolio tagging, green bond eligibility, and DFI reporting.</p>
+            </div>
+            <div className="border-l-3 border-purple-500 pl-3" style={{borderLeftWidth: 3}}>
+              <strong className="text-gray-900">PCAF</strong> <span className="text-gray-400">|</span> <span className="text-gray-500">Partnership for Carbon Accounting Financials</span>
+              <p className="text-gray-500 mt-0.5">Global standard for measuring financed emissions (Scope 3, Category 15). Uses a data quality ladder (1-5) to measure the carbon footprint of your loan portfolio.</p>
+            </div>
+            <div className="border-l-3 border-teal-500 pl-3" style={{borderLeftWidth: 3}}>
+              <strong className="text-gray-900">TCFD</strong> <span className="text-gray-400">|</span> <span className="text-gray-500">Task Force on Climate-related Financial Disclosures</span>
+              <p className="text-gray-500 mt-0.5">The foundational 4-pillar framework (Governance, Strategy, Risk Management, Metrics &amp; Targets) now absorbed into IFRS S2. Basis for CBK CRDF structure.</p>
+            </div>
+            <div className="border-l-3 border-rose-500 pl-3" style={{borderLeftWidth: 3}}>
+              <strong className="text-gray-900">Scenario Analysis</strong>
+              <p className="text-gray-500 mt-0.5">Modelling how your portfolio performs under different climate futures (e.g., 1.5&deg;C orderly transition vs. 3&deg;C+ hot house). Required by CBK CRDF and IFRS S2.</p>
+            </div>
+            <div className="border-l-3 border-orange-500 pl-3" style={{borderLeftWidth: 3}}>
+              <strong className="text-gray-900">Physical vs Transition Risk</strong>
+              <p className="text-gray-500 mt-0.5"><strong>Physical</strong>: Direct climate impacts (droughts, floods, heat stress). <strong>Transition</strong>: Risks from shifting to low-carbon economy (policy changes, technology shifts, market sentiment).</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-gray-50 border border-gray-200 rounded-xl p-5">
+          <h3 className="text-base font-bold text-gray-900 mb-2">The 6 Assessment Pillars</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {PILLARS.map((p, i) => (
+              <div key={p.id} className="flex gap-3 items-start">
+                <span className="flex-shrink-0 w-7 h-7 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center text-xs font-bold">{i + 1}</span>
+                <div>
+                  <p className="text-sm font-semibold text-gray-900">{p.shortName}</p>
+                  <p className="text-xs text-gray-500">{p.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {user && (
+          <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 text-sm">
+            <p className="text-blue-800">Logged in as <strong>{user.name}</strong>{user.organisation ? ` from ${user.organisation}` : ''}. Your details will auto-populate in the next step.</p>
+          </div>
+        )}
+      </div>
+    )
+  }
+
+  // ============================================================
+  // RENDER: NEXT STEPS / CTA
+  // ============================================================
+  function renderNextSteps() {
+    const hasAnswers = totalAnswered > 0
+    return (
+      <div className="space-y-8">
+        <div>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">What Happens Next?</h2>
+          <p className="text-gray-600">
+            {hasAnswers
+              ? `You've answered ${totalAnswered} of ${totalQuestions} questions. ${totalAnswered === totalQuestions ? 'Your assessment is complete!' : 'You can continue to the dashboard to see your results, or complete the remaining questions.'}`
+              : "Complete the 6-pillar assessment to get your climate risk readiness score and gap analysis."
+            }
+          </p>
+        </div>
+
+        {hasAnswers && (
+          <div className={`rounded-xl p-6 border ${ragBg(overallScore)}`}>
+            <div className="text-center">
+              <p className="text-3xl font-black">{overallScore.toFixed(1)} <span className="text-lg font-normal text-gray-500">/ 5.0</span></p>
+              <p className={`text-sm font-bold mt-1 ${ragColor(overallScore)}`}>Overall Readiness: {ragLabel(overallScore)}</p>
+              <p className="text-xs text-gray-500 mt-1">{totalAnswered} of {totalQuestions} questions answered</p>
+            </div>
+          </div>
+        )}
+
+        <div className="border border-emerald-200 bg-emerald-50 rounded-xl p-6">
+          <h3 className="text-lg font-bold text-emerald-900 mb-3">Want Us to Help Close the Gaps?</h3>
+          <p className="text-sm text-emerald-800 mb-4">
+            Our platform automates CBK CRDF reporting, climate data collection, and gap remediation. We can take your diagnostic results and turn them into a compliance programme — so you meet the October 2026 deadline without building everything from scratch.
+          </p>
+          <div className="space-y-3">
+            <div className="flex gap-3 items-start">
+              <span className="text-emerald-600 font-bold text-lg">1</span>
+              <div>
+                <p className="text-sm font-semibold text-emerald-900">Gap Remediation Programme</p>
+                <p className="text-xs text-emerald-700">We review your diagnostic results, prioritise the gaps, and build a structured plan to achieve compliance across all 6 pillars.</p>
+              </div>
+            </div>
+            <div className="flex gap-3 items-start">
+              <span className="text-emerald-600 font-bold text-lg">2</span>
+              <div>
+                <p className="text-sm font-semibold text-emerald-900">Automated CBK CRDF Reporting</p>
+                <p className="text-xs text-emerald-700">Our report builder auto-populates county hazard data, sector classifications, and generates CBK-compliant Excel templates — no manual spreadsheets.</p>
+              </div>
+            </div>
+            <div className="flex gap-3 items-start">
+              <span className="text-emerald-600 font-bold text-lg">3</span>
+              <div>
+                <p className="text-sm font-semibold text-emerald-900">Ongoing Climate Data Infrastructure</p>
+                <p className="text-xs text-emerald-700">Borrower data collection, PCAF emissions measurement, KGFT portfolio tagging, and board-ready dashboards — all on one platform.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <a
+            href="/report"
+            className="block bg-emerald-600 hover:bg-emerald-700 text-white text-center font-semibold py-4 px-6 rounded-xl transition-colors"
+          >
+            Start CBK CRDF Report Builder &rarr;
+          </a>
+          <a
+            href="mailto:partner@cfopartners.fund?subject=Climate%20Risk%20Diagnostic%20Follow-up&body=Hi%2C%0A%0AI've%20completed%20the%20climate%20risk%20readiness%20diagnostic%20and%20would%20like%20to%20discuss%20next%20steps%20for%20our%20institution.%0A%0AInstitution%3A%20%0AContact%3A%20%0A%0AThank%20you."
+            className="block bg-white border-2 border-emerald-600 text-emerald-700 hover:bg-emerald-50 text-center font-semibold py-4 px-6 rounded-xl transition-colors"
+          >
+            Request Follow-up Consultation
+          </a>
+        </div>
+
+        <div className="text-center text-sm text-gray-500">
+          <p>Questions? Contact us at <strong>partner@cfopartners.fund</strong> or <strong>+254 748 918 910</strong></p>
+        </div>
+      </div>
+    )
+  }
+
+  // ============================================================
   // RENDER: ACTIVE SECTION
   // ============================================================
   function renderActiveSection() {
+    if (state.activeSection === 'intro') return renderIntro()
     if (state.activeSection === 'info') return renderClientInfo()
+    if (state.activeSection === 'next-steps') return renderNextSteps()
     if (state.activeSection === 'dashboard') return renderDashboard()
     if (state.activeSection === 'cbk' && state.mode === 'internal') return renderCBK()
     if (state.activeSection === 'pcaf' && state.mode === 'internal') return renderPCAF()
@@ -1367,7 +1560,7 @@ function DiagnosticPage() {
     const pillar = PILLARS.find((p) => p.id === state.activeSection)
     if (pillar) return renderPillar(pillar)
 
-    return renderClientInfo()
+    return renderIntro()
   }
 
   // Nav helpers
