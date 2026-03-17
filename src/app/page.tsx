@@ -1,9 +1,51 @@
 'use client'
 
-import { useState, useEffect, FormEvent } from 'react'
+import { useState, useEffect, useRef, useCallback, FormEvent } from 'react'
+import Link from 'next/link'
 
-const TABS = ['Overview', 'Services', 'For Banks', 'Market', 'Timeline', 'Africa', 'Blog', 'Why Us', 'Get Started'] as const
+const TABS = ['Overview', 'Services', 'Tools', 'For Banks', 'Market', 'Timeline', 'Africa', 'Blog', 'Why Us', 'Get Started'] as const
 type Tab = typeof TABS[number]
+
+// Animated counter hook
+function useCountUp(end: number, duration = 1500, trigger = true) {
+  const [val, setVal] = useState(0)
+  useEffect(() => {
+    if (!trigger) return
+    let start = 0
+    const step = end / (duration / 16)
+    const timer = setInterval(() => {
+      start += step
+      if (start >= end) { setVal(end); clearInterval(timer) }
+      else setVal(Math.floor(start))
+    }, 16)
+    return () => clearInterval(timer)
+  }, [end, duration, trigger])
+  return val
+}
+
+// Intersection observer hook for scroll animations
+function useInView(threshold = 0.1) {
+  const ref = useRef<HTMLDivElement>(null)
+  const [inView, setInView] = useState(false)
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setInView(true); obs.disconnect() } }, { threshold })
+    obs.observe(el)
+    return () => obs.disconnect()
+  }, [threshold])
+  return { ref, inView }
+}
+
+// Fade-in wrapper
+function FadeIn({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
+  const { ref, inView } = useInView()
+  return (
+    <div ref={ref} style={{ opacity: inView ? 1 : 0, transform: inView ? 'translateY(0)' : 'translateY(24px)', transition: `opacity 0.6s ease ${delay}ms, transform 0.6s ease ${delay}ms` }}>
+      {children}
+    </div>
+  )
+}
 
 const BANKS_TIER1 = [
   { n: 1, name: 'KCB Group', assets: '1,400+', ownership: 'Listed (NSE)', esg: 'KBA SFI Catalyst Awardee 2024' },
@@ -2273,28 +2315,37 @@ export default function HomePage() {
           </div>
 
           {/* Open Source Tools Integration */}
+          <FadeIn>
           <div style={{ marginBottom: 32 }}>
             <h3 style={{ fontSize: 20, fontWeight: 700, marginBottom: 16, color: 'var(--dark)' }}>Integrated Open-Source Climate Tools</h3>
             <p style={{ color: 'var(--text2)', fontSize: 14, marginBottom: 16 }}>
               Our platform integrates leading open-source climate risk tools to provide institutional-grade analytics without the institutional price tag.
+              {' '}<Link href="/tools" style={{ color: 'var(--primary)', fontWeight: 600, textDecoration: 'none' }}>Try them live &rarr;</Link>
             </p>
             <div className="grid-3">
               {[
-                { name: 'PACTA (RMI)', desc: 'Portfolio alignment analysis against Paris Agreement targets. Measures your lending portfolio against 2°C-aligned sector pathways.', use: 'Portfolio alignment' },
-                { name: 'CLIMADA (ETH Zurich)', desc: 'Probabilistic natural catastrophe risk modelling. Calculates expected losses from droughts, floods, and tropical storms.', use: 'Physical risk modelling' },
-                { name: 'OS-Climate', desc: 'Open-source physical and transition risk analytics platform backed by Linux Foundation. Scenario analysis and data integration.', use: 'Scenario analysis' },
-                { name: '1in1000 (PRISK)', desc: 'Sovereign climate risk assessment tool. Evaluates how climate change affects country-level economic performance and debt sustainability.', use: 'Sovereign risk' },
-                { name: 'WRI Aqueduct', desc: 'Global water risk mapping tool by World Resources Institute. Maps water stress, flood risk, and drought severity at sub-national level.', use: 'Water risk mapping' },
-                { name: 'WWF Risk Filter', desc: 'Biodiversity and water risk screening for investment portfolios. Maps deforestation and water stress across supply chains.', use: 'Biodiversity screening' },
+                { name: 'PACTA (RMI)', desc: 'Portfolio alignment analysis against Paris Agreement targets. Measures your lending portfolio against 2°C-aligned sector pathways.', use: 'Portfolio alignment', live: false },
+                { name: 'CLIMADA (ETH Zurich)', desc: 'Probabilistic natural catastrophe risk modelling. Calculates expected losses from droughts, floods, and tropical storms.', use: 'Physical risk modelling', live: true },
+                { name: 'OS-Climate', desc: 'Open-source physical and transition risk analytics platform backed by Linux Foundation. Scenario analysis and data integration.', use: 'Scenario analysis', live: false },
+                { name: '1in1000 (PRISK)', desc: 'Sovereign climate risk assessment tool. Evaluates how climate change affects country-level economic performance and debt sustainability.', use: 'Sovereign risk', live: false },
+                { name: 'WRI Aqueduct', desc: 'Global water risk mapping tool by World Resources Institute. Maps water stress, flood risk, and drought severity at sub-national level.', use: 'Water risk mapping', live: true },
+                { name: 'WWF Risk Filter', desc: 'Biodiversity and water risk screening for investment portfolios. Maps deforestation and water stress across supply chains.', use: 'Biodiversity screening', live: false },
               ].map(tool => (
-                <div key={tool.name} className="card card-blue">
-                  <h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 4 }}>{tool.name}</h4>
-                  <span className="badge badge-blue" style={{ marginBottom: 8, display: 'inline-block' }}>{tool.use}</span>
-                  <p style={{ fontSize: 13, color: 'var(--text2)', lineHeight: 1.5 }}>{tool.desc}</p>
-                </div>
+                <Link key={tool.name} href="/tools" style={{ textDecoration: 'none', color: 'inherit' }}>
+                  <div className="card card-blue" style={{ cursor: 'pointer', transition: 'transform 0.2s, box-shadow 0.2s', position: 'relative' }}
+                    onMouseEnter={e => { (e.currentTarget as HTMLElement).style.transform = 'translateY(-4px)'; (e.currentTarget as HTMLElement).style.boxShadow = '0 8px 24px rgba(26,86,219,0.12)' }}
+                    onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform = ''; (e.currentTarget as HTMLElement).style.boxShadow = '' }}>
+                    {tool.live && <span style={{ position: 'absolute', top: 12, right: 12, width: 8, height: 8, borderRadius: '50%', background: '#10b981', boxShadow: '0 0 6px #10b981', animation: 'pulse 2s infinite' }} />}
+                    <h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 4 }}>{tool.name}</h4>
+                    <span className="badge badge-blue" style={{ marginBottom: 8, display: 'inline-block' }}>{tool.use}</span>
+                    <p style={{ fontSize: 13, color: 'var(--text2)', lineHeight: 1.5 }}>{tool.desc}</p>
+                    <span style={{ fontSize: 12, color: 'var(--primary)', fontWeight: 600, marginTop: 8, display: 'inline-block' }}>Try it live &rarr;</span>
+                  </div>
+                </Link>
               ))}
             </div>
           </div>
+          </FadeIn>
 
           {/* Pricing CTA */}
           <div style={{ textAlign: 'center', padding: 32, background: 'var(--bg2)', borderRadius: 12 }}>
@@ -2307,6 +2358,42 @@ export default function HomePage() {
               <button className="btn btn-outline" onClick={() => switchTab('Get Started')}>Request Demo</button>
             </div>
             <p style={{ color: 'var(--text2)', fontSize: 13, marginTop: 12 }}>partner@cfopartners.fund &nbsp;|&nbsp; +254 748 918 910</p>
+          </div>
+        </div>
+      )}
+
+      {/* ============ TOOLS (redirect) ============ */}
+      {activeTab === 'Tools' && (
+        <div className="section" style={{ textAlign: 'center', padding: '80px 24px' }}>
+          <div style={{ fontSize: 48, marginBottom: 16 }}>&#x1F527;</div>
+          <h1 style={{ fontSize: 32, fontWeight: 800, marginBottom: 12 }}>Tools & Integrations</h1>
+          <p style={{ color: 'var(--text2)', maxWidth: 600, margin: '0 auto 24px', fontSize: 16 }}>
+            Connect to 6 leading open-source climate risk engines. Run portfolio alignment, physical risk modelling, scenario analysis, and more — directly from your dashboard.
+          </p>
+          <Link href="/tools" style={{ display: 'inline-block', padding: '14px 32px', background: 'var(--primary)', color: '#fff', borderRadius: 8, fontWeight: 700, fontSize: 16, textDecoration: 'none', transition: 'transform 0.2s, box-shadow 0.2s' }}
+            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)'; (e.currentTarget as HTMLElement).style.boxShadow = '0 8px 20px rgba(26,86,219,0.3)' }}
+            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform = ''; (e.currentTarget as HTMLElement).style.boxShadow = '' }}>
+            Open Tools Dashboard &rarr;
+          </Link>
+          <div style={{ marginTop: 48, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 16, maxWidth: 800, margin: '48px auto 0' }}>
+            {[
+              { icon: '📊', name: 'PACTA', label: 'Portfolio Alignment' },
+              { icon: '🌊', name: 'CLIMADA', label: 'Physical Risk' },
+              { icon: '🔬', name: 'OS-Climate', label: 'Scenario Analysis' },
+              { icon: '🏛️', name: '1in1000', label: 'Sovereign Risk' },
+              { icon: '💧', name: 'WRI Aqueduct', label: 'Water Risk' },
+              { icon: '🌿', name: 'WWF Risk Filter', label: 'Biodiversity' },
+            ].map(t => (
+              <Link key={t.name} href="/tools" style={{ textDecoration: 'none', color: 'inherit' }}>
+                <div style={{ padding: 20, background: '#fff', borderRadius: 12, border: '1px solid #e2e8f0', textAlign: 'center', cursor: 'pointer', transition: 'all 0.2s' }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--primary)'; (e.currentTarget as HTMLElement).style.transform = 'translateY(-3px)' }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = '#e2e8f0'; (e.currentTarget as HTMLElement).style.transform = '' }}>
+                  <div style={{ fontSize: 28, marginBottom: 8 }}>{t.icon}</div>
+                  <div style={{ fontWeight: 700, fontSize: 14 }}>{t.name}</div>
+                  <div style={{ fontSize: 12, color: 'var(--text2)' }}>{t.label}</div>
+                </div>
+              </Link>
+            ))}
           </div>
         </div>
       )}

@@ -1,7 +1,9 @@
 'use client'
 import { AuthProvider, useAuth } from '@/lib/AuthContext'
 import { useRouter } from 'next/navigation'
-import { useEffect } from 'react'
+import { useEffect, lazy, Suspense } from 'react'
+
+const ClimateAssistant = lazy(() => import('@/components/ClimateAssistant'))
 
 function AuthGateInner({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth()
@@ -26,7 +28,12 @@ function AuthGateInner({ children }: { children: React.ReactNode }) {
 
   if (!user) return null
 
-  return <>{children}</>
+  return (
+    <>
+      {children}
+      <Suspense fallback={null}><ClimateAssistant /></Suspense>
+    </>
+  )
 }
 
 export default function AuthGate({ children }: { children: React.ReactNode }) {
