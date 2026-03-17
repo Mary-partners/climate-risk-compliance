@@ -1,4 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
+import { getPrismaClient } from "@/lib/prisma";
+
+export const dynamic = "force-dynamic";
 
 interface DiagnosticPayload {
   institutionName: string;
@@ -22,23 +25,18 @@ interface DiagnosticPayload {
 function calculateReadinessScore(data: DiagnosticPayload): number {
   let score = 0;
 
-  // hasEsgTeam: Yes=20, Planning=10, No=0
   if (data.hasEsgTeam === "Yes") score += 20;
-  else if (data.hasEsgTeam === "Planning") score += 10;
+  else if (data.hasEsgTeam === "Planning to hire") score += 10;
 
-  // hasSubmittedReports: Yes=20, In progress=10, No=0
   if (data.hasSubmittedReports === "Yes") score += 20;
   else if (data.hasSubmittedReports === "In progress") score += 10;
 
-  // collectsClimateData: Yes systematically=20, Yes partially=10, No=0
   if (data.collectsClimateData === "Yes systematically") score += 20;
   else if (data.collectsClimateData === "Yes partially") score += 10;
 
-  // kgftClassified: Yes fully=20, Partially=10, No=0
   if (data.kgftClassified === "Yes fully") score += 20;
   else if (data.kgftClassified === "Partially") score += 10;
 
-  // pcafMeasured: Yes=20, In progress=10, No=0
   if (data.pcafMeasured === "Yes") score += 20;
   else if (data.pcafMeasured === "In progress") score += 10;
 
@@ -80,26 +78,28 @@ export async function POST(request: NextRequest) {
 
     const readinessScore = calculateReadinessScore(body);
 
-    // Log for now; Prisma DB insert will replace this when DATABASE_URL is configured
-    console.log("[Diagnostic Received]", {
-      institutionName,
-      contactName,
-      email,
-      role,
-      institutionType,
-      totalAssets: body.totalAssets ?? null,
-      borrowerCount: body.borrowerCount ?? null,
-      hasEsgTeam: body.hasEsgTeam ?? null,
-      hasSubmittedReports: body.hasSubmittedReports ?? null,
-      collectsClimateData: body.collectsClimateData ?? null,
-      kgftClassified: body.kgftClassified ?? null,
-      pcafMeasured: body.pcafMeasured ?? null,
-      frameworks: body.frameworks ?? [],
-      pressingDeadline: body.pressingDeadline ?? null,
-      topChallenges: body.topChallenges ?? [],
-      additionalInfo: body.additionalInfo ?? null,
-      readinessScore,
-      receivedAt: new Date().toISOString(),
+    // Save to database
+    const prisma = getPrismaClient();
+    await prisma.diagnostic.create({
+      data: {
+        institutionName,
+        contactName,
+        email,
+        role,
+        institutionType,
+        totalAssets: body.totalAssets ?? null,
+        borrowerCount: body.borrowerCount ?? null,
+        hasEsgTeam: body.hasEsgTeam ?? null,
+        hasSubmittedReports: body.hasSubmittedReports ?? null,
+        collectsClimateData: body.collectsClimateData ?? null,
+        kgftClassified: body.kgftClassified ?? null,
+        pcafMeasured: body.pcafMeasured ?? null,
+        frameworks: body.frameworks ?? [],
+        pressingDeadline: body.pressingDeadline ?? null,
+        topChallenges: body.topChallenges ?? [],
+        additionalInfo: body.additionalInfo ?? null,
+        readinessScore,
+      },
     });
 
     return NextResponse.json({

@@ -1,4 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
+import { getPrismaClient } from "@/lib/prisma";
+
+export const dynamic = "force-dynamic";
 
 interface InquiryPayload {
   name: string;
@@ -42,16 +45,18 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Log for now; Prisma DB insert will replace this when DATABASE_URL is configured
-    console.log("[Inquiry Received]", {
-      name,
-      email,
-      organisation,
-      organisationType,
-      journeyStage: body.journeyStage ?? null,
-      biggestChallenge: body.biggestChallenge ?? null,
-      additionalNotes: body.additionalNotes ?? null,
-      receivedAt: new Date().toISOString(),
+    // Save to database
+    const prisma = getPrismaClient();
+    await prisma.inquiry.create({
+      data: {
+        name,
+        email,
+        organisation,
+        organisationType,
+        journeyStage: body.journeyStage ?? null,
+        biggestChallenge: body.biggestChallenge ?? null,
+        additionalNotes: body.additionalNotes ?? null,
+      },
     });
 
     return NextResponse.json({

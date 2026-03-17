@@ -1,4 +1,14 @@
-// Prisma client singleton - will be configured when DATABASE_URL is set
-// For now, API routes handle data without DB (console logging)
+import { PrismaClient } from "@prisma/client";
 
-export const prisma = null;
+const globalForPrisma = globalThis as unknown as {
+  prisma: PrismaClient | undefined;
+};
+
+function getPrismaClient(): PrismaClient {
+  if (!globalForPrisma.prisma) {
+    globalForPrisma.prisma = new PrismaClient();
+  }
+  return globalForPrisma.prisma;
+}
+
+export { getPrismaClient };
