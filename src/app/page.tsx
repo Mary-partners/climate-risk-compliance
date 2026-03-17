@@ -1,8 +1,8 @@
 'use client'
 
-import { useState, FormEvent } from 'react'
+import { useState, useEffect, FormEvent } from 'react'
 
-const TABS = ['Overview', 'For Banks', 'Market', 'Timeline', 'Africa', 'Why Us', 'Get Started'] as const
+const TABS = ['Overview', 'For Banks', 'Market', 'Timeline', 'Africa', 'Why Us', 'Diagnostic', 'Get Started'] as const
 type Tab = typeof TABS[number]
 
 export default function HomePage() {
@@ -17,6 +17,24 @@ export default function HomePage() {
     notes: '',
   })
   const [formStatus, setFormStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle')
+  const [showInterestModal, setShowInterestModal] = useState(false)
+
+  useEffect(() => {
+    if (!sessionStorage.getItem('interest_answered')) {
+      const timer = setTimeout(() => setShowInterestModal(true), 800)
+      return () => clearTimeout(timer)
+    }
+  }, [])
+
+  const handleInterestSelect = (interest: string) => {
+    sessionStorage.setItem('interest_answered', 'true')
+    setShowInterestModal(false)
+    fetch('/api/inquiry', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: 'Visitor', email: '', organisation: '', orgType: '', journeyStage: '', biggestChallenge: interest, notes: 'Auto: interest question' }),
+    }).catch(() => {})
+  }
 
   const handleFormSubmit = async (e: FormEvent) => {
     e.preventDefault()
@@ -40,6 +58,37 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-white">
+      {/* ─── INTEREST QUESTION MODAL ─── */}
+      {showInterestModal && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 animate-in">
+            <h2 className="text-xl font-bold text-gray-900 mb-2">Welcome to CFOIP</h2>
+            <p className="text-gray-600 text-sm mb-6">What brought you here today?</p>
+            <div className="space-y-2">
+              {[
+                'CBK compliance deadline pressure',
+                'Board or management directive',
+                'Preparing for climate risk disclosure',
+                'Exploring what others in the sector are doing',
+                'DFI or investor requirement',
+                'General curiosity about climate finance',
+              ].map((option) => (
+                <button
+                  key={option}
+                  onClick={() => handleInterestSelect(option)}
+                  className="w-full text-left px-4 py-3 rounded-xl border border-gray-200 hover:border-emerald-400 hover:bg-emerald-50 text-sm text-gray-700 transition-all"
+                >
+                  {option}
+                </button>
+              ))}
+            </div>
+            <button onClick={() => { sessionStorage.setItem('interest_answered', 'true'); setShowInterestModal(false) }} className="mt-4 text-xs text-gray-400 hover:text-gray-600 transition-colors w-full text-center">
+              Skip
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* ─── HEADER / NAV ─── */}
       <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-200 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -696,6 +745,91 @@ export default function HomePage() {
             </div>
           )}
 
+          {/* ============ DIAGNOSTIC ============ */}
+          {activeTab === 'Diagnostic' && (
+            <div className="space-y-12">
+              <section className="text-center">
+                <h2 className="section-heading">Climate Risk <span className="gradient-text">Readiness Diagnostic</span></h2>
+                <p className="section-subheading mx-auto text-center mb-8">
+                  Assess where your institution stands on climate risk compliance. Our diagnostic tool evaluates your readiness across 6 pillars aligned to CBK CRDF, IFRS S1/S2, and PCAF requirements.
+                </p>
+              </section>
+
+              <div className="grid md:grid-cols-2 gap-8 mb-12">
+                <a href="/diagnostic" className="card hover:shadow-xl group cursor-pointer block">
+                  <div className="text-4xl mb-4">🏦</div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-emerald-600 transition-colors">Bank Self-Assessment</h3>
+                  <p className="text-gray-600 mb-4">Simplified 36-question path designed for internal compliance teams. Takes approximately 30 minutes to complete.</p>
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    <span className="badge">6 Pillars</span>
+                    <span className="badge">36 Questions</span>
+                    <span className="badge">~30 min</span>
+                  </div>
+                  <span className="btn-primary w-full text-center">Start Self-Assessment →</span>
+                </a>
+
+                <a href="/diagnostic?mode=internal" className="card hover:shadow-xl group cursor-pointer block">
+                  <div className="text-4xl mb-4">🔬</div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-emerald-600 transition-colors">Full Expert Diagnostic</h3>
+                  <p className="text-gray-600 mb-4">Complete 84-question assessment with CBK template gap analysis, PCAF readiness matrix, and critical checks.</p>
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    <span className="badge">6 Pillars</span>
+                    <span className="badge">84 Questions</span>
+                    <span className="badge-amber">CBK Gap Analysis</span>
+                    <span className="badge">PCAF Matrix</span>
+                  </div>
+                  <span className="btn-secondary w-full text-center">Start Full Diagnostic →</span>
+                </a>
+              </div>
+
+              <section>
+                <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">Six Assessment Pillars</h3>
+                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {[
+                    { name: 'Governance & Oversight', desc: 'Board strategy, committee structure, accountability, and policy framework for climate risk.', icon: '⚖️' },
+                    { name: 'Strategy & Planning', desc: 'Scenario analysis, transition planning, physical risk mapping, and opportunity identification.', icon: '🎯' },
+                    { name: 'Risk Management', desc: 'ERM integration, credit risk, concentration monitoring, and climate stress testing.', icon: '🛡️' },
+                    { name: 'Metrics & Targets', desc: 'Scope 1/2 emissions, financed emissions (PCAF), data quality, and science-based targets.', icon: '📊' },
+                    { name: 'Data Infrastructure', desc: 'MSME data collection, core banking integration, external data sources, and data governance.', icon: '🗄️' },
+                    { name: 'Taxonomy & Classification', desc: 'Kenya Green Taxonomy mapping, climate sensitivity tagging, and CBK reporting standards.', icon: '🏷️' },
+                  ].map((pillar) => (
+                    <div key={pillar.name} className="card">
+                      <div className="text-3xl mb-3">{pillar.icon}</div>
+                      <h4 className="font-semibold text-gray-900 mb-2">{pillar.name}</h4>
+                      <p className="text-sm text-gray-600">{pillar.desc}</p>
+                    </div>
+                  ))}
+                </div>
+              </section>
+
+              <section className="text-center">
+                <h3 className="text-2xl font-bold text-gray-900 mb-4">What You Get</h3>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <div className="stat-card">
+                    <div className="text-3xl font-bold gradient-text mb-2">Score</div>
+                    <div className="text-sm text-gray-600">Readiness score benchmarked against peers</div>
+                  </div>
+                  <div className="stat-card">
+                    <div className="text-3xl font-bold gradient-text mb-2">Gaps</div>
+                    <div className="text-sm text-gray-600">Prioritised gap register with severity</div>
+                  </div>
+                  <div className="stat-card">
+                    <div className="text-3xl font-bold gradient-text mb-2">Roadmap</div>
+                    <div className="text-sm text-gray-600">12-month phased implementation plan</div>
+                  </div>
+                  <div className="stat-card">
+                    <div className="text-3xl font-bold gradient-text mb-2">Call</div>
+                    <div className="text-sm text-gray-600">30-minute consultation to review results</div>
+                  </div>
+                </div>
+              </section>
+
+              <section className="urgency-bar">
+                <span className="font-semibold">Next Steps:</span> Complete the diagnostic → Receive your personalised assessment → Onboard to the CBK Report Builder → Generate your CRDF templates → Submit to CBK before <span className="font-bold text-red-600">October 2026</span>.
+              </section>
+            </div>
+          )}
+
           {/* ============ GET STARTED ============ */}
           {activeTab === 'Get Started' && (
             <div className="space-y-16">
@@ -887,7 +1021,7 @@ export default function HomePage() {
                     )}
                     {formStatus === 'error' && (
                       <div className="text-center text-red-600 text-sm p-3 bg-red-500/10 rounded-xl border border-red-500/20">
-                        Something went wrong. Please email us directly at mary@cfolead.solutions.
+                        Something went wrong. Please email us directly at partner@cfopartners.fund.
                       </div>
                     )}
                   </form>
@@ -940,9 +1074,10 @@ export default function HomePage() {
                   <div className="space-y-1">
                     <p className="text-gray-900 font-semibold">Mary Ndinda</p>
                     <p className="text-emerald-600 text-sm">Founder &amp; CEO</p>
-                    <a href="mailto:mary@cfolead.solutions" className="text-emerald-600 hover:text-emerald-300 text-sm underline underline-offset-2 transition-colors">
-                      mary@cfolead.solutions
+                    <a href="mailto:partner@cfopartners.fund" className="text-emerald-600 hover:text-emerald-300 text-sm underline underline-offset-2 transition-colors">
+                      partner@cfopartners.fund
                     </a>
+                    <p className="text-gray-500 text-sm mt-1">+254 748 918 910</p>
                   </div>
                 </div>
               </section>

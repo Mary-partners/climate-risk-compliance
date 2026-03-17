@@ -1,723 +1,1512 @@
 'use client'
 
-import { useState, FormEvent } from 'react'
+import { useState, useEffect, useCallback, useMemo, Suspense } from 'react'
+import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 
-const INSTITUTION_TYPES = [
-  'Commercial Bank',
-  'SACCO',
-  'Insurance Company',
-  'Pension Fund/Fund Manager',
-  'Microfinance Bank',
-  'NSE-Listed Company',
-  'DFI/Climate Fund/Development Partner',
-  'Audit/Consulting Firm',
-  'Regulator/Industry Association',
-  'Other',
-]
-
-const ASSET_RANGES = [
-  'Under KSH 10B',
-  'KSH 10B - 50B',
-  'KSH 50B - 100B',
-  'KSH 100B - 500B',
-  'KSH 500B - 1T',
-  'Over KSH 1T',
-]
-
-const MEMBER_RANGES = [
-  'Under 10,000',
-  '10,000 - 50,000',
-  '50,000 - 100,000',
-  '100,000 - 500,000',
-  'Over 500,000',
-]
-
-const FRAMEWORKS = [
-  'CBK CRDF',
-  'IFRS S1',
-  'IFRS S2',
-  'TCFD',
-  'KGFT',
-  'PCAF',
-  'NSE ESG Guidance',
-  'Not sure yet',
-]
-
-const DEADLINES = [
-  'Oct 2026 CBK CRDF',
-  'Jan 2027 IFRS S1/S2',
-  'Not sure',
-  'No immediate deadline',
-]
-
-const CHALLENGES = [
-  'Lack of internal expertise',
-  'No ESG team',
-  'Data collection from borrowers',
-  'Understanding regulatory requirements',
-  'Budget constraints',
-  'Board awareness',
-  'Technology/systems gap',
-  'Measuring financed emissions',
-  'KGFT classification',
-  'Stakeholder reporting',
-]
-
-const STEP_LABELS = [
-  'About Your Institution',
-  'Current Climate Risk Status',
-  'Reporting Frameworks & Challenges',
-  'Review & Submit',
-]
-
-interface FormData {
-  institutionName: string
-  yourName: string
-  email: string
-  role: string
-  institutionType: string
-  totalAssets: string
-  memberCount: string
-  hasEsgTeam: string
-  submittedReports: string
-  collectsClimateData: string
-  kgftClassified: string
-  measuredEmissions: string
-  frameworks: string[]
-  reportingDeadline: string
-  challenges: string[]
-  additionalContext: string
+// ============================================================
+// TYPES
+// ============================================================
+interface Question {
+  text: string
+  options: [string, string, string, string, string]
 }
 
-const INITIAL_FORM: FormData = {
-  institutionName: '',
-  yourName: '',
-  email: '',
-  role: '',
-  institutionType: '',
-  totalAssets: '',
-  memberCount: '',
-  hasEsgTeam: '',
-  submittedReports: '',
-  collectsClimateData: '',
-  kgftClassified: '',
-  measuredEmissions: '',
-  frameworks: [],
-  reportingDeadline: '',
-  challenges: [],
-  additionalContext: '',
+interface Category {
+  name: string
+  questions: Question[]
 }
 
-function ChevronIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className || 'w-4 h-4'} fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-    </svg>
-  )
+interface Pillar {
+  id: string
+  name: string
+  shortName: string
+  description: string
+  categories: Category[]
 }
 
-function CheckIcon() {
-  return (
-    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-    </svg>
-  )
+interface CBKField {
+  label: string
 }
 
-function ArrowLeftIcon() {
-  return (
-    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
-    </svg>
-  )
+interface CBKTemplate {
+  id: string
+  name: string
+  fields: CBKField[]
 }
 
-export default function DiagnosticPage() {
-  const [step, setStep] = useState(0)
-  const [form, setForm] = useState<FormData>(INITIAL_FORM)
-  const [submitted, setSubmitted] = useState(false)
-  const [submitting, setSubmitting] = useState(false)
-  const [errors, setErrors] = useState<Record<string, string>>({})
+interface PCAFClass {
+  name: string
+}
 
-  function updateField(field: keyof FormData, value: string) {
-    setForm((prev) => ({ ...prev, [field]: value }))
-    if (errors[field]) {
-      setErrors((prev) => {
-        const next = { ...prev }
-        delete next[field]
-        return next
-      })
-    }
+interface CriticalCheck {
+  title: string
+  description: string
+}
+
+interface ClientInfo {
+  bankName: string
+  date: string
+  lead: string
+  sponsor: string
+  scope: string
+}
+
+interface DiagnosticState {
+  mode: 'bank' | 'internal'
+  info: ClientInfo
+  answers: Record<string, number>
+  cbk: Record<string, string>
+  pcaf: Record<string, string>
+  checks: Record<number, string>
+  activeSection: string
+}
+
+// ============================================================
+// DATA: 6 PILLARS (36 questions for bank mode)
+// ============================================================
+const PILLARS: Pillar[] = [
+  {
+    id: 'p1',
+    name: 'Pillar 1: Governance & Oversight',
+    shortName: 'Governance',
+    description: 'Board-level accountability, oversight structures, and climate risk policy frameworks.',
+    categories: [
+      {
+        name: 'Board Oversight',
+        questions: [
+          {
+            text: 'Has your board formally approved a climate risk strategy or policy?',
+            options: ['No', 'Under discussion', 'Draft exists', 'Approved but needs updating', 'Yes \u2014 current and approved'],
+          },
+          {
+            text: 'How frequently does the board discuss climate risk?',
+            options: ['Never', 'Discussed once', 'Annually', 'Semi-annually', 'Quarterly or more'],
+          },
+          {
+            text: 'Have board members received climate risk training in the past year?',
+            options: ['No training', 'Planned but not done', 'Some members trained', 'Most members trained', 'All trained with refreshers'],
+          },
+        ],
+      },
+      {
+        name: 'Accountability',
+        questions: [
+          {
+            text: 'Is there a named senior executive accountable for climate risk?',
+            options: ['No one assigned', 'Informal mention only', 'Partial responsibility', 'Named executive', 'C-suite with KPIs'],
+          },
+          {
+            text: 'Is climate risk integrated into your enterprise risk management framework?',
+            options: ['Not at all', 'Mentioned informally', 'Partially mapped', 'Formal integration underway', 'Fully embedded in ERM'],
+          },
+          {
+            text: 'Does your institution have a documented climate risk policy?',
+            options: ['No policy', 'Under development', 'Draft exists', 'Approved policy', 'Approved with regular review'],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'p2',
+    name: 'Pillar 2: Strategy & Planning',
+    shortName: 'Strategy',
+    description: 'Climate scenario analysis, transition planning, and identification of opportunities.',
+    categories: [
+      {
+        name: 'Scenario Analysis',
+        questions: [
+          {
+            text: 'Has your institution conducted climate scenario analysis?',
+            options: ['No', 'Planned', 'Basic qualitative', 'Quantitative for some portfolios', 'Full quantitative dual-scenario'],
+          },
+          {
+            text: 'Do your scenarios cover both physical and transition risks?',
+            options: ['Neither', 'Physical only', 'Transition only', 'Both but limited', 'Both comprehensively'],
+          },
+          {
+            text: 'What time horizons does your scenario analysis cover?',
+            options: ['None', 'Short-term only (<5y)', 'Medium-term (5-15y)', 'Long-term (>15y)', 'Multiple horizons integrated'],
+          },
+        ],
+      },
+      {
+        name: 'Planning',
+        questions: [
+          {
+            text: 'Does your institution have a documented transition plan?',
+            options: ['No plan', 'Discussed but not documented', 'Draft in progress', 'Approved plan exists', 'Approved with milestones and KPIs'],
+          },
+          {
+            text: 'Have you set green financing targets?',
+            options: ['No targets', 'Under discussion', 'Informal targets', 'Formal targets set', 'Targets with tracking and reporting'],
+          },
+          {
+            text: 'Have you identified climate-related business opportunities?',
+            options: ['Not considered', 'Early discussions', 'Some identified', 'Formal pipeline', 'Revenue-generating products launched'],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'p3',
+    name: 'Pillar 3: Risk Management',
+    shortName: 'Risk Mgmt',
+    description: 'Integration of climate factors into enterprise risk, credit assessment, and stress testing.',
+    categories: [
+      {
+        name: 'ERM Integration',
+        questions: [
+          {
+            text: 'Is climate risk formally incorporated into your ERM framework?',
+            options: ['Not at all', 'Under discussion', 'Partially mapped', 'Formally integrated', 'Fully embedded with appetite limits'],
+          },
+          {
+            text: 'Do you include climate factors in credit risk assessment?',
+            options: ['No', 'Planned', 'Selective sectors only', 'Most sectors covered', 'All lending includes climate screening'],
+          },
+          {
+            text: 'Do you monitor concentration risk to climate-sensitive sectors?',
+            options: ['No monitoring', 'Ad hoc tracking', 'Informal monitoring', 'Formal limits set', 'Real-time monitoring with alerts'],
+          },
+        ],
+      },
+      {
+        name: 'Stress Testing',
+        questions: [
+          {
+            text: 'Do you conduct climate stress tests on your loan book?',
+            options: ['No', 'Planned', 'Basic sensitivity', 'Detailed scenario-based', 'Annual comprehensive with board review'],
+          },
+          {
+            text: 'Does your risk appetite statement reference climate risk?',
+            options: ['No mention', 'Informally referenced', 'Qualitative statement', 'Quantitative thresholds', 'Fully embedded with escalation'],
+          },
+          {
+            text: 'Do you use climate risk in ICAAP or ILAAP processes?',
+            options: ['Not included', 'Planned', 'Qualitative mention', 'Partially quantified', 'Fully integrated capital allocation'],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'p4',
+    name: 'Pillar 4: Metrics & Targets',
+    shortName: 'Metrics',
+    description: 'GHG emissions measurement, PCAF methodology, science-based targets, and dashboards.',
+    categories: [
+      {
+        name: 'Emissions',
+        questions: [
+          {
+            text: 'Do you measure your Scope 1 and 2 GHG emissions?',
+            options: ['No', 'Planned', 'Partial measurement', 'Full measurement', 'Measured with third-party verification'],
+          },
+          {
+            text: 'Do you measure financed emissions (Scope 3 Category 15)?',
+            options: ['No', 'Awareness only', 'Initial estimates', 'PCAF methodology for key sectors', 'Full portfolio PCAF measurement'],
+          },
+          {
+            text: 'What is your PCAF data quality score?',
+            options: ['Not measured', 'Score 5 (Regional avg)', 'Score 4 (Sector avg)', 'Score 3 (Activity data)', 'Score 1-2 (Verified/Audited)'],
+          },
+        ],
+      },
+      {
+        name: 'Targets',
+        questions: [
+          {
+            text: 'Have you set GHG emission reduction targets?',
+            options: ['No targets', 'Under discussion', 'Informal targets', 'Science-based targets set', 'SBTi validated targets'],
+          },
+          {
+            text: 'Do you track a green asset ratio?',
+            options: ['Not tracked', 'Planned', 'Partial tracking', 'Full tracking', 'Tracked with board reporting'],
+          },
+          {
+            text: 'Is there a climate risk dashboard for management?',
+            options: ['No dashboard', 'Ad hoc reports', 'Periodic manual reports', 'Automated quarterly', 'Real-time digital dashboard'],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'p5',
+    name: 'Pillar 5: Data Infrastructure',
+    shortName: 'Data',
+    description: 'Climate data collection, core banking integration, geospatial capabilities, and governance.',
+    categories: [
+      {
+        name: 'Data Collection',
+        questions: [
+          {
+            text: 'Do you collect climate-related data from borrowers?',
+            options: ['No collection', 'Planned', 'Ad hoc for some', 'Structured for major clients', 'Systematic for all borrowers'],
+          },
+          {
+            text: 'Are climate fields embedded in your core banking system?',
+            options: ['Not at all', 'Planned', 'Some fields added', 'Most fields in system', 'Fully integrated with automated feeds'],
+          },
+          {
+            text: 'Do you capture geographic coordinates for collateral?',
+            options: ['No', 'For some properties', 'Urban properties only', 'Most properties', 'All collateral geolocated'],
+          },
+        ],
+      },
+      {
+        name: 'Data Quality',
+        questions: [
+          {
+            text: 'Do you use external climate or geospatial data sources?',
+            options: ['No', 'Awareness only', 'Exploring options', 'Some integrated', 'Multiple sources integrated'],
+          },
+          {
+            text: 'Do you have a data governance framework for climate data?',
+            options: ['No framework', 'Under development', 'Draft framework', 'Implemented', 'Implemented with quality dashboards'],
+          },
+          {
+            text: 'Is your climate data auditable and traceable?',
+            options: ['No trails', 'Minimal documentation', 'Partial trails', 'Mostly traceable', 'Fully auditable with lineage'],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'p6',
+    name: 'Pillar 6: Taxonomy & Classification',
+    shortName: 'Taxonomy',
+    description: 'KGFT mapping, CBK CRDF template readiness, IFRS alignment, and gap analysis status.',
+    categories: [
+      {
+        name: 'KGFT',
+        questions: [
+          {
+            text: 'Have you mapped your portfolio against the Kenya Green Finance Taxonomy?',
+            options: ['Not started', 'Aware of KGFT', 'Initial mapping', 'Partial mapping complete', 'Full portfolio classified'],
+          },
+          {
+            text: 'Can you quantify KGFT-eligible and aligned activities?',
+            options: ['Cannot quantify', 'Rough estimates', 'Some sectors quantified', 'Most quantified', 'Full quantification with reporting'],
+          },
+          {
+            text: 'Have staff been trained on KGFT classification?',
+            options: ['No training', 'Planned', 'Some staff trained', 'Key teams trained', 'Organization-wide with certification'],
+          },
+        ],
+      },
+      {
+        name: 'Reporting',
+        questions: [
+          {
+            text: 'Can you populate all 9 CBK CRDF templates from your systems?',
+            options: ['Cannot populate any', '1-2 templates partially', '3-5 templates partially', 'Most templates mostly', 'All 9 templates fully from systems'],
+          },
+          {
+            text: 'Are your disclosures aligned with IFRS S1/S2 requirements?',
+            options: ['Not aware of requirements', 'Aware but not started', 'Gap analysis done', 'Partial alignment', 'Fully aligned and tested'],
+          },
+          {
+            text: 'Have you completed a gap analysis between current reporting and required standards?',
+            options: ['No gap analysis', 'Planned', 'In progress', 'Completed', 'Completed with remediation plan'],
+          },
+        ],
+      },
+    ],
+  },
+]
+
+// ============================================================
+// DATA: CBK TEMPLATES (internal only)
+// ============================================================
+const CBK_TEMPLATES: CBKTemplate[] = [
+  {
+    id: '5A',
+    name: '5A Credit Risk',
+    fields: [
+      { label: 'Climate-sensitive sector exposure breakdown' },
+      { label: 'Physical risk exposure by geography' },
+      { label: 'Transition risk exposure by sector' },
+      { label: 'Climate-adjusted probability of default' },
+      { label: 'Climate-adjusted loss given default' },
+      { label: 'Concentration risk to top climate-sensitive sectors' },
+    ],
+  },
+  {
+    id: '5B',
+    name: '5B Market & Liquidity',
+    fields: [
+      { label: 'Climate-sensitive assets in trading book' },
+      { label: 'Stranded asset exposure' },
+      { label: 'Climate VaR estimates' },
+      { label: 'Liquidity stress from climate events' },
+      { label: 'Climate-related contingent liabilities' },
+    ],
+  },
+  {
+    id: '7A',
+    name: '7A Scope 1 & 2',
+    fields: [
+      { label: 'Scope 1 emissions (tCO2e)' },
+      { label: 'Scope 2 location-based emissions' },
+      { label: 'Scope 2 market-based emissions' },
+      { label: 'Emissions intensity per employee' },
+      { label: 'Emissions intensity per revenue' },
+      { label: 'Year-on-year change and methodology' },
+    ],
+  },
+  {
+    id: '7B',
+    name: '7B Financed Emissions',
+    fields: [
+      { label: 'Total financed emissions (tCO2e)' },
+      { label: 'Financed emissions by asset class' },
+      { label: 'Financed emissions by sector' },
+      { label: 'Attribution methodology (PCAF)' },
+      { label: 'Data quality score by asset class' },
+      { label: 'Coverage ratio of portfolio measured' },
+    ],
+  },
+  {
+    id: '7C',
+    name: '7C Emissions Detail',
+    fields: [
+      { label: 'Top 10 emitting counterparties' },
+      { label: 'Sector-level emission factors used' },
+      { label: 'Data sources and proxies applied' },
+      { label: 'Avoided emissions from green finance' },
+      { label: 'Removals and offsets' },
+      { label: 'Emissions trend analysis (3-year)' },
+      { label: 'Verification and assurance status' },
+    ],
+  },
+  {
+    id: '10',
+    name: '10 Targets & Transition',
+    fields: [
+      { label: 'GHG reduction targets (Scope 1, 2, 3)' },
+      { label: 'Green financing targets' },
+      { label: 'Transition plan milestones' },
+      { label: 'Sector-specific decarbonisation pathways' },
+      { label: 'Capital allocation to transition' },
+      { label: 'Progress against targets to date' },
+    ],
+  },
+  {
+    id: '11',
+    name: '11 Physical Risk',
+    fields: [
+      { label: 'Acute physical risk exposure (floods, drought)' },
+      { label: 'Chronic physical risk exposure (temperature, rainfall)' },
+      { label: 'Geographic distribution of exposed assets' },
+      { label: 'Insurance coverage of physical risks' },
+      { label: 'Physical risk scenario analysis results' },
+      { label: 'Adaptation measures and residual risk' },
+    ],
+  },
+  {
+    id: '12',
+    name: '12 Transition Risk',
+    fields: [
+      { label: 'Policy and legal transition risk exposure' },
+      { label: 'Technology transition risk exposure' },
+      { label: 'Market transition risk exposure' },
+      { label: 'Reputational transition risk assessment' },
+      { label: 'Transition scenario analysis results' },
+      { label: 'Stranded asset risk and write-down estimates' },
+    ],
+  },
+  {
+    id: '14',
+    name: '14 Green Finance',
+    fields: [
+      { label: 'Total green finance portfolio (KES)' },
+      { label: 'Green asset ratio' },
+      { label: 'KGFT-eligible activities' },
+      { label: 'KGFT-aligned activities' },
+      { label: 'Green bond/sukuk issuance' },
+      { label: 'Sustainability-linked instruments' },
+    ],
+  },
+]
+
+// ============================================================
+// DATA: PCAF ASSET CLASSES (internal only)
+// ============================================================
+const PCAF_CLASSES: PCAFClass[] = [
+  { name: 'Listed Equity & Bonds' },
+  { name: 'Business Loans' },
+  { name: 'Project Finance' },
+  { name: 'Commercial Real Estate' },
+  { name: 'Mortgages' },
+  { name: 'Motor Vehicle Loans' },
+  { name: 'MSME Agriculture' },
+  { name: 'MSME Manufacturing' },
+  { name: 'MSME Trade & Services' },
+  { name: 'MSME Transport' },
+  { name: 'MSME Construction' },
+  { name: 'MSME Other' },
+]
+
+// ============================================================
+// DATA: CRITICAL CHECKS (internal only)
+// ============================================================
+const CRITICAL_CHECKS: CriticalCheck[] = [
+  {
+    title: 'Board Climate Risk Approval',
+    description: 'Has the board formally approved a climate risk policy or strategy document within the last 12 months?',
+  },
+  {
+    title: 'Named C-Suite Accountability',
+    description: 'Is there a named C-suite executive (CRO, CFO, or equivalent) with explicit climate risk accountability in their job description and KPIs?',
+  },
+  {
+    title: 'CBK CRDF Template Population',
+    description: 'Can the institution populate at least 5 of the 9 CBK CRDF templates with data from existing systems (not manual workarounds)?',
+  },
+  {
+    title: 'Financed Emissions Baseline',
+    description: 'Has the institution completed a baseline financed emissions measurement using PCAF methodology for at least its top 3 sectors by exposure?',
+  },
+  {
+    title: 'KGFT Portfolio Classification',
+    description: 'Has the institution classified at least 50% of its lending portfolio against the Kenya Green Finance Taxonomy (eligible vs. aligned)?',
+  },
+  {
+    title: 'Climate Scenario Analysis',
+    description: 'Has the institution conducted at least one quantitative climate scenario analysis covering both physical and transition risks?',
+  },
+  {
+    title: 'Data Collection Infrastructure',
+    description: 'Does the institution have structured climate data collection fields embedded in its core banking or loan origination system (not just spreadsheets)?',
+  },
+]
+
+// ============================================================
+// NAVIGATION SECTIONS
+// ============================================================
+function getSections(mode: 'bank' | 'internal') {
+  const sections = [
+    { id: 'info', label: 'Client Info' },
+    ...PILLARS.map((p) => ({ id: p.id, label: p.name })),
+  ]
+  if (mode === 'internal') {
+    sections.push(
+      { id: 'cbk', label: 'CBK Template Gap Analysis' },
+      { id: 'pcaf', label: 'PCAF Readiness' },
+      { id: 'checks', label: 'Critical Checks' }
+    )
   }
+  sections.push({ id: 'dashboard', label: 'Dashboard' })
+  return sections
+}
 
-  function toggleCheckbox(field: 'frameworks' | 'challenges', value: string) {
-    setForm((prev) => {
-      const arr = prev[field]
+// ============================================================
+// SCORING HELPERS
+// ============================================================
+function ragColor(score: number): string {
+  if (score >= 4) return 'text-emerald-600'
+  if (score >= 2) return 'text-amber-500'
+  return 'text-red-500'
+}
+
+function ragBg(score: number): string {
+  if (score >= 4) return 'bg-emerald-50 border-emerald-200'
+  if (score >= 2) return 'bg-amber-50 border-amber-200'
+  return 'bg-red-50 border-red-200'
+}
+
+function ragBadge(score: number): string {
+  if (score >= 4) return 'badge'
+  if (score >= 2) return 'badge-amber'
+  return 'badge-red'
+}
+
+function ragLabel(score: number): string {
+  if (score >= 4) return 'GREEN'
+  if (score >= 2) return 'AMBER'
+  return 'RED'
+}
+
+function severityLabel(score: number): string {
+  if (score < 2) return 'Critical'
+  if (score < 3) return 'High'
+  return 'Medium'
+}
+
+function severityColor(score: number): string {
+  if (score < 2) return 'text-red-600 bg-red-50'
+  if (score < 3) return 'text-amber-700 bg-amber-50'
+  return 'text-yellow-700 bg-yellow-50'
+}
+
+// ============================================================
+// MAIN COMPONENT
+// ============================================================
+export default function DiagnosticPageWrapper() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-8 h-8 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin mx-auto mb-3" />
+          <p className="text-sm text-gray-500">Loading diagnostic...</p>
+        </div>
+      </div>
+    }>
+      <DiagnosticPage />
+    </Suspense>
+  )
+}
+
+function DiagnosticPage() {
+  const searchParams = useSearchParams()
+  const isInternal = searchParams.get('mode') === 'internal'
+
+  const [state, setState] = useState<DiagnosticState>({
+    mode: isInternal ? 'internal' : 'bank',
+    info: { bankName: '', date: new Date().toISOString().split('T')[0], lead: '', sponsor: '', scope: '' },
+    answers: {},
+    cbk: {},
+    pcaf: {},
+    checks: {},
+    activeSection: 'info',
+  })
+
+  const [sidebarOpen, setSidebarOpen] = useState(false)
+
+  // Load from localStorage
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem('climate-diagnostic-state')
+      if (saved) {
+        const parsed = JSON.parse(saved) as DiagnosticState
+        parsed.mode = isInternal ? 'internal' : 'bank'
+        setState(parsed)
+      }
+    } catch {
+      // ignore parse errors
+    }
+  }, [isInternal])
+
+  // Save to localStorage
+  useEffect(() => {
+    try {
+      localStorage.setItem('climate-diagnostic-state', JSON.stringify(state))
+    } catch {
+      // ignore storage errors
+    }
+  }, [state])
+
+  const updateInfo = useCallback((field: keyof ClientInfo, value: string) => {
+    setState((prev) => ({ ...prev, info: { ...prev.info, [field]: value } }))
+  }, [])
+
+  const setAnswer = useCallback((key: string, value: number) => {
+    setState((prev) => ({ ...prev, answers: { ...prev.answers, [key]: value } }))
+  }, [])
+
+  const setCbk = useCallback((key: string, value: string) => {
+    setState((prev) => ({ ...prev, cbk: { ...prev.cbk, [key]: value } }))
+  }, [])
+
+  const setPcaf = useCallback((key: string, value: string) => {
+    setState((prev) => ({ ...prev, pcaf: { ...prev.pcaf, [key]: value } }))
+  }, [])
+
+  const setCheck = useCallback((idx: number, value: string) => {
+    setState((prev) => ({ ...prev, checks: { ...prev.checks, [idx]: value } }))
+  }, [])
+
+  const setActiveSection = useCallback((id: string) => {
+    setState((prev) => ({ ...prev, activeSection: id }))
+    setSidebarOpen(false)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }, [])
+
+  // ---- Scoring ----
+  const pillarScores = useMemo(() => {
+    return PILLARS.map((pillar) => {
+      let total = 0
+      let count = 0
+      pillar.categories.forEach((cat) => {
+        cat.questions.forEach((_, qi) => {
+          const key = `${pillar.id}_${cat.name}_${qi}`
+          if (state.answers[key] !== undefined) {
+            total += state.answers[key] + 1 // options are 0-indexed, scores are 1-5
+            count++
+          }
+        })
+      })
+      const totalQuestions = pillar.categories.reduce((s, c) => s + c.questions.length, 0)
       return {
-        ...prev,
-        [field]: arr.includes(value) ? arr.filter((v) => v !== value) : [...arr, value],
+        pillarId: pillar.id,
+        pillarName: pillar.name,
+        score: count > 0 ? total / count : 0,
+        answered: count,
+        total: totalQuestions,
       }
     })
-  }
+  }, [state.answers])
 
-  function validateStep(s: number): boolean {
-    const newErrors: Record<string, string> = {}
-    if (s === 0) {
-      if (!form.institutionName.trim()) newErrors.institutionName = 'Institution name is required'
-      if (!form.yourName.trim()) newErrors.yourName = 'Your name is required'
-      if (!form.email.trim()) newErrors.email = 'Email is required'
-      else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) newErrors.email = 'Enter a valid email address'
-      if (!form.role.trim()) newErrors.role = 'Your role is required'
-      if (!form.institutionType) newErrors.institutionType = 'Please select your institution type'
-      if (!form.totalAssets) newErrors.totalAssets = 'Please select your asset range'
-      if (!form.memberCount) newErrors.memberCount = 'Please select member count'
-    }
-    if (s === 1) {
-      if (!form.hasEsgTeam) newErrors.hasEsgTeam = 'Please select an option'
-      if (!form.submittedReports) newErrors.submittedReports = 'Please select an option'
-      if (!form.collectsClimateData) newErrors.collectsClimateData = 'Please select an option'
-      if (!form.kgftClassified) newErrors.kgftClassified = 'Please select an option'
-      if (!form.measuredEmissions) newErrors.measuredEmissions = 'Please select an option'
-    }
-    if (s === 2) {
-      if (form.frameworks.length === 0) newErrors.frameworks = 'Please select at least one framework'
-      if (!form.reportingDeadline) newErrors.reportingDeadline = 'Please select a deadline'
-      if (form.challenges.length === 0) newErrors.challenges = 'Please select at least one challenge'
-    }
-    setErrors(newErrors)
-    return Object.keys(newErrors).length === 0
-  }
+  const overallScore = useMemo(() => {
+    const scored = pillarScores.filter((p) => p.answered > 0)
+    if (scored.length === 0) return 0
+    return scored.reduce((s, p) => s + p.score, 0) / scored.length
+  }, [pillarScores])
 
-  function nextStep() {
-    if (validateStep(step)) {
-      setStep((s) => Math.min(s + 1, 3))
-      window.scrollTo({ top: 0, behavior: 'smooth' })
-    }
-  }
+  const totalAnswered = useMemo(() => {
+    return pillarScores.reduce((s, p) => s + p.answered, 0)
+  }, [pillarScores])
 
-  function prevStep() {
-    setStep((s) => Math.max(s - 1, 0))
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-  }
+  const totalQuestions = useMemo(() => {
+    return pillarScores.reduce((s, p) => s + p.total, 0)
+  }, [pillarScores])
 
-  async function handleSubmit(e: FormEvent) {
-    e.preventDefault()
-    setSubmitting(true)
-    try {
-      const payload = {
-        institutionName: form.institutionName,
-        contactName: form.yourName,
-        email: form.email,
-        role: form.role,
-        institutionType: form.institutionType,
-        totalAssets: form.totalAssets,
-        borrowerCount: form.memberCount,
-        hasEsgTeam: form.hasEsgTeam,
-        hasSubmittedReports: form.submittedReports,
-        collectsClimateData: form.collectsClimateData,
-        kgftClassified: form.kgftClassified,
-        pcafMeasured: form.measuredEmissions,
-        frameworks: form.frameworks,
-        pressingDeadline: form.reportingDeadline,
-        topChallenges: form.challenges,
-        additionalInfo: form.additionalContext,
-      }
-      await fetch('/api/diagnostic', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
+  // Category scores for gap register
+  const categoryScores = useMemo(() => {
+    const results: { pillar: string; category: string; score: number; answered: number; total: number }[] = []
+    PILLARS.forEach((pillar) => {
+      pillar.categories.forEach((cat) => {
+        let total = 0
+        let count = 0
+        cat.questions.forEach((_, qi) => {
+          const key = `${pillar.id}_${cat.name}_${qi}`
+          if (state.answers[key] !== undefined) {
+            total += state.answers[key] + 1
+            count++
+          }
+        })
+        results.push({
+          pillar: pillar.shortName,
+          category: cat.name,
+          score: count > 0 ? total / count : 0,
+          answered: count,
+          total: cat.questions.length,
+        })
       })
-      setSubmitted(true)
-      window.scrollTo({ top: 0, behavior: 'smooth' })
-    } catch {
-      // Still show success to avoid blocking the user
-      setSubmitted(true)
-    } finally {
-      setSubmitting(false)
-    }
+    })
+    return results
+  }, [state.answers])
+
+  // Progress percentage
+  const progress = useMemo(() => {
+    if (totalQuestions === 0) return 0
+    return Math.round((totalAnswered / totalQuestions) * 100)
+  }, [totalAnswered, totalQuestions])
+
+  // Pillar nav score for sidebar badge
+  function getPillarNavScore(pillarId: string): number | null {
+    const ps = pillarScores.find((p) => p.pillarId === pillarId)
+    if (!ps || ps.answered === 0) return null
+    return ps.score
   }
 
-  // ---- Success State ----
-  if (submitted) {
+  // Export JSON
+  function exportAssessment() {
+    const data = {
+      exportDate: new Date().toISOString(),
+      clientInfo: state.info,
+      mode: state.mode,
+      pillarScores: pillarScores.map((ps) => ({
+        ...ps,
+        rag: ps.answered > 0 ? ragLabel(ps.score) : 'N/A',
+      })),
+      overallScore: overallScore.toFixed(2),
+      overallRAG: totalAnswered > 0 ? ragLabel(overallScore) : 'N/A',
+      answers: state.answers,
+      ...(state.mode === 'internal' ? { cbk: state.cbk, pcaf: state.pcaf, checks: state.checks } : {}),
+    }
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `climate-diagnostic-${state.info.bankName || 'assessment'}-${new Date().toISOString().split('T')[0]}.json`
+    a.click()
+    URL.revokeObjectURL(url)
+  }
+
+  const sections = getSections(state.mode)
+
+  // ============================================================
+  // RENDER: SIDEBAR NAV
+  // ============================================================
+  function renderSidebar() {
     return (
-      <div className="min-h-screen bg-white">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 py-12 sm:py-20">
-          <div className="card text-center py-16">
-            <div className="w-20 h-20 rounded-full bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center mx-auto mb-6">
-              <svg className="w-10 h-10 text-emerald-600" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-              </svg>
-            </div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">Thank You!</h1>
-            <p className="text-gray-600 text-lg max-w-xl mx-auto mb-8">
-              We&apos;ve received your diagnostic. Mary will review your responses and send you a personalised climate risk readiness assessment within 48 hours.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/" className="btn-primary">
-                Back to Home
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
+      <nav className="space-y-1">
+        {sections.map((sec) => {
+          const isActive = state.activeSection === sec.id
+          const isPillar = sec.id.startsWith('p')
+          const pillarScore = isPillar ? getPillarNavScore(sec.id) : null
+
+          return (
+            <button
+              key={sec.id}
+              onClick={() => setActiveSection(sec.id)}
+              className={`w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium transition-all flex items-center justify-between gap-2 ${
+                isActive
+                  ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                  : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 border border-transparent'
+              }`}
+            >
+              <span className="truncate">{sec.label}</span>
+              {isPillar && pillarScore !== null && (
+                <span className={`text-xs px-2 py-0.5 rounded-full font-bold flex-shrink-0 ${ragBadge(pillarScore)}`}>
+                  {pillarScore.toFixed(1)}
+                </span>
+              )}
+              {isPillar && pillarScore === null && (
+                <span className="text-xs px-2 py-0.5 rounded-full bg-gray-100 text-gray-400 flex-shrink-0">--</span>
+              )}
+            </button>
+          )
+        })}
+      </nav>
     )
   }
 
-  // ---- Helpers for rendering ----
-  function renderSelectField(
-    label: string,
-    field: keyof FormData,
-    options: string[],
-    placeholder: string
-  ) {
+  // ============================================================
+  // RENDER: CLIENT INFO
+  // ============================================================
+  function renderClientInfo() {
     return (
-      <div>
-        <label className="block text-sm font-medium text-gray-600 mb-2">{label}</label>
-        <div className="relative">
+      <div className="space-y-6">
+        <div>
+          <h2 className="text-xl font-bold text-gray-900 mb-1">Client Information</h2>
+          <p className="text-gray-500 text-sm">Enter the details of the institution being assessed.</p>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">Bank / Institution Name</label>
+            <input
+              type="text"
+              className="input-field"
+              value={state.info.bankName}
+              onChange={(e) => updateInfo('bankName', e.target.value)}
+              placeholder="e.g. Kenya Commercial Bank"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">Assessment Date</label>
+            <input
+              type="date"
+              className="input-field"
+              value={state.info.date}
+              onChange={(e) => updateInfo('date', e.target.value)}
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">Assessment Lead</label>
+            <input
+              type="text"
+              className="input-field"
+              value={state.info.lead}
+              onChange={(e) => updateInfo('lead', e.target.value)}
+              placeholder="e.g. Mary Ndinda"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">Executive Sponsor</label>
+            <input
+              type="text"
+              className="input-field"
+              value={state.info.sponsor}
+              onChange={(e) => updateInfo('sponsor', e.target.value)}
+              placeholder="e.g. Chief Risk Officer"
+            />
+          </div>
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1.5">Scope</label>
           <select
             className="select-field"
-            value={form[field] as string}
-            onChange={(e) => updateField(field, e.target.value)}
+            value={state.info.scope}
+            onChange={(e) => updateInfo('scope', e.target.value)}
           >
-            <option value="" disabled>{placeholder}</option>
-            {options.map((opt) => (
-              <option key={opt} value={opt}>{opt}</option>
-            ))}
+            <option value="" disabled>Select assessment scope</option>
+            <option value="Full Portfolio">Full Portfolio</option>
+            <option value="MSME Only">MSME Only</option>
+            <option value="Corporate & Commercial">Corporate &amp; Commercial</option>
           </select>
-          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4 text-gray-600">
-            <ChevronIcon />
+        </div>
+      </div>
+    )
+  }
+
+  // ============================================================
+  // RENDER: PILLAR SECTION
+  // ============================================================
+  function renderPillar(pillar: Pillar) {
+    const ps = pillarScores.find((p) => p.pillarId === pillar.id)
+
+    return (
+      <div className="space-y-8">
+        <div>
+          <h2 className="text-xl font-bold text-gray-900 mb-1">{pillar.name}</h2>
+          <p className="text-gray-500 text-sm">{pillar.description}</p>
+          {ps && ps.answered > 0 && (
+            <div className={`inline-flex items-center gap-2 mt-3 px-3 py-1.5 rounded-lg border ${ragBg(ps.score)}`}>
+              <span className={`text-sm font-bold ${ragColor(ps.score)}`}>{ps.score.toFixed(1)} / 5.0</span>
+              <span className={`text-xs font-medium ${ragColor(ps.score)}`}>{ragLabel(ps.score)}</span>
+              <span className="text-gray-400 text-xs">({ps.answered}/{ps.total} answered)</span>
+            </div>
+          )}
+        </div>
+
+        {pillar.categories.map((cat) => {
+          // Category subtotal
+          let catTotal = 0
+          let catCount = 0
+          cat.questions.forEach((_, qi) => {
+            const key = `${pillar.id}_${cat.name}_${qi}`
+            if (state.answers[key] !== undefined) {
+              catTotal += state.answers[key] + 1
+              catCount++
+            }
+          })
+          const catScore = catCount > 0 ? catTotal / catCount : null
+
+          return (
+            <div key={cat.name} className="space-y-5">
+              <div className="flex items-center justify-between">
+                <h3 className="text-sm font-semibold text-gray-800 uppercase tracking-wide">{cat.name}</h3>
+                {catScore !== null && (
+                  <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${ragBadge(catScore)}`}>
+                    {catScore.toFixed(1)}
+                  </span>
+                )}
+              </div>
+
+              {cat.questions.map((q, qi) => {
+                const key = `${pillar.id}_${cat.name}_${qi}`
+                const selected = state.answers[key]
+
+                return (
+                  <div key={qi} className="card">
+                    <p className="text-sm font-medium text-gray-800 mb-4">
+                      {qi + 1}. {q.text}
+                    </p>
+                    <div className="grid grid-cols-1 sm:grid-cols-5 gap-2">
+                      {q.options.map((opt, oi) => {
+                        const isSelected = selected === oi
+                        const scoreVal = oi + 1
+                        let optBg = 'bg-gray-50 border-gray-200 hover:border-gray-300 text-gray-600'
+                        if (isSelected) {
+                          if (scoreVal >= 4) optBg = 'bg-emerald-50 border-emerald-400 text-emerald-800 ring-1 ring-emerald-400'
+                          else if (scoreVal >= 2) optBg = 'bg-amber-50 border-amber-400 text-amber-800 ring-1 ring-amber-400'
+                          else optBg = 'bg-red-50 border-red-400 text-red-800 ring-1 ring-red-400'
+                        }
+
+                        return (
+                          <button
+                            key={oi}
+                            type="button"
+                            onClick={() => setAnswer(key, oi)}
+                            className={`px-3 py-2.5 rounded-lg border text-xs font-medium transition-all text-left ${optBg}`}
+                          >
+                            <span className="block text-[10px] font-bold mb-0.5 opacity-60">{scoreVal}/5</span>
+                            {opt}
+                          </button>
+                        )
+                      })}
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          )
+        })}
+      </div>
+    )
+  }
+
+  // ============================================================
+  // RENDER: CBK TEMPLATE GAP ANALYSIS (internal only)
+  // ============================================================
+  function renderCBK() {
+    // Compute completion stats
+    const totalFields = CBK_TEMPLATES.reduce((s, t) => s + t.fields.length, 0)
+    let filledFull = 0
+    let filledPartial = 0
+    let filledNone = 0
+    CBK_TEMPLATES.forEach((t) => {
+      t.fields.forEach((_, fi) => {
+        const key = `${t.id}_${fi}`
+        const val = state.cbk[key]
+        if (val === 'full') filledFull++
+        else if (val === 'partial') filledPartial++
+        else if (val === 'none') filledNone++
+      })
+    })
+    const filledCount = filledFull + filledPartial + filledNone
+    const completionPct = totalFields > 0 ? Math.round((filledCount / totalFields) * 100) : 0
+
+    return (
+      <div className="space-y-8">
+        <div>
+          <h2 className="text-xl font-bold text-gray-900 mb-1">CBK Template Gap Analysis</h2>
+          <p className="text-gray-500 text-sm">
+            Assess your institution&apos;s ability to populate each of the 9 CBK CRDF disclosure templates.
+          </p>
+          <div className="mt-4">
+            <div className="flex items-center justify-between text-sm mb-1">
+              <span className="text-gray-600">Completion: {filledCount} / {totalFields} fields assessed</span>
+              <span className="font-medium text-gray-900">{completionPct}%</span>
+            </div>
+            <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
+              <div
+                className="h-full bg-emerald-500 rounded-full transition-all duration-500"
+                style={{ width: `${completionPct}%` }}
+              />
+            </div>
+            <div className="flex gap-4 mt-2 text-xs text-gray-500">
+              <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-emerald-500 inline-block" /> Full: {filledFull}</span>
+              <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-amber-500 inline-block" /> Partial: {filledPartial}</span>
+              <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-red-500 inline-block" /> None: {filledNone}</span>
+            </div>
           </div>
         </div>
-        {errors[field] && <p className="text-red-400 text-sm mt-1">{errors[field]}</p>}
-      </div>
-    )
-  }
 
-  function renderInputField(
-    label: string,
-    field: keyof FormData,
-    type: string = 'text',
-    placeholder: string = ''
-  ) {
-    return (
-      <div>
-        <label className="block text-sm font-medium text-gray-600 mb-2">{label}</label>
-        <input
-          type={type}
-          className="input-field"
-          value={form[field] as string}
-          onChange={(e) => updateField(field, e.target.value)}
-          placeholder={placeholder}
-          required
-        />
-        {errors[field] && <p className="text-red-400 text-sm mt-1">{errors[field]}</p>}
-      </div>
-    )
-  }
+        {CBK_TEMPLATES.map((template) => (
+          <div key={template.id} className="card">
+            <h3 className="text-sm font-semibold text-gray-800 mb-4">Template {template.name}</h3>
+            <div className="space-y-3">
+              {template.fields.map((field, fi) => {
+                const key = `${template.id}_${fi}`
+                const val = state.cbk[key] || ''
 
-  function renderCheckboxGroup(
-    label: string,
-    field: 'frameworks' | 'challenges',
-    options: string[]
-  ) {
-    return (
-      <div>
-        <label className="block text-sm font-medium text-gray-600 mb-3">{label}</label>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          {options.map((opt) => {
-            const checked = form[field].includes(opt)
-            return (
-              <label
-                key={opt}
-                className={`flex items-center gap-3 px-4 py-3 rounded-xl border cursor-pointer transition-all duration-200 ${
-                  checked
-                    ? 'bg-emerald-500/10 border-emerald-500/30 text-gray-900'
-                    : 'bg-gray-50/40 border-gray-200 text-gray-600 hover:border-white/20'
-                }`}
-              >
-                <div
-                  className={`w-5 h-5 rounded flex-shrink-0 border flex items-center justify-center transition-all ${
-                    checked
-                      ? 'bg-emerald-500 border-emerald-500'
-                      : 'border-white/20 bg-transparent'
-                  }`}
-                >
-                  {checked && <CheckIcon />}
-                </div>
-                <span className="text-sm">{opt}</span>
-                <input
-                  type="checkbox"
-                  className="sr-only"
-                  checked={checked}
-                  onChange={() => toggleCheckbox(field, opt)}
-                />
-              </label>
-            )
-          })}
-        </div>
-        {errors[field] && <p className="text-red-400 text-sm mt-1">{errors[field]}</p>}
-      </div>
-    )
-  }
+                return (
+                  <div key={fi} className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 py-2 border-b border-gray-100 last:border-0">
+                    <span className="text-sm text-gray-700 flex-1">{field.label}</span>
+                    <div className="flex gap-2 flex-shrink-0">
+                      {(['full', 'partial', 'none'] as const).map((status) => {
+                        const isSelected = val === status
+                        let btnStyle = 'bg-gray-50 border-gray-200 text-gray-500 hover:border-gray-300'
+                        if (isSelected && status === 'full') btnStyle = 'bg-emerald-50 border-emerald-400 text-emerald-700 ring-1 ring-emerald-400'
+                        if (isSelected && status === 'partial') btnStyle = 'bg-amber-50 border-amber-400 text-amber-700 ring-1 ring-amber-400'
+                        if (isSelected && status === 'none') btnStyle = 'bg-red-50 border-red-400 text-red-700 ring-1 ring-red-400'
 
-  // ---- Progress Indicator ----
-  function renderProgress() {
-    return (
-      <div className="mb-10">
-        <div className="flex items-center justify-between mb-2">
-          {STEP_LABELS.map((label, i) => (
-            <div key={label} className="flex items-center flex-1 last:flex-none">
-              <div className="flex flex-col items-center">
-                <div
-                  className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-300 ${
-                    i < step
-                      ? 'bg-emerald-500 text-gray-900'
-                      : i === step
-                      ? 'bg-emerald-500/20 text-emerald-600 border-2 border-emerald-500'
-                      : 'bg-gray-50/60 text-gray-500 border border-gray-200'
-                  }`}
-                >
-                  {i < step ? <CheckIcon /> : i + 1}
-                </div>
-                <span
-                  className={`text-xs mt-2 hidden sm:block whitespace-nowrap ${
-                    i <= step ? 'text-emerald-600' : 'text-gray-500'
-                  }`}
-                >
-                  {label}
-                </span>
-              </div>
-              {i < STEP_LABELS.length - 1 && (
-                <div
-                  className={`flex-1 h-0.5 mx-2 sm:mx-4 rounded transition-all duration-300 ${
-                    i < step ? 'bg-emerald-500' : 'bg-white/10'
-                  }`}
-                />
-              )}
+                        return (
+                          <button
+                            key={status}
+                            type="button"
+                            onClick={() => setCbk(key, status)}
+                            className={`px-3 py-1 rounded-md border text-xs font-medium capitalize transition-all ${btnStyle}`}
+                          >
+                            {status}
+                          </button>
+                        )
+                      })}
+                    </div>
+                  </div>
+                )
+              })}
             </div>
-          ))}
-        </div>
-        {/* Mobile step label */}
-        <p className="text-sm text-emerald-600 font-medium sm:hidden mt-4 text-center">
-          Step {step + 1} of 4: {STEP_LABELS[step]}
-        </p>
+          </div>
+        ))}
       </div>
     )
   }
 
-  // ---- Step 1 ----
-  function renderStep1() {
+  // ============================================================
+  // RENDER: PCAF READINESS (internal only)
+  // ============================================================
+  function renderPCAF() {
     return (
       <div className="space-y-6">
-        <h2 className="text-xl font-semibold text-gray-900 mb-2">About Your Institution</h2>
-        <p className="text-gray-600 text-sm mb-6">
-          Tell us about your organisation so we can tailor your assessment.
-        </p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          {renderInputField('Institution Name', 'institutionName', 'text', 'e.g. Kenya Commercial Bank')}
-          {renderInputField('Your Name', 'yourName', 'text', 'e.g. John Kamau')}
-          {renderInputField('Email Address', 'email', 'email', 'you@institution.co.ke')}
-          {renderInputField('Your Role', 'role', 'text', 'e.g. Head of Risk')}
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          {renderSelectField('Institution Type', 'institutionType', INSTITUTION_TYPES, 'Select institution type')}
-          {renderSelectField('Approximate Total Assets or AUM', 'totalAssets', ASSET_RANGES, 'Select asset range')}
-        </div>
-        {renderSelectField(
-          'Number of Borrowers/Members/Policyholders',
-          'memberCount',
-          MEMBER_RANGES,
-          'Select range'
-        )}
-      </div>
-    )
-  }
-
-  // ---- Step 2 ----
-  function renderStep2() {
-    return (
-      <div className="space-y-6">
-        <h2 className="text-xl font-semibold text-gray-900 mb-2">Current Climate Risk Status</h2>
-        <p className="text-gray-600 text-sm mb-6">
-          Help us understand where you currently stand on climate risk management.
-        </p>
-        {renderSelectField(
-          'Do you have a dedicated ESG or sustainability team?',
-          'hasEsgTeam',
-          ['Yes', 'No', 'Planning to hire'],
-          'Select an option'
-        )}
-        {renderSelectField(
-          'Have you submitted any climate-related reports to your regulator?',
-          'submittedReports',
-          ['Yes', 'No', 'In progress'],
-          'Select an option'
-        )}
-        {renderSelectField(
-          'Do you collect climate-related data from borrowers, members, or investees?',
-          'collectsClimateData',
-          ['Yes systematically', 'Yes partially', 'No', 'Planning to start'],
-          'Select an option'
-        )}
-        {renderSelectField(
-          'Have you classified your portfolio against the Kenya Green Finance Taxonomy (KGFT)?',
-          'kgftClassified',
-          ['Yes fully', 'Partially', 'No', 'Not aware of KGFT'],
-          'Select an option'
-        )}
-        {renderSelectField(
-          'Have you measured your financed emissions (PCAF methodology)?',
-          'measuredEmissions',
-          ['Yes', 'In progress', 'No', 'Not aware of PCAF'],
-          'Select an option'
-        )}
-      </div>
-    )
-  }
-
-  // ---- Step 3 ----
-  function renderStep3() {
-    return (
-      <div className="space-y-6">
-        <h2 className="text-xl font-semibold text-gray-900 mb-2">Reporting Frameworks & Challenges</h2>
-        <p className="text-gray-600 text-sm mb-6">
-          Tell us about the frameworks you&apos;re targeting and the obstacles you face.
-        </p>
-        {renderCheckboxGroup(
-          'Which frameworks are you preparing for?',
-          'frameworks',
-          FRAMEWORKS
-        )}
-        {renderSelectField(
-          "What's your most pressing reporting deadline?",
-          'reportingDeadline',
-          DEADLINES,
-          'Select a deadline'
-        )}
-        {renderCheckboxGroup(
-          'Top challenges you face',
-          'challenges',
-          CHALLENGES
-        )}
         <div>
-          <label className="block text-sm font-medium text-gray-600 mb-2">
-            Additional context (optional)
-          </label>
-          <textarea
-            className="input-field min-h-[120px] resize-y"
-            value={form.additionalContext}
-            onChange={(e) => updateField('additionalContext', e.target.value)}
-            placeholder="Anything else you'd like us to know about your climate risk journey..."
-          />
+          <h2 className="text-xl font-bold text-gray-900 mb-1">PCAF Readiness Assessment</h2>
+          <p className="text-gray-500 text-sm">
+            Evaluate data quality, availability, and exposure for each PCAF asset class.
+          </p>
+        </div>
+
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-gray-200">
+                <th className="text-left py-3 px-2 text-gray-600 font-semibold">Asset Class</th>
+                <th className="text-left py-3 px-2 text-gray-600 font-semibold">Data Quality (1-5)</th>
+                <th className="text-left py-3 px-2 text-gray-600 font-semibold">Data Availability</th>
+                <th className="text-left py-3 px-2 text-gray-600 font-semibold">Exposure (KES M)</th>
+                <th className="text-left py-3 px-2 text-gray-600 font-semibold">Notes</th>
+              </tr>
+            </thead>
+            <tbody>
+              {PCAF_CLASSES.map((ac, idx) => {
+                const dqKey = `pcaf_dq_${idx}`
+                const daKey = `pcaf_da_${idx}`
+                const exKey = `pcaf_ex_${idx}`
+                const ntKey = `pcaf_nt_${idx}`
+
+                return (
+                  <tr key={idx} className="border-b border-gray-100 hover:bg-gray-50">
+                    <td className="py-3 px-2 font-medium text-gray-800">{ac.name}</td>
+                    <td className="py-3 px-2">
+                      <select
+                        className="select-field text-xs py-1.5"
+                        value={state.pcaf[dqKey] || ''}
+                        onChange={(e) => setPcaf(dqKey, e.target.value)}
+                      >
+                        <option value="" disabled>Score</option>
+                        <option value="1">1 - Verified</option>
+                        <option value="2">2 - Audited</option>
+                        <option value="3">3 - Activity data</option>
+                        <option value="4">4 - Sector avg</option>
+                        <option value="5">5 - Regional avg</option>
+                      </select>
+                    </td>
+                    <td className="py-3 px-2">
+                      <select
+                        className="select-field text-xs py-1.5"
+                        value={state.pcaf[daKey] || ''}
+                        onChange={(e) => setPcaf(daKey, e.target.value)}
+                      >
+                        <option value="" disabled>Select</option>
+                        <option value="available">Available</option>
+                        <option value="partial">Partial</option>
+                        <option value="unavailable">Unavailable</option>
+                      </select>
+                    </td>
+                    <td className="py-3 px-2">
+                      <input
+                        type="number"
+                        className="input-field text-xs py-1.5 w-28"
+                        placeholder="0"
+                        value={state.pcaf[exKey] || ''}
+                        onChange={(e) => setPcaf(exKey, e.target.value)}
+                      />
+                    </td>
+                    <td className="py-3 px-2">
+                      <input
+                        type="text"
+                        className="input-field text-xs py-1.5"
+                        placeholder="Notes..."
+                        value={state.pcaf[ntKey] || ''}
+                        onChange={(e) => setPcaf(ntKey, e.target.value)}
+                      />
+                    </td>
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
         </div>
       </div>
     )
   }
 
-  // ---- Step 4: Review ----
-  function renderReviewRow(label: string, value: string | string[]) {
-    const display = Array.isArray(value) ? value.join(', ') : value
-    if (!display) return null
-    return (
-      <div className="flex flex-col sm:flex-row sm:items-start gap-1 sm:gap-4 py-3 border-b border-gray-200 last:border-0">
-        <span className="text-gray-500 text-sm sm:w-64 flex-shrink-0">{label}</span>
-        <span className="text-gray-900 text-sm">{display}</span>
-      </div>
-    )
-  }
+  // ============================================================
+  // RENDER: CRITICAL CHECKS (internal only)
+  // ============================================================
+  function renderChecks() {
+    const passCount = Object.values(state.checks).filter((v) => v === 'pass').length
+    const failCount = Object.values(state.checks).filter((v) => v === 'fail').length
+    const partialCount = Object.values(state.checks).filter((v) => v === 'partial').length
 
-  function renderStep4() {
     return (
       <div className="space-y-6">
-        <h2 className="text-xl font-semibold text-gray-900 mb-2">Review Your Responses</h2>
-        <p className="text-gray-600 text-sm mb-6">
-          Please review your answers before submitting. Click &quot;Back&quot; to make changes.
-        </p>
-
-        <div className="card space-y-0">
-          <h3 className="text-emerald-600 font-semibold text-sm uppercase tracking-wider mb-4">
-            About Your Institution
-          </h3>
-          {renderReviewRow('Institution Name', form.institutionName)}
-          {renderReviewRow('Your Name', form.yourName)}
-          {renderReviewRow('Email', form.email)}
-          {renderReviewRow('Role', form.role)}
-          {renderReviewRow('Institution Type', form.institutionType)}
-          {renderReviewRow('Total Assets / AUM', form.totalAssets)}
-          {renderReviewRow('Borrowers/Members/Policyholders', form.memberCount)}
+        <div>
+          <h2 className="text-xl font-bold text-gray-900 mb-1">Critical Compliance Checks</h2>
+          <p className="text-gray-500 text-sm">
+            These are non-negotiable items for CBK CRDF compliance. Each must be addressed.
+          </p>
+          <div className="flex gap-4 mt-3 text-xs">
+            <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-emerald-500" /> Pass: {passCount}</span>
+            <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-amber-500" /> Partial: {partialCount}</span>
+            <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-red-500" /> Fail: {failCount}</span>
+          </div>
         </div>
 
-        <div className="card space-y-0">
-          <h3 className="text-emerald-600 font-semibold text-sm uppercase tracking-wider mb-4">
-            Current Climate Risk Status
-          </h3>
-          {renderReviewRow('Dedicated ESG team?', form.hasEsgTeam)}
-          {renderReviewRow('Climate reports submitted?', form.submittedReports)}
-          {renderReviewRow('Collects climate data?', form.collectsClimateData)}
-          {renderReviewRow('KGFT classified?', form.kgftClassified)}
-          {renderReviewRow('Financed emissions measured?', form.measuredEmissions)}
+        {CRITICAL_CHECKS.map((check, idx) => {
+          const val = state.checks[idx] || ''
+
+          return (
+            <div key={idx} className="card">
+              <h3 className="text-sm font-semibold text-gray-800 mb-1">{idx + 1}. {check.title}</h3>
+              <p className="text-xs text-gray-500 mb-4">{check.description}</p>
+              <div className="flex gap-2">
+                {(['pass', 'partial', 'fail'] as const).map((status) => {
+                  const isSelected = val === status
+                  let btnStyle = 'bg-gray-50 border-gray-200 text-gray-500 hover:border-gray-300'
+                  if (isSelected && status === 'pass') btnStyle = 'bg-emerald-50 border-emerald-400 text-emerald-700 ring-1 ring-emerald-400'
+                  if (isSelected && status === 'partial') btnStyle = 'bg-amber-50 border-amber-400 text-amber-700 ring-1 ring-amber-400'
+                  if (isSelected && status === 'fail') btnStyle = 'bg-red-50 border-red-400 text-red-700 ring-1 ring-red-400'
+
+                  return (
+                    <button
+                      key={status}
+                      type="button"
+                      onClick={() => setCheck(idx, status)}
+                      className={`px-4 py-2 rounded-lg border text-xs font-semibold capitalize transition-all ${btnStyle}`}
+                    >
+                      {status}
+                    </button>
+                  )
+                })}
+              </div>
+            </div>
+          )
+        })}
+      </div>
+    )
+  }
+
+  // ============================================================
+  // RENDER: DASHBOARD
+  // ============================================================
+  function renderDashboard() {
+    const gaps = categoryScores.filter((c) => c.answered > 0 && c.score < 4.0).sort((a, b) => a.score - b.score)
+
+    const roadmapPhases = [
+      {
+        phase: 'Phase 1: Foundation',
+        timeline: 'Months 1-3',
+        items: [
+          'Establish board climate risk oversight committee',
+          'Appoint named C-suite climate risk executive',
+          'Complete gap analysis against CBK CRDF requirements',
+          'Begin KGFT awareness training for key teams',
+        ],
+      },
+      {
+        phase: 'Phase 2: Data & Systems',
+        timeline: 'Months 4-6',
+        items: [
+          'Embed climate data fields in core banking system',
+          'Initiate borrower climate data collection',
+          'Establish Scope 1 & 2 emissions baseline',
+          'Begin PCAF financed emissions measurement for top sectors',
+        ],
+      },
+      {
+        phase: 'Phase 3: Integration',
+        timeline: 'Months 7-9',
+        items: [
+          'Integrate climate risk into ERM framework',
+          'Conduct first climate scenario analysis',
+          'Map portfolio against Kenya Green Finance Taxonomy',
+          'Develop climate risk dashboard for management',
+        ],
+      },
+      {
+        phase: 'Phase 4: Reporting & Compliance',
+        timeline: 'Months 10-12',
+        items: [
+          'Populate all 9 CBK CRDF templates',
+          'Complete IFRS S1/S2 alignment',
+          'Set science-based emission reduction targets',
+          'Submit first climate risk disclosure to CBK',
+        ],
+      },
+    ]
+
+    return (
+      <div className="space-y-8 print:space-y-6" id="dashboard-print">
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="text-xl font-bold text-gray-900 mb-1">Assessment Dashboard</h2>
+            <p className="text-gray-500 text-sm">
+              {state.info.bankName ? `${state.info.bankName} \u2014 ` : ''}Climate Risk Readiness Assessment Results
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={exportAssessment}
+            className="btn-secondary text-sm print:hidden"
+          >
+            <svg className="w-4 h-4 mr-1.5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+            </svg>
+            Export Assessment
+          </button>
         </div>
 
-        <div className="card space-y-0">
-          <h3 className="text-emerald-600 font-semibold text-sm uppercase tracking-wider mb-4">
-            Reporting Frameworks & Challenges
-          </h3>
-          {renderReviewRow('Frameworks preparing for', form.frameworks)}
-          {renderReviewRow('Most pressing deadline', form.reportingDeadline)}
-          {renderReviewRow('Top challenges', form.challenges)}
-          {renderReviewRow('Additional context', form.additionalContext)}
+        {/* Overall Score */}
+        <div className={`rounded-2xl border p-8 text-center ${totalAnswered > 0 ? ragBg(overallScore) : 'bg-gray-50 border-gray-200'}`}>
+          <p className="text-sm font-medium text-gray-500 mb-2">Overall Readiness Score</p>
+          <p className={`text-6xl font-black ${totalAnswered > 0 ? ragColor(overallScore) : 'text-gray-300'}`}>
+            {totalAnswered > 0 ? overallScore.toFixed(1) : '--'}
+          </p>
+          <p className="text-lg font-medium text-gray-400 mt-1">/ 5.0</p>
+          {totalAnswered > 0 && (
+            <span className={`inline-block mt-3 text-sm font-bold px-4 py-1 rounded-full ${ragBadge(overallScore)}`}>
+              {ragLabel(overallScore)}
+            </span>
+          )}
+        </div>
+
+        {/* 3 Stat Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="stat-card text-center">
+            <p className="text-sm text-gray-500 mb-1">Overall Score</p>
+            <p className={`text-3xl font-bold ${totalAnswered > 0 ? ragColor(overallScore) : 'text-gray-300'}`}>
+              {totalAnswered > 0 ? overallScore.toFixed(2) : '--'}
+            </p>
+          </div>
+          <div className="stat-card text-center">
+            <p className="text-sm text-gray-500 mb-1">Questions Answered</p>
+            <p className="text-3xl font-bold text-gray-900">{totalAnswered} <span className="text-lg text-gray-400">/ {totalQuestions}</span></p>
+          </div>
+          <div className="stat-card text-center">
+            <p className="text-sm text-gray-500 mb-1">Gap Count</p>
+            <p className="text-3xl font-bold text-amber-600">{gaps.length}</p>
+          </div>
+        </div>
+
+        {/* Pillar Score Grid */}
+        <div>
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">Pillar Scores</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {pillarScores.map((ps) => {
+              const pillar = PILLARS.find((p) => p.id === ps.pillarId)!
+              return (
+                <div key={ps.pillarId} className={`rounded-xl border p-5 ${ps.answered > 0 ? ragBg(ps.score) : 'bg-gray-50 border-gray-200'}`}>
+                  <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">{pillar.shortName}</p>
+                  <p className={`text-3xl font-bold ${ps.answered > 0 ? ragColor(ps.score) : 'text-gray-300'}`}>
+                    {ps.answered > 0 ? ps.score.toFixed(1) : '--'}
+                  </p>
+                  <div className="flex items-center justify-between mt-2">
+                    {ps.answered > 0 && (
+                      <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${ragBadge(ps.score)}`}>{ragLabel(ps.score)}</span>
+                    )}
+                    <span className="text-xs text-gray-400">{ps.answered}/{ps.total} answered</span>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        </div>
+
+        {/* Gap Register */}
+        {gaps.length > 0 && (
+          <div>
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Gap Register</h3>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm border border-gray-200 rounded-xl overflow-hidden">
+                <thead>
+                  <tr className="bg-gray-50 border-b border-gray-200">
+                    <th className="text-left py-3 px-4 text-gray-600 font-semibold">Severity</th>
+                    <th className="text-left py-3 px-4 text-gray-600 font-semibold">Pillar</th>
+                    <th className="text-left py-3 px-4 text-gray-600 font-semibold">Category</th>
+                    <th className="text-left py-3 px-4 text-gray-600 font-semibold">Score</th>
+                    <th className="text-left py-3 px-4 text-gray-600 font-semibold">Deadline</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {gaps.map((g, i) => (
+                    <tr key={i} className="border-b border-gray-100 hover:bg-gray-50">
+                      <td className="py-3 px-4">
+                        <span className={`text-xs font-bold px-2 py-1 rounded-full ${severityColor(g.score)}`}>
+                          {severityLabel(g.score)}
+                        </span>
+                      </td>
+                      <td className="py-3 px-4 text-gray-700">{g.pillar}</td>
+                      <td className="py-3 px-4 text-gray-800 font-medium">{g.category}</td>
+                      <td className={`py-3 px-4 font-bold ${ragColor(g.score)}`}>{g.score.toFixed(1)}</td>
+                      <td className="py-3 px-4 text-gray-500">
+                        {g.score < 2 ? 'Q1 2027' : g.score < 3 ? 'Q2 2027' : 'Q3 2027'}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+
+        {/* 12-Month Roadmap */}
+        <div>
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">12-Month Implementation Roadmap</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {roadmapPhases.map((phase, idx) => (
+              <div key={idx} className="card">
+                <div className="flex items-center gap-3 mb-3">
+                  <span className="w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center text-sm font-bold flex-shrink-0">
+                    {idx + 1}
+                  </span>
+                  <div>
+                    <h4 className="text-sm font-bold text-gray-900">{phase.phase}</h4>
+                    <p className="text-xs text-gray-500">{phase.timeline}</p>
+                  </div>
+                </div>
+                <ul className="space-y-2">
+                  {phase.items.map((item, ii) => (
+                    <li key={ii} className="flex items-start gap-2 text-xs text-gray-600">
+                      <svg className="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     )
   }
 
-  // ---- What You'll Get cards ----
-  const benefits = [
-    {
-      title: 'Readiness Score',
-      description: 'A numerical score benchmarking your institution against Kenya\'s climate risk readiness landscape.',
-      icon: (
-        <svg className="w-8 h-8 text-emerald-600" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
-        </svg>
-      ),
-    },
-    {
-      title: 'Gap Analysis',
-      description: 'A detailed breakdown of where you fall short on CBK CRDF, IFRS S1/S2, KGFT, and PCAF requirements.',
-      icon: (
-        <svg className="w-8 h-8 text-emerald-600" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-        </svg>
-      ),
-    },
-    {
-      title: 'Prioritised Roadmap',
-      description: 'A step-by-step action plan ordered by urgency and regulatory deadline, tailored to your institution.',
-      icon: (
-        <svg className="w-8 h-8 text-emerald-600" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M9 6.75V15m6-6v8.25m.503 3.498l4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 00-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0z" />
-        </svg>
-      ),
-    },
-    {
-      title: '30-Minute Consultation',
-      description: 'A complimentary call with Mary to walk through your results and discuss next steps.',
-      icon: (
-        <svg className="w-8 h-8 text-emerald-600" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 01-.825-.242m9.345-8.334a2.126 2.126 0 00-.476-.095 48.64 48.64 0 00-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0011.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155" />
-        </svg>
-      ),
-    },
-  ]
+  // ============================================================
+  // RENDER: ACTIVE SECTION
+  // ============================================================
+  function renderActiveSection() {
+    if (state.activeSection === 'info') return renderClientInfo()
+    if (state.activeSection === 'dashboard') return renderDashboard()
+    if (state.activeSection === 'cbk' && state.mode === 'internal') return renderCBK()
+    if (state.activeSection === 'pcaf' && state.mode === 'internal') return renderPCAF()
+    if (state.activeSection === 'checks' && state.mode === 'internal') return renderChecks()
 
+    const pillar = PILLARS.find((p) => p.id === state.activeSection)
+    if (pillar) return renderPillar(pillar)
+
+    return renderClientInfo()
+  }
+
+  // Nav helpers
+  function goNext() {
+    const idx = sections.findIndex((s) => s.id === state.activeSection)
+    if (idx < sections.length - 1) {
+      setActiveSection(sections[idx + 1].id)
+    }
+  }
+
+  function goPrev() {
+    const idx = sections.findIndex((s) => s.id === state.activeSection)
+    if (idx > 0) {
+      setActiveSection(sections[idx - 1].id)
+    }
+  }
+
+  const currentIdx = sections.findIndex((s) => s.id === state.activeSection)
+  const isFirst = currentIdx <= 0
+  const isLast = currentIdx >= sections.length - 1
+
+  // ============================================================
+  // MAIN LAYOUT
+  // ============================================================
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
-      <header className="border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
-          <Link
-            href="/"
-            className="inline-flex items-center gap-2 text-gray-600 hover:text-emerald-600 transition-colors text-sm mb-6"
-          >
-            <ArrowLeftIcon />
-            Back to Home
-          </Link>
-          <h1 className="section-heading">
-            Climate Risk <span className="gradient-text">Readiness Diagnostic</span>
-          </h1>
-          <p className="text-gray-600 text-lg max-w-3xl mt-2">
-            Find out where your institution stands on climate risk readiness. Complete this short
-            diagnostic and we&apos;ll provide a personalised assessment with recommendations.
-          </p>
+      <header className="border-b border-gray-200 bg-white sticky top-0 z-30 print:static">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="flex items-center justify-between py-4">
+            <div className="flex items-center gap-4">
+              <Link
+                href="/"
+                className="text-gray-400 hover:text-emerald-600 transition-colors"
+              >
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+                </svg>
+              </Link>
+              <div>
+                <h1 className="text-lg font-bold text-gray-900">
+                  Climate Risk <span className="gradient-text">Readiness Diagnostic</span>
+                </h1>
+                <p className="text-xs text-gray-500 hidden sm:block">
+                  {state.mode === 'internal' ? 'Internal Assessment Mode' : 'Bank Assessment Mode'}
+                  {state.info.bankName ? ` \u2014 ${state.info.bankName}` : ''}
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3">
+              {/* Progress bar */}
+              <div className="hidden sm:flex items-center gap-2">
+                <div className="w-32 h-2 bg-gray-100 rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-emerald-500 rounded-full transition-all duration-500"
+                    style={{ width: `${progress}%` }}
+                  />
+                </div>
+                <span className="text-xs text-gray-500 font-medium">{progress}%</span>
+              </div>
+              {/* Mobile menu toggle */}
+              <button
+                type="button"
+                onClick={() => setSidebarOpen(!sidebarOpen)}
+                className="lg:hidden p-2 rounded-lg hover:bg-gray-100 text-gray-600"
+              >
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                </svg>
+              </button>
+            </div>
+          </div>
         </div>
       </header>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-          {/* Main Form */}
-          <div className="lg:col-span-2">
-            {renderProgress()}
-
-            <form onSubmit={handleSubmit}>
-              <div className="card">
-                {step === 0 && renderStep1()}
-                {step === 1 && renderStep2()}
-                {step === 2 && renderStep3()}
-                {step === 3 && renderStep4()}
-
-                {/* Navigation */}
-                <div className="flex items-center justify-between mt-8 pt-6 border-t border-gray-200">
-                  {step > 0 ? (
-                    <button type="button" onClick={prevStep} className="btn-secondary">
-                      <ArrowLeftIcon />
-                      <span className="ml-2">Back</span>
-                    </button>
-                  ) : (
-                    <div />
-                  )}
-
-                  {step < 3 ? (
-                    <button type="button" onClick={nextStep} className="btn-primary">
-                      Continue
-                      <svg className="w-4 h-4 ml-2" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                      </svg>
-                    </button>
-                  ) : (
-                    <button
-                      type="submit"
-                      disabled={submitting}
-                      className="btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      {submitting ? (
-                        <>
-                          <svg className="animate-spin w-4 h-4 mr-2" viewBox="0 0 24 24" fill="none">
-                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-                          </svg>
-                          Submitting...
-                        </>
-                      ) : (
-                        <>
-                          Submit Diagnostic
-                          <svg className="w-4 h-4 ml-2" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
-                          </svg>
-                        </>
-                      )}
-                    </button>
-                  )}
-                </div>
-              </div>
-            </form>
-          </div>
-
-          {/* Sidebar: What You'll Get */}
-          <aside className="lg:col-span-1">
-            <div className="sticky top-10">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">What You&apos;ll Get</h3>
-              <div className="space-y-4">
-                {benefits.map((b) => (
-                  <div key={b.title} className="stat-card flex items-start gap-4 text-left">
-                    <div className="flex-shrink-0 mt-1">{b.icon}</div>
-                    <div>
-                      <h4 className="text-gray-900 font-semibold text-sm mb-1">{b.title}</h4>
-                      <p className="text-gray-600 text-xs leading-relaxed">{b.description}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <div className="mt-6 p-4 rounded-xl bg-emerald-500/5 border border-emerald-500/20">
-                <p className="text-emerald-600 text-sm font-medium mb-1">Free assessment</p>
-                <p className="text-gray-600 text-xs leading-relaxed">
-                  This diagnostic is completely free. Your data is confidential and will only be used to prepare your personalised assessment.
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
+        <div className="flex gap-6">
+          {/* Sidebar - desktop */}
+          <aside className="hidden lg:block w-72 flex-shrink-0">
+            <div className="sticky top-24">
+              {renderSidebar()}
+              <div className="mt-4 p-3 rounded-lg bg-gray-50 border border-gray-200">
+                <p className="text-xs text-gray-500">
+                  <span className="font-semibold text-gray-700">Auto-saved.</span> Your progress is saved to this browser automatically.
                 </p>
               </div>
             </div>
           </aside>
+
+          {/* Sidebar - mobile overlay */}
+          {sidebarOpen && (
+            <div className="fixed inset-0 z-40 lg:hidden">
+              <div className="absolute inset-0 bg-black/30" onClick={() => setSidebarOpen(false)} />
+              <div className="absolute left-0 top-0 bottom-0 w-72 bg-white border-r border-gray-200 p-4 overflow-y-auto">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-sm font-bold text-gray-900">Navigation</h3>
+                  <button type="button" onClick={() => setSidebarOpen(false)} className="text-gray-400 hover:text-gray-600">
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+                {renderSidebar()}
+              </div>
+            </div>
+          )}
+
+          {/* Main content */}
+          <main className="flex-1 min-w-0">
+            <div className="card">
+              {renderActiveSection()}
+
+              {/* Section navigation */}
+              <div className="flex items-center justify-between mt-8 pt-6 border-t border-gray-200 print:hidden">
+                {!isFirst ? (
+                  <button type="button" onClick={goPrev} className="btn-secondary text-sm">
+                    <svg className="w-4 h-4 mr-1.5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+                    </svg>
+                    Previous
+                  </button>
+                ) : (
+                  <div />
+                )}
+                {!isLast ? (
+                  <button type="button" onClick={goNext} className="btn-primary text-sm">
+                    Next Section
+                    <svg className="w-4 h-4 ml-1.5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                    </svg>
+                  </button>
+                ) : (
+                  <button type="button" onClick={exportAssessment} className="btn-primary text-sm">
+                    <svg className="w-4 h-4 mr-1.5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+                    </svg>
+                    Export Assessment
+                  </button>
+                )}
+              </div>
+            </div>
+          </main>
         </div>
       </div>
     </div>
