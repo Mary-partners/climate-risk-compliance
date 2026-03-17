@@ -2,7 +2,7 @@
 
 import { useState, useEffect, FormEvent } from 'react'
 
-const TABS = ['Overview', 'Get Started', 'Free Diagnostic', 'For Banks', 'Market', 'Banks', 'SACCOs', 'Insurance', 'Pensions', 'MFBs', 'Listed Cos', 'DFIs', 'Timeline', 'Africa', 'Why Us'] as const
+const TABS = ['Overview', 'Get Started', 'Free Diagnostic', 'For Banks', 'Market', 'Timeline', 'Africa', 'Why Us'] as const
 type Tab = typeof TABS[number]
 
 const BANKS_TIER1 = [
@@ -143,6 +143,8 @@ const DIAG_CHALLENGES = ['Collecting climate data from borrowers/members/investe
 export default function HomePage() {
   const [activeTab, setActiveTab] = useState<Tab>('Overview')
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [expandedSegment, setExpandedSegment] = useState<string | null>(null)
+  const toggleSegment = (seg: string) => setExpandedSegment(prev => prev === seg ? null : seg)
 
   // Get Started form
   const [gsForm, setGsForm] = useState({ name: '', email: '', organisation: '', orgType: '', journeyStage: '', biggestChallenge: '', notes: '', honeypot: '' })
@@ -902,195 +904,135 @@ export default function HomePage() {
       {activeTab === 'Market' && (
         <div className="section">
           <h1 style={{ fontSize: 28, fontWeight: 800, marginBottom: 8 }}>Kenya&apos;s Climate Risk Ecosystem</h1>
-          <p style={{ color: 'var(--text2)', marginBottom: 20 }}>All the institutions, funders, and partners that need climate data. Use the segment tabs above for deeper detail.</p>
-          <div className="grid-5" style={{ marginBottom: 20 }}>
-            {[['39', 'Licensed Banks'], ['176', 'DT-SACCOs'], ['62', 'Insurers'], ['1,200+', 'Pension Schemes'], ['14', 'MFBs']].map(([v, l]) => (
-              <div key={l as string} className="card kpi" style={{ padding: 12 }}>
-                <div className="kpi-value" style={{ fontSize: 24 }}>{v}</div>
-                <div className="kpi-label">{l}</div>
-              </div>
-            ))}
-          </div>
-          <div className="card" style={{ overflowX: 'auto' }}>
+          <p style={{ color: 'var(--text2)', marginBottom: 20 }}>1,500+ institutions across 7 segments. Click any segment to explore.</p>
+
+          {/* Regulatory Comparison */}
+          <div className="card" style={{ marginBottom: 20, overflowX: 'auto' }}>
             <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 12 }}>Regulatory Framework Comparison</h3>
             <table>
-              <thead><tr><th>Dimension</th><th>Banks</th><th>SACCOs</th><th>Insurers</th><th>Pension</th><th>MFBs</th></tr></thead>
+              <thead><tr><th>Dimension</th><th>Banks</th><th>SACCOs</th><th>Insurers</th><th>Pension</th><th>MFBs</th><th>Listed Cos</th></tr></thead>
               <tbody>
-                <tr><td style={{ fontWeight: 600 }}>Regulator</td><td>CBK</td><td>SASRA</td><td>IRA</td><td>RBA</td><td>CBK</td></tr>
-                <tr><td style={{ fontWeight: 600 }}>Framework</td><td>CBK CRDF + IFRS S2</td><td>IFRS S1 + S2</td><td>IFRS S1 + S2</td><td>IFRS S1 + S2</td><td>CBK CRDF + IFRS S2</td></tr>
-                <tr><td style={{ fontWeight: 600 }}>Timeline</td><td>Oct 2026 / Jan 2027</td><td>Jan 2027</td><td>Jan 2027</td><td>Jan 2027</td><td>Oct 2026 / Jan 2027</td></tr>
-                <tr><td style={{ fontWeight: 600 }}>Progress</td><td>73% submitted</td><td>Capacity building</td><td>Early movers</td><td>Emerging</td><td>Capacity needed</td></tr>
-                <tr><td style={{ fontWeight: 600 }}>CFOIP Relevance</td><td><span className="badge badge-green">High</span></td><td><span className="badge badge-green">Very High</span></td><td><span className="badge badge-green">High</span></td><td><span className="badge badge-amber">Mod-High</span></td><td><span className="badge badge-green">Very High</span></td></tr>
+                <tr><td style={{ fontWeight: 600 }}>Regulator</td><td>CBK</td><td>SASRA</td><td>IRA</td><td>RBA</td><td>CBK</td><td>CMA/NSE</td></tr>
+                <tr><td style={{ fontWeight: 600 }}>Framework</td><td>CRDF + IFRS S2</td><td>IFRS S1+S2</td><td>IFRS S1+S2</td><td>IFRS S1+S2</td><td>CRDF + IFRS S2</td><td>NSE ESG + IFRS S2</td></tr>
+                <tr><td style={{ fontWeight: 600 }}>Deadline</td><td>Oct 2026</td><td>Jan 2027</td><td>Jan 2027</td><td>Jan 2027</td><td>Oct 2026</td><td>Jan 2027</td></tr>
               </tbody>
             </table>
           </div>
-        </div>
-      )}
 
-      {/* ============ BANKS ============ */}
-      {activeTab === 'Banks' && (
-        <div className="section">
-          <h1 style={{ fontSize: 28, fontWeight: 800, marginBottom: 8 }}>Commercial Banks</h1>
-          <div className="grid-4" style={{ marginBottom: 16 }}>
-            <div className="card kpi" style={{ padding: 12 }}><div className="kpi-value" style={{ fontSize: 24 }}>39</div><div className="kpi-label">Licensed by CBK</div></div>
-            <div className="card kpi" style={{ padding: 12 }}><div className="kpi-value" style={{ fontSize: 24 }}>KSH 7.2T+</div><div className="kpi-label">Total Assets</div></div>
-            <div className="card kpi" style={{ padding: 12 }}><div className="kpi-value" style={{ fontSize: 24 }}>KSH 3.8T+</div><div className="kpi-label">Loan Book</div></div>
-            <div className="card kpi" style={{ padding: 12 }}><div className="kpi-value" style={{ fontSize: 24 }}>73%</div><div className="kpi-label">Submitted Reports</div></div>
-          </div>
-          <p style={{ fontSize: 14, color: 'var(--text2)', marginBottom: 20 }}>Banks touch every part of the economy through lending. A bank&apos;s climate risk sits in its loan book. Measuring that exposure across thousands of borrowers is where the real challenge lies.</p>
-          <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 8 }}>Tier 1 Banks (9) &mdash; ~75% of total assets</h3>
-          <div className="card" style={{ marginBottom: 16, overflowX: 'auto' }}>
-            <table><thead><tr><th>#</th><th>Bank</th><th>Assets (KSH B)</th><th>Ownership</th><th>Sustainability</th></tr></thead>
-            <tbody>{BANKS_TIER1.map(b => <tr key={b.n}><td>{b.n}</td><td style={{ fontWeight: 600 }}>{b.name}</td><td>{b.assets}</td><td>{b.ownership}</td><td><span className="badge badge-green">{b.esg}</span></td></tr>)}</tbody></table>
-          </div>
-          <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 8 }}>Tier 2 Banks (10)</h3>
-          <div className="card" style={{ marginBottom: 16, overflowX: 'auto' }}>
-            <table><thead><tr><th>#</th><th>Bank</th><th>Assets (KSH B)</th><th>Ownership</th></tr></thead>
-            <tbody>{BANKS_TIER2.map(b => <tr key={b.n}><td>{b.n}</td><td style={{ fontWeight: 600 }}>{b.name}</td><td>{b.assets}</td><td>{b.ownership}</td></tr>)}</tbody></table>
-          </div>
-          <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 8 }}>Tier 3 Banks (20)</h3>
-          <div className="card" style={{ marginBottom: 16, overflowX: 'auto' }}>
-            <table><thead><tr><th>#</th><th>Bank</th><th>Assets (KSH B)</th><th>Ownership</th></tr></thead>
-            <tbody>{BANKS_TIER3.map(b => <tr key={b.n}><td>{b.n}</td><td style={{ fontWeight: 600 }}>{b.name}</td><td>{b.assets}</td><td>{b.ownership}</td></tr>)}</tbody></table>
-          </div>
-          <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 8 }}>CFOIP Approach by Tier</h3>
-          <div className="grid-3">
-            <div className="card card-accent"><h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 4 }}>Tier 1 (9 banks)</h4><p style={{ fontSize: 13, color: 'var(--text2)' }}>Have started ESG reporting but need automated climate data collection from borrowers and CRDF template generation.</p></div>
-            <div className="card card-blue"><h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 4 }}>Tier 2 (10 banks)</h4><p style={{ fontSize: 13, color: 'var(--text2)' }}>Most have no ESG infrastructure. Need full platform: borrower data collection, risk analysis, report generation.</p></div>
-            <div className="card card-amber"><h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 4 }}>Tier 3 (20 banks)</h4><p style={{ fontSize: 13, color: 'var(--text2)' }}>Smallest banks with least internal capacity. Many are pan-African subsidiaries. CFOIP provides turnkey solution.</p></div>
-          </div>
-        </div>
-      )}
+          {/* Expandable Segment List */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            {/* Banks */}
+            <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
+              <button onClick={() => toggleSegment('banks')} style={{ width: '100%', padding: '16px 20px', border: 'none', background: expandedSegment === 'banks' ? 'var(--accent-light)' : 'white', cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center', textAlign: 'left' }}>
+                <div><span style={{ fontWeight: 700, fontSize: 16 }}>Commercial Banks</span><span style={{ color: 'var(--text2)', fontSize: 13, marginLeft: 12 }}>39 licensed &bull; KSH 7.2T+ assets &bull; 73% submitted reports</span></div>
+                <span style={{ fontSize: 18, color: 'var(--accent)' }}>{expandedSegment === 'banks' ? '\u25B2' : '\u25BC'}</span>
+              </button>
+              {expandedSegment === 'banks' && (
+                <div style={{ padding: '0 20px 20px' }}>
+                  <h4 style={{ fontSize: 15, fontWeight: 700, margin: '12px 0 8px' }}>Tier 1 Banks (9) &mdash; ~75% of total assets</h4>
+                  <div style={{ overflowX: 'auto' }}><table><thead><tr><th>#</th><th>Bank</th><th>Assets (KSH B)</th><th>Ownership</th><th>Sustainability</th></tr></thead>
+                  <tbody>{BANKS_TIER1.map(b => <tr key={b.n}><td>{b.n}</td><td style={{ fontWeight: 600 }}>{b.name}</td><td>{b.assets}</td><td>{b.ownership}</td><td><span className="badge badge-green" style={{ fontSize: 11 }}>{b.esg}</span></td></tr>)}</tbody></table></div>
+                  <h4 style={{ fontSize: 15, fontWeight: 700, margin: '16px 0 8px' }}>Tier 2 Banks (10)</h4>
+                  <div style={{ overflowX: 'auto' }}><table><thead><tr><th>#</th><th>Bank</th><th>Assets (KSH B)</th><th>Ownership</th></tr></thead>
+                  <tbody>{BANKS_TIER2.map(b => <tr key={b.n}><td>{b.n}</td><td style={{ fontWeight: 600 }}>{b.name}</td><td>{b.assets}</td><td>{b.ownership}</td></tr>)}</tbody></table></div>
+                  <h4 style={{ fontSize: 15, fontWeight: 700, margin: '16px 0 8px' }}>Tier 3 Banks (20)</h4>
+                  <div style={{ overflowX: 'auto' }}><table><thead><tr><th>#</th><th>Bank</th><th>Assets (KSH B)</th><th>Ownership</th></tr></thead>
+                  <tbody>{BANKS_TIER3.map(b => <tr key={b.n}><td>{b.n}</td><td style={{ fontWeight: 600 }}>{b.name}</td><td>{b.assets}</td><td>{b.ownership}</td></tr>)}</tbody></table></div>
+                </div>
+              )}
+            </div>
 
-      {/* ============ SACCOs ============ */}
-      {activeTab === 'SACCOs' && (
-        <div className="section">
-          <h1 style={{ fontSize: 28, fontWeight: 800, marginBottom: 8 }}>Deposit-Taking SACCOs</h1>
-          <div className="grid-4" style={{ marginBottom: 16 }}>
-            <div className="card kpi" style={{ padding: 12 }}><div className="kpi-value" style={{ fontSize: 24 }}>176</div><div className="kpi-label">SASRA-regulated</div></div>
-            <div className="card kpi" style={{ padding: 12 }}><div className="kpi-value" style={{ fontSize: 24 }}>KSH 900B+</div><div className="kpi-label">Total Assets</div></div>
-            <div className="card kpi" style={{ padding: 12 }}><div className="kpi-value" style={{ fontSize: 24 }}>6.5M+</div><div className="kpi-label">Total Members</div></div>
-            <div className="card kpi" style={{ padding: 12 }}><div className="kpi-value" style={{ fontSize: 24 }}>Early</div><div className="kpi-label">ESG Readiness</div></div>
-          </div>
-          <p style={{ fontSize: 14, color: 'var(--text2)', marginBottom: 20 }}>SACCOs are classified as Public Interest Entities by ICPAK and must adopt IFRS S1 &amp; S2 from January 2027. Yet virtually none have ESG teams. This is CFOIP&apos;s largest opportunity.</p>
-          <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 8 }}>Top 12 DT-SACCOs by Assets</h3>
-          <div className="card" style={{ overflowX: 'auto' }}>
-            <table><thead><tr><th>#</th><th>SACCO</th><th>Assets (KSH B)</th><th>Members</th><th>Sector</th></tr></thead>
-            <tbody>{SACCOS.map(s => <tr key={s.n}><td>{s.n}</td><td style={{ fontWeight: 600 }}>{s.name}</td><td>{s.assets}</td><td>{s.members}</td><td>{s.sector}</td></tr>)}</tbody></table>
-          </div>
-        </div>
-      )}
+            {/* SACCOs */}
+            <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
+              <button onClick={() => toggleSegment('saccos')} style={{ width: '100%', padding: '16px 20px', border: 'none', background: expandedSegment === 'saccos' ? 'var(--accent-light)' : 'white', cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center', textAlign: 'left' }}>
+                <div><span style={{ fontWeight: 700, fontSize: 16 }}>Deposit-Taking SACCOs</span><span style={{ color: 'var(--text2)', fontSize: 13, marginLeft: 12 }}>176 SASRA-regulated &bull; KSH 900B+ &bull; 6.5M+ members</span></div>
+                <span style={{ fontSize: 18, color: 'var(--accent)' }}>{expandedSegment === 'saccos' ? '\u25B2' : '\u25BC'}</span>
+              </button>
+              {expandedSegment === 'saccos' && (
+                <div style={{ padding: '0 20px 20px' }}>
+                  <p style={{ fontSize: 14, color: 'var(--text2)', margin: '12px 0' }}>SACCOs are Public Interest Entities. Must adopt IFRS S1 &amp; S2 from January 2027. Virtually none have ESG teams &mdash; CFOIP&apos;s largest opportunity.</p>
+                  <div style={{ overflowX: 'auto' }}><table><thead><tr><th>#</th><th>SACCO</th><th>Assets (KSH B)</th><th>Members</th><th>Sector</th></tr></thead>
+                  <tbody>{SACCOS.map(s => <tr key={s.n}><td>{s.n}</td><td style={{ fontWeight: 600 }}>{s.name}</td><td>{s.assets}</td><td>{s.members}</td><td>{s.sector}</td></tr>)}</tbody></table></div>
+                </div>
+              )}
+            </div>
 
-      {/* ============ INSURANCE ============ */}
-      {activeTab === 'Insurance' && (
-        <div className="section">
-          <h1 style={{ fontSize: 28, fontWeight: 800, marginBottom: 8 }}>Insurance Companies</h1>
-          <div className="grid-4" style={{ marginBottom: 16 }}>
-            <div className="card kpi" style={{ padding: 12 }}><div className="kpi-value" style={{ fontSize: 24 }}>62</div><div className="kpi-label">Licensed insurers</div></div>
-            <div className="card kpi" style={{ padding: 12 }}><div className="kpi-value" style={{ fontSize: 24 }}>KSH 320B+</div><div className="kpi-label">Gross Premiums</div></div>
-            <div className="card kpi" style={{ padding: 12 }}><div className="kpi-value" style={{ fontSize: 24 }}>KSH 850B+</div><div className="kpi-label">Industry Assets</div></div>
-            <div className="card kpi" style={{ padding: 12 }}><div className="kpi-value" style={{ fontSize: 24 }}>Emerging</div><div className="kpi-label">Climate-Ready</div></div>
-          </div>
-          <p style={{ fontSize: 14, color: 'var(--text2)', marginBottom: 20 }}>Insurers face a double exposure to climate risk &mdash; physical risks increase claims, while investment portfolios carry transition risk. CFOIP addresses both sides.</p>
-          <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 8 }}>Priority Insurance Targets</h3>
-          <div className="card" style={{ overflowX: 'auto' }}>
-            <table><thead><tr><th>Insurer</th><th>Type</th><th>Premiums</th><th>Sustainability Data</th></tr></thead>
-            <tbody>{INSURERS.map(i => <tr key={i.name}><td style={{ fontWeight: 600 }}>{i.name}</td><td>{i.type}</td><td>{i.premiums}</td><td>{i.esg}</td></tr>)}</tbody></table>
-          </div>
-        </div>
-      )}
+            {/* Insurance */}
+            <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
+              <button onClick={() => toggleSegment('insurance')} style={{ width: '100%', padding: '16px 20px', border: 'none', background: expandedSegment === 'insurance' ? 'var(--accent-light)' : 'white', cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center', textAlign: 'left' }}>
+                <div><span style={{ fontWeight: 700, fontSize: 16 }}>Insurance Companies</span><span style={{ color: 'var(--text2)', fontSize: 13, marginLeft: 12 }}>62 licensed &bull; KSH 320B+ premiums &bull; KSH 850B+ assets</span></div>
+                <span style={{ fontSize: 18, color: 'var(--accent)' }}>{expandedSegment === 'insurance' ? '\u25B2' : '\u25BC'}</span>
+              </button>
+              {expandedSegment === 'insurance' && (
+                <div style={{ padding: '0 20px 20px' }}>
+                  <p style={{ fontSize: 14, color: 'var(--text2)', margin: '12px 0' }}>Double exposure: physical risks increase claims, investment portfolios carry transition risk.</p>
+                  <div style={{ overflowX: 'auto' }}><table><thead><tr><th>Insurer</th><th>Type</th><th>Premiums</th><th>Sustainability</th></tr></thead>
+                  <tbody>{INSURERS.map(i => <tr key={i.name}><td style={{ fontWeight: 600 }}>{i.name}</td><td>{i.type}</td><td>{i.premiums}</td><td>{i.esg}</td></tr>)}</tbody></table></div>
+                </div>
+              )}
+            </div>
 
-      {/* ============ PENSIONS ============ */}
-      {activeTab === 'Pensions' && (
-        <div className="section">
-          <h1 style={{ fontSize: 28, fontWeight: 800, marginBottom: 8 }}>Pension Schemes</h1>
-          <div className="grid-4" style={{ marginBottom: 16 }}>
-            <div className="card kpi" style={{ padding: 12 }}><div className="kpi-value" style={{ fontSize: 24 }}>1,200+</div><div className="kpi-label">Registered schemes</div></div>
-            <div className="card kpi" style={{ padding: 12 }}><div className="kpi-value" style={{ fontSize: 24 }}>KSH 1.8T+</div><div className="kpi-label">Assets Under Mgmt</div></div>
-            <div className="card kpi" style={{ padding: 12 }}><div className="kpi-value" style={{ fontSize: 24 }}>25+</div><div className="kpi-label">Licensed Fund Mgrs</div></div>
-            <div className="card kpi" style={{ padding: 12 }}><div className="kpi-value" style={{ fontSize: 24 }}>Early</div><div className="kpi-label">Climate Reporting</div></div>
-          </div>
-          <p style={{ fontSize: 14, color: 'var(--text2)', marginBottom: 20 }}>Pension funds invest through intermediaries. Climate risk sits across every asset class. CFOIP helps aggregate climate data and calculate portfolio-level emissions.</p>
-          <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 8 }}>Key Pension Sector Players</h3>
-          <div className="card" style={{ overflowX: 'auto' }}>
-            <table><thead><tr><th>Category</th><th>Key Names</th><th>CFOIP Relevance</th></tr></thead>
-            <tbody>
-              <tr><td style={{ fontWeight: 600 }}>Large Schemes</td><td>NSSF (KSH 300B+), LAPTRUST, County Pension Fund, Parliamentary Pension</td><td><span className="badge badge-green">High: direct users</span></td></tr>
-              <tr><td style={{ fontWeight: 600 }}>Fund Managers</td><td>Old Mutual, Britam, Sanlam, ICEA LION, CIC Asset Mgmt, GenAfrica</td><td><span className="badge badge-green">High: channel partners</span></td></tr>
-              <tr><td style={{ fontWeight: 600 }}>Administrators</td><td>Zamara, Minet, CPF Administrators, Enwealth Financial</td><td><span className="badge badge-amber">Medium: referral</span></td></tr>
-              <tr><td style={{ fontWeight: 600 }}>Trustees</td><td>Individual scheme boards across 1,200+ schemes</td><td><span className="badge badge-amber">Medium: dashboards</span></td></tr>
-            </tbody></table>
-          </div>
-        </div>
-      )}
+            {/* Pensions */}
+            <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
+              <button onClick={() => toggleSegment('pensions')} style={{ width: '100%', padding: '16px 20px', border: 'none', background: expandedSegment === 'pensions' ? 'var(--accent-light)' : 'white', cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center', textAlign: 'left' }}>
+                <div><span style={{ fontWeight: 700, fontSize: 16 }}>Pension Schemes</span><span style={{ color: 'var(--text2)', fontSize: 13, marginLeft: 12 }}>1,200+ schemes &bull; KSH 1.8T+ AUM &bull; 25+ fund managers</span></div>
+                <span style={{ fontSize: 18, color: 'var(--accent)' }}>{expandedSegment === 'pensions' ? '\u25B2' : '\u25BC'}</span>
+              </button>
+              {expandedSegment === 'pensions' && (
+                <div style={{ padding: '0 20px 20px' }}>
+                  <div style={{ overflowX: 'auto', marginTop: 12 }}><table><thead><tr><th>Category</th><th>Key Names</th><th>CFOIP Relevance</th></tr></thead>
+                  <tbody>
+                    <tr><td style={{ fontWeight: 600 }}>Large Schemes</td><td>NSSF (KSH 300B+), LAPTRUST, County Pension Fund</td><td><span className="badge badge-green">High</span></td></tr>
+                    <tr><td style={{ fontWeight: 600 }}>Fund Managers</td><td>Old Mutual, Britam, Sanlam, ICEA LION, CIC Asset Mgmt</td><td><span className="badge badge-green">High</span></td></tr>
+                    <tr><td style={{ fontWeight: 600 }}>Administrators</td><td>Zamara, Minet, CPF Administrators, Enwealth</td><td><span className="badge badge-amber">Medium</span></td></tr>
+                  </tbody></table></div>
+                </div>
+              )}
+            </div>
 
-      {/* ============ MFBs ============ */}
-      {activeTab === 'MFBs' && (
-        <div className="section">
-          <h1 style={{ fontSize: 28, fontWeight: 800, marginBottom: 8 }}>Microfinance Banks</h1>
-          <div className="grid-4" style={{ marginBottom: 16 }}>
-            <div className="card kpi" style={{ padding: 12 }}><div className="kpi-value" style={{ fontSize: 24 }}>14</div><div className="kpi-label">Licensed MFBs</div></div>
-            <div className="card kpi" style={{ padding: 12 }}><div className="kpi-value" style={{ fontSize: 24 }}>KSH 120B+</div><div className="kpi-label">Combined Assets</div></div>
-            <div className="card kpi" style={{ padding: 12 }}><div className="kpi-value" style={{ fontSize: 24 }}>2M+</div><div className="kpi-label">Borrowers Served</div></div>
-            <div className="card kpi" style={{ padding: 12 }}><div className="kpi-value" style={{ fontSize: 24 }}>Early</div><div className="kpi-label">ESG Readiness</div></div>
-          </div>
-          <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 8 }}>All 14 Licensed Microfinance Banks</h3>
-          <div className="card" style={{ overflowX: 'auto' }}>
-            <table><thead><tr><th>#</th><th>MFB</th><th>Focus</th><th>Est. Borrowers</th></tr></thead>
-            <tbody>{MFBS.map(m => <tr key={m.n}><td>{m.n}</td><td style={{ fontWeight: 600 }}>{m.name}</td><td>{m.focus}</td><td>{m.borrowers}</td></tr>)}</tbody></table>
-          </div>
-        </div>
-      )}
+            {/* MFBs */}
+            <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
+              <button onClick={() => toggleSegment('mfbs')} style={{ width: '100%', padding: '16px 20px', border: 'none', background: expandedSegment === 'mfbs' ? 'var(--accent-light)' : 'white', cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center', textAlign: 'left' }}>
+                <div><span style={{ fontWeight: 700, fontSize: 16 }}>Microfinance Banks</span><span style={{ color: 'var(--text2)', fontSize: 13, marginLeft: 12 }}>14 licensed &bull; KSH 120B+ assets &bull; 2M+ borrowers</span></div>
+                <span style={{ fontSize: 18, color: 'var(--accent)' }}>{expandedSegment === 'mfbs' ? '\u25B2' : '\u25BC'}</span>
+              </button>
+              {expandedSegment === 'mfbs' && (
+                <div style={{ padding: '0 20px 20px' }}>
+                  <div style={{ overflowX: 'auto', marginTop: 12 }}><table><thead><tr><th>#</th><th>MFB</th><th>Focus</th><th>Est. Borrowers</th></tr></thead>
+                  <tbody>{MFBS.map(m => <tr key={m.n}><td>{m.n}</td><td style={{ fontWeight: 600 }}>{m.name}</td><td>{m.focus}</td><td>{m.borrowers}</td></tr>)}</tbody></table></div>
+                </div>
+              )}
+            </div>
 
-      {/* ============ LISTED COS ============ */}
-      {activeTab === 'Listed Cos' && (
-        <div className="section">
-          <h1 style={{ fontSize: 28, fontWeight: 800, marginBottom: 8 }}>NSE-Listed Companies</h1>
-          <div className="grid-4" style={{ marginBottom: 16 }}>
-            <div className="card kpi" style={{ padding: 12 }}><div className="kpi-value" style={{ fontSize: 24 }}>~65</div><div className="kpi-label">Listed Issuers</div></div>
-            <div className="card kpi" style={{ padding: 12 }}><div className="kpi-value" style={{ fontSize: 24 }}>KSH 2.1T+</div><div className="kpi-label">Market Cap</div></div>
-            <div className="card kpi" style={{ padding: 12 }}><div className="kpi-value" style={{ fontSize: 24 }}>~29</div><div className="kpi-label">Doing ESG</div></div>
-            <div className="card kpi" style={{ padding: 12 }}><div className="kpi-value" style={{ fontSize: 24 }}>&lt;10</div><div className="kpi-label">IFRS S2 Ready</div></div>
-          </div>
-          <p style={{ fontSize: 14, color: 'var(--text2)', marginBottom: 12 }}>NSE-listed companies have ESG disclosure guidance since 2021 but IFRS S2 climate reporting from January 2027 significantly raises the bar. Most are not ready for quantitative climate disclosure.</p>
-          <p style={{ fontSize: 14, color: 'var(--text2)', marginBottom: 20 }}>The gap between current voluntary ESG narratives and quantitative IFRS S2 rigour is significant. Companies need Scope 1, 2, and material Scope 3 emissions, scenario analysis, and climate-related financial impacts.</p>
-          <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 8 }}>Key Listed Companies: Climate Reporting Status</h3>
-          <div className="card" style={{ overflowX: 'auto' }}>
-            <table><thead><tr><th>Company</th><th>Sector</th><th>Market Cap</th><th>Sustainability</th><th>IFRS S2 Readiness</th></tr></thead>
-            <tbody>{LISTED_COS.map(c => <tr key={c.name}><td style={{ fontWeight: 600 }}>{c.name}</td><td>{c.sector}</td><td>{c.marketCap}</td><td style={{ fontSize: 13 }}>{c.esg}</td><td><span className={`badge ${c.readiness === 'Partial alignment' ? 'badge-amber' : 'badge-red'}`}>{c.readiness}</span></td></tr>)}</tbody></table>
-          </div>
-        </div>
-      )}
+            {/* Listed Companies */}
+            <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
+              <button onClick={() => toggleSegment('listed')} style={{ width: '100%', padding: '16px 20px', border: 'none', background: expandedSegment === 'listed' ? 'var(--accent-light)' : 'white', cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center', textAlign: 'left' }}>
+                <div><span style={{ fontWeight: 700, fontSize: 16 }}>NSE-Listed Companies</span><span style={{ color: 'var(--text2)', fontSize: 13, marginLeft: 12 }}>~65 issuers &bull; KSH 2.1T+ market cap &bull; ~29 doing ESG</span></div>
+                <span style={{ fontSize: 18, color: 'var(--accent)' }}>{expandedSegment === 'listed' ? '\u25B2' : '\u25BC'}</span>
+              </button>
+              {expandedSegment === 'listed' && (
+                <div style={{ padding: '0 20px 20px' }}>
+                  <p style={{ fontSize: 14, color: 'var(--text2)', margin: '12px 0' }}>NSE ESG guidance since 2021 but IFRS S2 from Jan 2027 raises the bar. Most not ready for quantitative climate disclosure.</p>
+                  <div style={{ overflowX: 'auto' }}><table><thead><tr><th>Company</th><th>Sector</th><th>Market Cap</th><th>IFRS S2 Readiness</th></tr></thead>
+                  <tbody>{LISTED_COS.map(c => <tr key={c.name}><td style={{ fontWeight: 600 }}>{c.name}</td><td>{c.sector}</td><td>{c.marketCap}</td><td><span className={`badge ${c.readiness === 'Partial alignment' ? 'badge-amber' : 'badge-red'}`}>{c.readiness}</span></td></tr>)}</tbody></table></div>
+                </div>
+              )}
+            </div>
 
-      {/* ============ DFIs ============ */}
-      {activeTab === 'DFIs' && (
-        <div className="section">
-          <h1 style={{ fontSize: 28, fontWeight: 800, marginBottom: 8 }}>DFIs, Climate Funds &amp; Development Partners</h1>
-          <div className="grid-4" style={{ marginBottom: 16 }}>
-            <div className="card kpi" style={{ padding: 12 }}><div className="kpi-value" style={{ fontSize: 24 }}>$4B+</div><div className="kpi-label">Climate Finance to Kenya</div></div>
-            <div className="card kpi" style={{ padding: 12 }}><div className="kpi-value" style={{ fontSize: 24 }}>15+</div><div className="kpi-label">Active DFIs</div></div>
-            <div className="card kpi" style={{ padding: 12 }}><div className="kpi-value" style={{ fontSize: 24 }}>10+</div><div className="kpi-label">Climate Funds</div></div>
-            <div className="card kpi" style={{ padding: 12 }}><div className="kpi-value" style={{ fontSize: 24 }}>Data</div><div className="kpi-label">Core Need</div></div>
-          </div>
-          <p style={{ fontSize: 14, color: 'var(--text2)', marginBottom: 12 }}>DFIs and climate funds invest billions into Kenya&apos;s financial institutions but their investees often can&apos;t provide the climate data funders need. CFOIP solves this by deploying at the investee level.</p>
-          <div className="grid-3" style={{ marginBottom: 20 }}>
-            {[
-              { title: 'Co-Deployment', text: 'DFIs require or subsidise CFOIP adoption as part of lending agreements or TA packages' },
-              { title: 'Portfolio Dashboards', text: 'Aggregated climate risk views across all investees: emissions, alignment, physical risk' },
-              { title: 'Impact Reporting', text: 'Automated metrics aligned with IFC PS, PCAF, Joint Impact Indicators, and TCFD' },
-              { title: 'Capacity Building', text: 'Platform deployment doubles as TA. Institutions learn by using the tool' },
-              { title: 'Data Standardisation', text: 'Consistent data quality across all investees regardless of internal capacity' },
-            ].map(item => (
-              <div key={item.title} className="card card-accent" style={{ padding: 16 }}>
-                <h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 4 }}>{item.title}</h4>
-                <p style={{ fontSize: 13, color: 'var(--text2)' }}>{item.text}</p>
-              </div>
-            ))}
-          </div>
-          <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 8 }}>Key DFIs &amp; Climate Finance Players in Kenya</h3>
-          <div className="card" style={{ overflowX: 'auto' }}>
-            <table><thead><tr><th>Organisation</th><th>Type</th><th>Climate Focus</th><th>CFOIP Angle</th></tr></thead>
-            <tbody>{DFIS.map(d => <tr key={d.name}><td style={{ fontWeight: 600 }}>{d.name}</td><td>{d.type}</td><td style={{ fontSize: 13 }}>{d.focus}</td><td style={{ fontSize: 13 }}>{d.angle}</td></tr>)}</tbody></table>
+            {/* DFIs */}
+            <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
+              <button onClick={() => toggleSegment('dfis')} style={{ width: '100%', padding: '16px 20px', border: 'none', background: expandedSegment === 'dfis' ? 'var(--accent-light)' : 'white', cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center', textAlign: 'left' }}>
+                <div><span style={{ fontWeight: 700, fontSize: 16 }}>DFIs, Climate Funds &amp; Partners</span><span style={{ color: 'var(--text2)', fontSize: 13, marginLeft: 12 }}>$4B+ climate finance &bull; 15+ active DFIs &bull; 10+ climate funds</span></div>
+                <span style={{ fontSize: 18, color: 'var(--accent)' }}>{expandedSegment === 'dfis' ? '\u25B2' : '\u25BC'}</span>
+              </button>
+              {expandedSegment === 'dfis' && (
+                <div style={{ padding: '0 20px 20px' }}>
+                  <p style={{ fontSize: 14, color: 'var(--text2)', margin: '12px 0' }}>DFIs invest billions but investees can&apos;t provide climate data. CFOIP deploys at investee level &mdash; data flows up automatically.</p>
+                  <div style={{ overflowX: 'auto' }}><table><thead><tr><th>Organisation</th><th>Type</th><th>Climate Focus</th><th>CFOIP Angle</th></tr></thead>
+                  <tbody>{DFIS.map(d => <tr key={d.name}><td style={{ fontWeight: 600 }}>{d.name}</td><td>{d.type}</td><td style={{ fontSize: 13 }}>{d.focus}</td><td style={{ fontSize: 13 }}>{d.angle}</td></tr>)}</tbody></table></div>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       )}
