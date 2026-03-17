@@ -1,9 +1,9 @@
 'use client'
-import { useAuth } from '@/lib/AuthContext'
+import { AuthProvider, useAuth } from '@/lib/AuthContext'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 
-export default function AuthGate({ children }: { children: React.ReactNode }) {
+function AuthGateInner({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth()
   const router = useRouter()
 
@@ -27,4 +27,12 @@ export default function AuthGate({ children }: { children: React.ReactNode }) {
   if (!user) return null
 
   return <>{children}</>
+}
+
+export default function AuthGate({ children }: { children: React.ReactNode }) {
+  return (
+    <AuthProvider>
+      <AuthGateInner>{children}</AuthGateInner>
+    </AuthProvider>
+  )
 }

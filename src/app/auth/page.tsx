@@ -3,7 +3,7 @@
 import { useState, FormEvent } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { useAuth } from '@/lib/AuthContext'
+import { AuthProvider, useAuth } from '@/lib/AuthContext'
 
 type Tab = 'login' | 'register'
 
@@ -24,7 +24,7 @@ const CBK_TIERS = [
   'Tier 3 (Small)',
 ]
 
-export default function AuthPage() {
+function AuthPageInner() {
   const router = useRouter()
   const { login, register } = useAuth()
 
@@ -435,5 +435,13 @@ export default function AuthPage() {
         </p>
       </div>
     </div>
+  )
+}
+
+export default function AuthPage() {
+  return (
+    <AuthProvider>
+      <AuthPageInner />
+    </AuthProvider>
   )
 }
