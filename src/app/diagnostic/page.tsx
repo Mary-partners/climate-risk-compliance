@@ -241,16 +241,16 @@ export default function DiagnosticPage() {
   // ---- Success State ----
   if (submitted) {
     return (
-      <div className="min-h-screen bg-navy-950">
+      <div className="min-h-screen bg-white">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 py-12 sm:py-20">
           <div className="card text-center py-16">
             <div className="w-20 h-20 rounded-full bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center mx-auto mb-6">
-              <svg className="w-10 h-10 text-emerald-400" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+              <svg className="w-10 h-10 text-emerald-600" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
               </svg>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-white mb-4">Thank You!</h1>
-            <p className="text-gray-400 text-lg max-w-xl mx-auto mb-8">
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">Thank You!</h1>
+            <p className="text-gray-600 text-lg max-w-xl mx-auto mb-8">
               We&apos;ve received your diagnostic. Mary will review your responses and send you a personalised climate risk readiness assessment within 48 hours.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -273,7 +273,7 @@ export default function DiagnosticPage() {
   ) {
     return (
       <div>
-        <label className="block text-sm font-medium text-gray-300 mb-2">{label}</label>
+        <label className="block text-sm font-medium text-gray-600 mb-2">{label}</label>
         <div className="relative">
           <select
             className="select-field"
@@ -285,7 +285,7 @@ export default function DiagnosticPage() {
               <option key={opt} value={opt}>{opt}</option>
             ))}
           </select>
-          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4 text-gray-400">
+          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4 text-gray-600">
             <ChevronIcon />
           </div>
         </div>
@@ -302,7 +302,7 @@ export default function DiagnosticPage() {
   ) {
     return (
       <div>
-        <label className="block text-sm font-medium text-gray-300 mb-2">{label}</label>
+        <label className="block text-sm font-medium text-gray-600 mb-2">{label}</label>
         <input
           type={type}
           className="input-field"
@@ -323,7 +323,7 @@ export default function DiagnosticPage() {
   ) {
     return (
       <div>
-        <label className="block text-sm font-medium text-gray-300 mb-3">{label}</label>
+        <label className="block text-sm font-medium text-gray-600 mb-3">{label}</label>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {options.map((opt) => {
             const checked = form[field].includes(opt)
@@ -332,8 +332,8 @@ export default function DiagnosticPage() {
                 key={opt}
                 className={`flex items-center gap-3 px-4 py-3 rounded-xl border cursor-pointer transition-all duration-200 ${
                   checked
-                    ? 'bg-emerald-500/10 border-emerald-500/30 text-white'
-                    : 'bg-navy-800/40 border-white/10 text-gray-400 hover:border-white/20'
+                    ? 'bg-emerald-500/10 border-emerald-500/30 text-gray-900'
+                    : 'bg-gray-50/40 border-gray-200 text-gray-600 hover:border-white/20'
                 }`}
               >
                 <div
@@ -372,17 +372,17 @@ export default function DiagnosticPage() {
                 <div
                   className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-300 ${
                     i < step
-                      ? 'bg-emerald-500 text-white'
+                      ? 'bg-emerald-500 text-gray-900'
                       : i === step
-                      ? 'bg-emerald-500/20 text-emerald-400 border-2 border-emerald-500'
-                      : 'bg-navy-800/60 text-gray-500 border border-white/10'
+                      ? 'bg-emerald-500/20 text-emerald-600 border-2 border-emerald-500'
+                      : 'bg-gray-50/60 text-gray-500 border border-gray-200'
                   }`}
                 >
                   {i < step ? <CheckIcon /> : i + 1}
                 </div>
                 <span
                   className={`text-xs mt-2 hidden sm:block whitespace-nowrap ${
-                    i <= step ? 'text-emerald-400' : 'text-gray-500'
+                    i <= step ? 'text-emerald-600' : 'text-gray-500'
                   }`}
                 >
                   {label}
@@ -399,7 +399,7 @@ export default function DiagnosticPage() {
           ))}
         </div>
         {/* Mobile step label */}
-        <p className="text-sm text-emerald-400 font-medium sm:hidden mt-4 text-center">
+        <p className="text-sm text-emerald-600 font-medium sm:hidden mt-4 text-center">
           Step {step + 1} of 4: {STEP_LABELS[step]}
         </p>
       </div>
@@ -410,8 +410,8 @@ export default function DiagnosticPage() {
   function renderStep1() {
     return (
       <div className="space-y-6">
-        <h2 className="text-xl font-semibold text-white mb-2">About Your Institution</h2>
-        <p className="text-gray-400 text-sm mb-6">
+        <h2 className="text-xl font-semibold text-gray-900 mb-2">About Your Institution</h2>
+        <p className="text-gray-600 text-sm mb-6">
           Tell us about your organisation so we can tailor your assessment.
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -438,8 +438,8 @@ export default function DiagnosticPage() {
   function renderStep2() {
     return (
       <div className="space-y-6">
-        <h2 className="text-xl font-semibold text-white mb-2">Current Climate Risk Status</h2>
-        <p className="text-gray-400 text-sm mb-6">
+        <h2 className="text-xl font-semibold text-gray-900 mb-2">Current Climate Risk Status</h2>
+        <p className="text-gray-600 text-sm mb-6">
           Help us understand where you currently stand on climate risk management.
         </p>
         {renderSelectField(
@@ -480,8 +480,8 @@ export default function DiagnosticPage() {
   function renderStep3() {
     return (
       <div className="space-y-6">
-        <h2 className="text-xl font-semibold text-white mb-2">Reporting Frameworks & Challenges</h2>
-        <p className="text-gray-400 text-sm mb-6">
+        <h2 className="text-xl font-semibold text-gray-900 mb-2">Reporting Frameworks & Challenges</h2>
+        <p className="text-gray-600 text-sm mb-6">
           Tell us about the frameworks you&apos;re targeting and the obstacles you face.
         </p>
         {renderCheckboxGroup(
@@ -501,7 +501,7 @@ export default function DiagnosticPage() {
           CHALLENGES
         )}
         <div>
-          <label className="block text-sm font-medium text-gray-300 mb-2">
+          <label className="block text-sm font-medium text-gray-600 mb-2">
             Additional context (optional)
           </label>
           <textarea
@@ -520,9 +520,9 @@ export default function DiagnosticPage() {
     const display = Array.isArray(value) ? value.join(', ') : value
     if (!display) return null
     return (
-      <div className="flex flex-col sm:flex-row sm:items-start gap-1 sm:gap-4 py-3 border-b border-white/5 last:border-0">
+      <div className="flex flex-col sm:flex-row sm:items-start gap-1 sm:gap-4 py-3 border-b border-gray-200 last:border-0">
         <span className="text-gray-500 text-sm sm:w-64 flex-shrink-0">{label}</span>
-        <span className="text-white text-sm">{display}</span>
+        <span className="text-gray-900 text-sm">{display}</span>
       </div>
     )
   }
@@ -530,13 +530,13 @@ export default function DiagnosticPage() {
   function renderStep4() {
     return (
       <div className="space-y-6">
-        <h2 className="text-xl font-semibold text-white mb-2">Review Your Responses</h2>
-        <p className="text-gray-400 text-sm mb-6">
+        <h2 className="text-xl font-semibold text-gray-900 mb-2">Review Your Responses</h2>
+        <p className="text-gray-600 text-sm mb-6">
           Please review your answers before submitting. Click &quot;Back&quot; to make changes.
         </p>
 
         <div className="card space-y-0">
-          <h3 className="text-emerald-400 font-semibold text-sm uppercase tracking-wider mb-4">
+          <h3 className="text-emerald-600 font-semibold text-sm uppercase tracking-wider mb-4">
             About Your Institution
           </h3>
           {renderReviewRow('Institution Name', form.institutionName)}
@@ -549,7 +549,7 @@ export default function DiagnosticPage() {
         </div>
 
         <div className="card space-y-0">
-          <h3 className="text-emerald-400 font-semibold text-sm uppercase tracking-wider mb-4">
+          <h3 className="text-emerald-600 font-semibold text-sm uppercase tracking-wider mb-4">
             Current Climate Risk Status
           </h3>
           {renderReviewRow('Dedicated ESG team?', form.hasEsgTeam)}
@@ -560,7 +560,7 @@ export default function DiagnosticPage() {
         </div>
 
         <div className="card space-y-0">
-          <h3 className="text-emerald-400 font-semibold text-sm uppercase tracking-wider mb-4">
+          <h3 className="text-emerald-600 font-semibold text-sm uppercase tracking-wider mb-4">
             Reporting Frameworks & Challenges
           </h3>
           {renderReviewRow('Frameworks preparing for', form.frameworks)}
@@ -578,7 +578,7 @@ export default function DiagnosticPage() {
       title: 'Readiness Score',
       description: 'A numerical score benchmarking your institution against Kenya\'s climate risk readiness landscape.',
       icon: (
-        <svg className="w-8 h-8 text-emerald-400" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+        <svg className="w-8 h-8 text-emerald-600" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
         </svg>
       ),
@@ -587,7 +587,7 @@ export default function DiagnosticPage() {
       title: 'Gap Analysis',
       description: 'A detailed breakdown of where you fall short on CBK CRDF, IFRS S1/S2, KGFT, and PCAF requirements.',
       icon: (
-        <svg className="w-8 h-8 text-emerald-400" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+        <svg className="w-8 h-8 text-emerald-600" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
         </svg>
       ),
@@ -596,7 +596,7 @@ export default function DiagnosticPage() {
       title: 'Prioritised Roadmap',
       description: 'A step-by-step action plan ordered by urgency and regulatory deadline, tailored to your institution.',
       icon: (
-        <svg className="w-8 h-8 text-emerald-400" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+        <svg className="w-8 h-8 text-emerald-600" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" d="M9 6.75V15m6-6v8.25m.503 3.498l4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 00-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0z" />
         </svg>
       ),
@@ -605,7 +605,7 @@ export default function DiagnosticPage() {
       title: '30-Minute Consultation',
       description: 'A complimentary call with Mary to walk through your results and discuss next steps.',
       icon: (
-        <svg className="w-8 h-8 text-emerald-400" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+        <svg className="w-8 h-8 text-emerald-600" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 01-.825-.242m9.345-8.334a2.126 2.126 0 00-.476-.095 48.64 48.64 0 00-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0011.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155" />
         </svg>
       ),
@@ -613,13 +613,13 @@ export default function DiagnosticPage() {
   ]
 
   return (
-    <div className="min-h-screen bg-navy-950">
+    <div className="min-h-screen bg-white">
       {/* Header */}
-      <header className="border-b border-white/5">
+      <header className="border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 text-gray-400 hover:text-emerald-400 transition-colors text-sm mb-6"
+            className="inline-flex items-center gap-2 text-gray-600 hover:text-emerald-600 transition-colors text-sm mb-6"
           >
             <ArrowLeftIcon />
             Back to Home
@@ -627,7 +627,7 @@ export default function DiagnosticPage() {
           <h1 className="section-heading">
             Climate Risk <span className="gradient-text">Readiness Diagnostic</span>
           </h1>
-          <p className="text-gray-400 text-lg max-w-3xl mt-2">
+          <p className="text-gray-600 text-lg max-w-3xl mt-2">
             Find out where your institution stands on climate risk readiness. Complete this short
             diagnostic and we&apos;ll provide a personalised assessment with recommendations.
           </p>
@@ -648,7 +648,7 @@ export default function DiagnosticPage() {
                 {step === 3 && renderStep4()}
 
                 {/* Navigation */}
-                <div className="flex items-center justify-between mt-8 pt-6 border-t border-white/5">
+                <div className="flex items-center justify-between mt-8 pt-6 border-t border-gray-200">
                   {step > 0 ? (
                     <button type="button" onClick={prevStep} className="btn-secondary">
                       <ArrowLeftIcon />
@@ -697,22 +697,22 @@ export default function DiagnosticPage() {
           {/* Sidebar: What You'll Get */}
           <aside className="lg:col-span-1">
             <div className="sticky top-10">
-              <h3 className="text-lg font-semibold text-white mb-4">What You&apos;ll Get</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">What You&apos;ll Get</h3>
               <div className="space-y-4">
                 {benefits.map((b) => (
                   <div key={b.title} className="stat-card flex items-start gap-4 text-left">
                     <div className="flex-shrink-0 mt-1">{b.icon}</div>
                     <div>
-                      <h4 className="text-white font-semibold text-sm mb-1">{b.title}</h4>
-                      <p className="text-gray-400 text-xs leading-relaxed">{b.description}</p>
+                      <h4 className="text-gray-900 font-semibold text-sm mb-1">{b.title}</h4>
+                      <p className="text-gray-600 text-xs leading-relaxed">{b.description}</p>
                     </div>
                   </div>
                 ))}
               </div>
 
               <div className="mt-6 p-4 rounded-xl bg-emerald-500/5 border border-emerald-500/20">
-                <p className="text-emerald-400 text-sm font-medium mb-1">Free assessment</p>
-                <p className="text-gray-400 text-xs leading-relaxed">
+                <p className="text-emerald-600 text-sm font-medium mb-1">Free assessment</p>
+                <p className="text-gray-600 text-xs leading-relaxed">
                   This diagnostic is completely free. Your data is confidential and will only be used to prepare your personalised assessment.
                 </p>
               </div>
