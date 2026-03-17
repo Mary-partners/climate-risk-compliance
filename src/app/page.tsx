@@ -838,6 +838,10 @@ export default function HomePage() {
                 <p className="section-subheading mx-auto text-center mb-8">
                   From first conversation to fully operational climate risk reporting — here&apos;s how we work with you.
                 </p>
+                <div className="flex justify-center gap-4 mt-6">
+                  <a href="/auth" className="btn-primary">Login / Create Account →</a>
+                  <a href="/diagnostic" className="btn-secondary">Take the Diagnostic First</a>
+                </div>
               </section>
 
               {/* 3-Phase Model */}

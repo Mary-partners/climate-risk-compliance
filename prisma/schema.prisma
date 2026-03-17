@@ -7,16 +7,21 @@ datasource db {
 }
 
 model User {
-  id           String   @id @default(cuid())
-  email        String   @unique
-  name         String
-  passwordHash String
-  role         String   @default("user")
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-  sessions     Session[]
-  inquiries    Inquiry[]
-  diagnostics  Diagnostic[]
+  id              String   @id @default(cuid())
+  email           String   @unique
+  name            String
+  passwordHash    String
+  role            String   @default("user")
+  organisation    String?
+  organisationType String?
+  jobTitle        String?
+  phone           String?
+  cbkTier         String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  sessions        Session[]
+  inquiries       Inquiry[]
+  diagnostics     Diagnostic[]
 }
 
 model Session {

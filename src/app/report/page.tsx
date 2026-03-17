@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback, useRef } from 'react'
+import AuthGate from '@/lib/AuthGate'
 
 /* ═══════════════════════════════════════════════════════════════
    CONSTANTS & TYPES
@@ -1308,6 +1309,7 @@ export default function ReportBuilderPage() {
      ═══════════════════════════════════════════════════════════════ */
 
   return (
+    <AuthGate>
     <div className="min-h-screen bg-white">
       {/* ─── HEADER ─── */}
       <header className="bg-white border-b border-gray-200 sticky top-0 z-50 backdrop-blur-md bg-white/90">
@@ -1443,5 +1445,6 @@ export default function ReportBuilderPage() {
         </main>
       </div>
     </div>
+    </AuthGate>
   )
 }

@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, useMemo, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
+import AuthGate from '@/lib/AuthGate'
 
 // ============================================================
 // TYPES
@@ -549,16 +550,18 @@ function severityColor(score: number): string {
 // ============================================================
 export default function DiagnosticPageWrapper() {
   return (
-    <Suspense fallback={
-      <div className="min-h-screen bg-white flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-8 h-8 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin mx-auto mb-3" />
-          <p className="text-sm text-gray-500">Loading diagnostic...</p>
+    <AuthGate>
+      <Suspense fallback={
+        <div className="min-h-screen bg-white flex items-center justify-center">
+          <div className="text-center">
+            <div className="w-8 h-8 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin mx-auto mb-3" />
+            <p className="text-sm text-gray-500">Loading diagnostic...</p>
+          </div>
         </div>
-      </div>
-    }>
-      <DiagnosticPage />
-    </Suspense>
+      }>
+        <DiagnosticPage />
+      </Suspense>
+    </AuthGate>
   )
 }
 
