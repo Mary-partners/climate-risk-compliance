@@ -73,10 +73,11 @@ export async function POST(request: NextRequest) {
       },
       token,
     });
-  } catch (error) {
-    console.error("Login error:", error);
+  } catch (error: unknown) {
+    const errMsg = error instanceof Error ? error.message : String(error);
+    console.error("Login error:", errMsg);
     return NextResponse.json(
-      { error: "Internal server error" },
+      { error: "Login failed", detail: errMsg },
       { status: 500 }
     );
   }

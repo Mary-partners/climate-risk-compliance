@@ -97,10 +97,11 @@ export async function POST(request: NextRequest) {
       },
       token,
     });
-  } catch (error) {
-    console.error("Registration error:", error);
+  } catch (error: unknown) {
+    const errMsg = error instanceof Error ? error.message : String(error);
+    console.error("Registration error:", errMsg);
     return NextResponse.json(
-      { error: "Internal server error" },
+      { error: "Registration failed", detail: errMsg },
       { status: 500 }
     );
   }
