@@ -10,6 +10,7 @@
     "postinstall": "npx prisma generate || true"
   },
   "dependencies": {
+    "@prisma/adapter-pg": "^7.5.0",
     "@prisma/client": "^7.5.0",
     "autoprefixer": "^10.4.27",
     "dotenv": "^17.3.1",
