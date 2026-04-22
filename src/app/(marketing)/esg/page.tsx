@@ -1,9 +1,28 @@
 import React from 'react'
+import { Metadata } from 'next'
 import ThemeHero from '@/components/theme/ThemeHero'
 import ThemeOverview from '@/components/theme/ThemeOverview'
 import ThemeFrameworks from '@/components/theme/ThemeFrameworks'
 import ThemeGeographyList from '@/components/theme/ThemeGeographyList'
 import ThemeCTA from '@/components/theme/ThemeCTA'
+
+export const metadata: Metadata = {
+  title: 'ESG Reporting Platform — GRI, SASB, IFRS S1',
+  description: 'Comprehensive ESG reporting platform for materiality assessment, metrics tracking, assurance, and disclosure across GRI, SASB, IFRS S1, and ESRS.',
+  openGraph: {
+    title: 'ESG Reporting Platform — GRI, SASB, IFRS S1',
+    description: 'Comprehensive ESG reporting platform for materiality assessment, metrics tracking, assurance, and disclosure across GRI, SASB, IFRS S1, and ESRS.',
+    type: 'website',
+    url: 'https://climate-risk-compliance.com/esg',
+    images: ['/og-image.png'],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'ESG Reporting Platform — GRI, SASB, IFRS S1',
+    description: 'Comprehensive ESG reporting platform for materiality assessment, metrics tracking, assurance, and disclosure across GRI, SASB, IFRS S1, and ESRS.',
+    images: ['/og-image.png'],
+  },
+}
 
 export default function ESGPage() {
   const overviewItems = [

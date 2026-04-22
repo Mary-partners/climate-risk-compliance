@@ -1,9 +1,28 @@
 import React from 'react'
+import { Metadata } from 'next'
 import ThemeHero from '@/components/theme/ThemeHero'
 import ThemeOverview from '@/components/theme/ThemeOverview'
 import ThemeFrameworks from '@/components/theme/ThemeFrameworks'
 import ThemeGeographyList from '@/components/theme/ThemeGeographyList'
 import ThemeCTA from '@/components/theme/ThemeCTA'
+
+export const metadata: Metadata = {
+  title: 'Board & Climate Governance — TCFD Oversight',
+  description: 'Board governance platform supporting climate literacy development, oversight frameworks, risk committee tooling, and disclosure sign-off aligned with TCFD and IFRS S2.',
+  openGraph: {
+    title: 'Board & Climate Governance — TCFD Oversight',
+    description: 'Board governance platform supporting climate literacy development, oversight frameworks, risk committee tooling, and disclosure sign-off aligned with TCFD and IFRS S2.',
+    type: 'website',
+    url: 'https://climate-risk-compliance.com/governance',
+    images: ['/og-image.png'],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Board & Climate Governance — TCFD Oversight',
+    description: 'Board governance platform supporting climate literacy development, oversight frameworks, risk committee tooling, and disclosure sign-off aligned with TCFD and IFRS S2.',
+    images: ['/og-image.png'],
+  },
+}
 
 export default function GovernancePage() {
   const overviewItems = [
