@@ -13,12 +13,12 @@ const fraunces = Fraunces({
 })
 
 export const metadata: Metadata = {
-  title: 'CFOIP | Climate Risk & Compliance Platform for Kenya\'s Financial Sector',
-  description: 'Helping Kenya\'s financial institutions collect, analyse, and report climate risk data. IFRS S1/S2, CBK CRDF, KGFT, PCAF compliance.',
-  keywords: ['climate risk', 'compliance', 'Kenya', 'IFRS S1', 'IFRS S2', 'CBK CRDF', 'KGFT', 'PCAF', 'ESG', 'financial sector'],
+  title: 'Climate Risk & Compliance Platform — IFRS S1/S2, TCFD, ESG Reporting',
+  description: 'The climate risk, compliance, and ESG reporting platform for institutions navigating IFRS S1/S2, TCFD, CBK CRDF, and emerging disclosure regulation.',
+  keywords: ['climate risk', 'ESG reporting', 'IFRS S1', 'IFRS S2', 'TCFD', 'CSRD', 'climate disclosure', 'compliance'],
   openGraph: {
-    title: 'CFOIP | Climate Risk & Compliance Platform',
-    description: 'Climate risk data infrastructure for Kenya\'s 1,500+ financial institutions.',
+    title: 'Climate Risk & Compliance Platform — IFRS S1/S2, TCFD, ESG Reporting',
+    description: 'The climate risk, compliance, and ESG reporting platform for institutions navigating IFRS S1/S2, TCFD, CBK CRDF, and emerging disclosure regulation.',
     type: 'website',
   },
 }
