@@ -35,13 +35,20 @@ const ThemeGeographyList: React.FC<ThemeGeographyListProps> = ({ countries }) =>
               {...(isActive && country.href && { href: country.href })}
               className={!isActive ? 'opacity-60 cursor-not-allowed' : ''}
             >
-              <div className="flex items-center justify-between">
-                <h3 className="text-base font-semibold text-ink-950">
-                  {country.name}
-                </h3>
-                <Badge variant={isActive ? 'success' : 'neutral'}>
-                  {isActive ? 'Active' : 'Coming soon'}
-                </Badge>
+              <div className="flex flex-col gap-2">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-base font-semibold text-ink-950">
+                    {country.name}
+                  </h3>
+                  <Badge variant={isActive ? 'success' : 'neutral'}>
+                    {isActive ? 'Active' : 'Coming soon'}
+                  </Badge>
+                </div>
+                {country.name === 'Kenya' && isActive && (
+                  <Badge variant="info" className="text-xs">
+                    Most complete coverage
+                  </Badge>
+                )}
               </div>
             </Card>
           )
