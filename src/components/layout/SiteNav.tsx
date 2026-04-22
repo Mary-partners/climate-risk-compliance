@@ -169,12 +169,12 @@ const SiteNav: React.FC = () => {
                 )}
               </div>
             ))}
-            <a
-              href="#resources"
+            <Link
+              href="/resources"
               className="text-sm font-medium text-ink-700 hover:text-forest-700 transition-colors"
             >
               Resources
-            </a>
+            </Link>
             <Link
               href="/auth"
               className="text-sm font-medium text-ink-700 hover:text-forest-700 transition-colors"
@@ -219,7 +219,7 @@ const SiteNav: React.FC = () => {
         </div>
 
         {mobileMenuOpen && (
-          <div className="lg:hidden py-4 border-t border-ink-200">
+          <div className="lg:hidden py-4 border-t border-ink-200 transition-all duration-300 ease-in-out">
             <div className="flex flex-col gap-2">
               {Object.keys(navSections).map((navKey) => (
                 <details key={navKey} className="group">
@@ -265,13 +265,13 @@ const SiteNav: React.FC = () => {
                   </div>
                 </details>
               ))}
-              <a
-                href="#resources"
+              <Link
+                href="/resources"
                 className="text-sm font-medium text-ink-700 hover:text-forest-700 transition-colors py-2"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Resources
-              </a>
+              </Link>
               <Link
                 href="/auth"
                 className="text-sm font-medium text-ink-700 hover:text-forest-700 transition-colors py-2"

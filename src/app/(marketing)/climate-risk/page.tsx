@@ -1,9 +1,28 @@
 import React from 'react'
+import { Metadata } from 'next'
 import ThemeHero from '@/components/theme/ThemeHero'
 import ThemeOverview from '@/components/theme/ThemeOverview'
 import ThemeFrameworks from '@/components/theme/ThemeFrameworks'
 import ThemeGeographyList from '@/components/theme/ThemeGeographyList'
 import ThemeCTA from '@/components/theme/ThemeCTA'
+
+export const metadata: Metadata = {
+  title: 'Climate Risk Platform — TCFD, IFRS S2, NGFS',
+  description: 'Advanced climate risk platform for assessing physical hazards, transition scenarios, portfolio alignment, and stress testing under TCFD, IFRS S2, and NGFS frameworks.',
+  openGraph: {
+    title: 'Climate Risk Platform — TCFD, IFRS S2, NGFS',
+    description: 'Advanced climate risk platform for assessing physical hazards, transition scenarios, portfolio alignment, and stress testing under TCFD, IFRS S2, and NGFS frameworks.',
+    type: 'website',
+    url: 'https://climate-risk-compliance.com/climate-risk',
+    images: ['/og-image.png'],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Climate Risk Platform — TCFD, IFRS S2, NGFS',
+    description: 'Advanced climate risk platform for assessing physical hazards, transition scenarios, portfolio alignment, and stress testing under TCFD, IFRS S2, and NGFS frameworks.',
+    images: ['/og-image.png'],
+  },
+}
 
 export default function ClimateRiskPage() {
   const overviewItems = [
