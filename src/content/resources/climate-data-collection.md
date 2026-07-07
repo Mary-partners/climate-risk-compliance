@@ -2,7 +2,7 @@
 title: "How to Collect Climate Data from Borrowers Without Losing Your Mind"
 date: "2026-02-01"
 excerpt: "The biggest bottleneck in climate risk reporting isn't regulation — it's getting data from your borrowers. Here's a practical approach."
-author: "Climate Risk Platform"
+author: "Climate & Energy Advisory (C&E)"
 category: "Data"
 ---
 

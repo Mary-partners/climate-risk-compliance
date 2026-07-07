@@ -2,7 +2,7 @@
 title: "Kenya's Insurers Are Sitting on a Climate Risk Time Bomb — And Most Don't Know It"
 date: "2026-01-01"
 excerpt: "With KSH 300B+ in assets and growing exposure to climate-sensitive sectors, Kenya's insurance industry needs to wake up to climate risk."
-author: "Climate Risk Platform"
+author: "Climate & Energy Advisory (C&E)"
 category: "Insurance"
 ---
 

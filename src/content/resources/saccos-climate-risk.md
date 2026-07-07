@@ -2,7 +2,7 @@
 title: "Why SACCOs Can't Ignore Climate Risk Anymore — Even If SASRA Hasn't Mandated It Yet"
 date: "2026-03-01"
 excerpt: "Kenya's 175+ deposit-taking SACCOs hold KSH 700B+ in assets. Most haven't started thinking about climate risk. That needs to change."
-author: "Climate Risk Platform"
+author: "Climate & Energy Advisory (C&E)"
 category: "SACCOs"
 ---
 

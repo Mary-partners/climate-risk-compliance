@@ -135,10 +135,10 @@ function AuthPageInner() {
         {/* Branding */}
         <div className="text-center mb-8">
           <Link href="/" className="inline-block mb-2">
-            <h1 className="text-3xl font-bold gradient-text">CFOIP</h1>
+            <h1 className="text-3xl font-bold gradient-text">C&amp;E Advisory</h1>
           </Link>
           <p className="text-gray-500 text-sm">
-            Climate Risk &amp; Compliance Platform
+            Climate &amp; Energy Advisory — Climate Risk &amp; Compliance Platform
           </p>
         </div>
 

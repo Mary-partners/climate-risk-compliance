@@ -7,10 +7,10 @@ import ThemeGeographyList from '@/components/theme/ThemeGeographyList'
 import ThemeCTA from '@/components/theme/ThemeCTA'
 
 export const metadata: Metadata = {
-  title: 'Climate Risk Platform — TCFD, IFRS S2, NGFS',
+  title: 'Climate & Energy Advisory — Climate Risk, TCFD, IFRS S2, NGFS',
   description: 'Advanced climate risk platform for assessing physical hazards, transition scenarios, portfolio alignment, and stress testing under TCFD, IFRS S2, and NGFS frameworks.',
   openGraph: {
-    title: 'Climate Risk Platform — TCFD, IFRS S2, NGFS',
+    title: 'Climate & Energy Advisory — Climate Risk, TCFD, IFRS S2, NGFS',
     description: 'Advanced climate risk platform for assessing physical hazards, transition scenarios, portfolio alignment, and stress testing under TCFD, IFRS S2, and NGFS frameworks.',
     type: 'website',
     url: 'https://climate-risk-compliance.com/climate-risk',
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Climate Risk Platform — TCFD, IFRS S2, NGFS',
+    title: 'Climate & Energy Advisory — Climate Risk, TCFD, IFRS S2, NGFS',
     description: 'Advanced climate risk platform for assessing physical hazards, transition scenarios, portfolio alignment, and stress testing under TCFD, IFRS S2, and NGFS frameworks.',
     images: ['/og-image.png'],
   },

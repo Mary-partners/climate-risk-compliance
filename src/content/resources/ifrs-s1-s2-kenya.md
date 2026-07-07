@@ -2,7 +2,7 @@
 title: "IFRS S1 and S2 in Kenya: What Every CFO Needs to Know Before January 2027"
 date: "2026-03-01"
 excerpt: "Kenya is adopting IFRS S1 and S2 from January 2027. Here's a plain-language breakdown of what these standards mean for your institution."
-author: "Climate Risk Platform"
+author: "Climate & Energy Advisory (C&E)"
 category: "Standards"
 ---
 

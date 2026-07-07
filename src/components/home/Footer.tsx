@@ -24,16 +24,16 @@ const Footer: React.FC = () => {
     {
       title: 'Resources',
       links: [
-        { label: 'Documentation', href: '#resources' },
-        { label: 'Compliance Timeline', href: '#resources' },
-        { label: 'Support', href: 'mailto:support@climatecompliance.com' },
+        { label: 'Documentation', href: '/resources' },
+        { label: 'Compliance Timeline', href: '/compliance' },
+        { label: 'Support', href: 'mailto:stephen.mutimba@eclimateadvisory.com' },
       ],
     },
     {
       title: 'Company',
       links: [
-        { label: 'About', href: '#' },
-        { label: 'Contact', href: 'mailto:hello@climatecompliance.com' },
+        { label: 'Climate & Energy Advisory', href: '#' },
+        { label: 'Contact', href: 'mailto:stephen.mutimba@eclimateadvisory.com' },
         { label: 'Privacy', href: '#' },
         { label: 'Terms', href: '#' },
       ],
@@ -41,10 +41,11 @@ const Footer: React.FC = () => {
   ]
 
   const complianceBadges = [
+    'CBK CRDF',
     'IFRS S1/S2',
     'TCFD',
-    'CBK CRDF',
-    'EU CSRD',
+    'KGFT',
+    'PCAF',
   ]
 
   return (
@@ -82,13 +83,18 @@ const Footer: React.FC = () => {
         </div>
 
         <div className="border-t border-white/10 pt-8">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+          <div className="flex flex-col md:flex-row justify-between items-start gap-6">
             <div className="text-center md:text-left">
               <p className="text-xl font-serif font-bold mb-2">
-                Climate Risk Platform
+                Climate &amp; Energy Advisory <span className="text-white/60 font-sans font-normal text-base">(C&amp;E)</span>
               </p>
-              <p className="text-sm text-white/60">
-                contact@climatecompliance.com
+              <p className="text-sm text-white/70 leading-relaxed">
+                2nd Floor, Golden Ivy, Karen Road, Karen<br />
+                Nairobi, Kenya
+              </p>
+              <p className="text-sm text-white/70 mt-2">
+                <a href="mailto:stephen.mutimba@eclimateadvisory.com" className="hover:text-white transition-colors">stephen.mutimba@eclimateadvisory.com</a><br />
+                <a href="tel:+254722721680" className="hover:text-white transition-colors">+254 722 721680</a>
               </p>
             </div>
             <div className="flex flex-wrap items-center justify-center gap-2">
@@ -100,7 +106,7 @@ const Footer: React.FC = () => {
             </div>
           </div>
           <p className="text-xs text-white/50 text-center mt-8">
-            © {new Date().getFullYear()} Climate Risk Platform. All rights reserved.
+            © {new Date().getFullYear()} Climate &amp; Energy Advisory (C&amp;E). All rights reserved.
           </p>
         </div>
       </div>

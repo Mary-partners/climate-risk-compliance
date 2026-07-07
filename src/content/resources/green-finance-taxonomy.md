@@ -2,7 +2,7 @@
 title: "Kenya's Green Finance Taxonomy: A Practical Guide for Financial Institutions"
 date: "2026-02-01"
 excerpt: "The Kenya Green Finance Taxonomy (KGFT) tells you what counts as 'green'. Here's how to use it in your lending and investment decisions."
-author: "Climate Risk Platform"
+author: "Climate & Energy Advisory (C&E)"
 category: "Green Finance"
 ---
 

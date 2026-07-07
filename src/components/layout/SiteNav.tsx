@@ -117,8 +117,9 @@ const SiteNav: React.FC = () => {
       <div className="max-w-6xl mx-auto px-6">
         <div className="flex items-center justify-between h-16">
           <div className="flex-shrink-0">
-            <Link href="/" className="text-xl font-serif font-bold text-forest-900">
-              Climate Risk Platform
+            <Link href="/" className="flex flex-col leading-tight">
+              <span className="text-xl font-serif font-bold text-forest-900">C&amp;E Advisory</span>
+              <span className="text-[10px] uppercase tracking-wider text-ink-500 font-medium">Climate Risk &amp; Compliance</span>
             </Link>
           </div>
 

@@ -2,7 +2,7 @@
 title: "The CBK Climate Risk Deadline Is Real — Here's What Your Bank Needs to Do Before October 2026"
 date: "2026-03-01"
 excerpt: "CBK's Climate-Related Disclosures Framework isn't a suggestion. It's a mandate. And October 2026 is closer than you think."
-author: "Climate Risk Platform"
+author: "Climate & Energy Advisory (C&E)"
 category: "Regulatory"
 ---
 

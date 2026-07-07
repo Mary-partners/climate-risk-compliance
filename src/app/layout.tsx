@@ -13,12 +13,12 @@ const fraunces = Fraunces({
 })
 
 export const metadata: Metadata = {
-  title: 'Climate Risk & Compliance Platform — IFRS S1/S2, TCFD, ESG Reporting',
-  description: 'The climate risk, compliance, and ESG reporting platform for institutions navigating IFRS S1/S2, TCFD, CBK CRDF, and emerging disclosure regulation.',
-  keywords: ['climate risk', 'ESG reporting', 'IFRS S1', 'IFRS S2', 'TCFD', 'CSRD', 'climate disclosure', 'compliance'],
+  title: 'Climate & Energy Advisory (C&E) — Climate Risk & Compliance Platform | CBK CRDF, IFRS S1/S2, TCFD',
+  description: 'Climate & Energy Advisory (C&E) helps Kenyan banks, SACCOs, MFBs and insurers meet the CBK Climate Risk Disclosure Framework, IFRS S1/S2, TCFD and the Kenya Green Finance Taxonomy — diagnostic, reporting and climate data on one platform.',
+  keywords: ['Climate & Energy Advisory', 'climate risk', 'ESG reporting', 'CBK CRDF', 'Kenya Green Finance Taxonomy', 'IFRS S1', 'IFRS S2', 'TCFD', 'PCAF', 'climate disclosure', 'compliance'],
   openGraph: {
-    title: 'Climate Risk & Compliance Platform — IFRS S1/S2, TCFD, ESG Reporting',
-    description: 'The climate risk, compliance, and ESG reporting platform for institutions navigating IFRS S1/S2, TCFD, CBK CRDF, and emerging disclosure regulation.',
+    title: 'Climate & Energy Advisory (C&E) — Climate Risk & Compliance Platform',
+    description: 'CBK CRDF, IFRS S1/S2, TCFD and Kenya Green Finance Taxonomy compliance for financial institutions — by Climate & Energy Advisory.',
     type: 'website',
   },
 }

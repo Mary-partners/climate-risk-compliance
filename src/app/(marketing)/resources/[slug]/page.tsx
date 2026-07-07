@@ -64,7 +64,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   }
   
   return {
-    title: `${post.title} — Climate Risk Platform`,
+    title: `${post.title} — Climate & Energy Advisory`,
     description: post.excerpt,
     openGraph: {
       title: post.title,

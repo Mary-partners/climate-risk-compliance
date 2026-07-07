@@ -2,7 +2,7 @@ import { ImageResponse } from 'next/og'
 
 export const runtime = 'edge'
 
-export const alt = 'Climate Risk Platform'
+export const alt = 'Climate & Energy Advisory (C&E) — Climate Risk & Compliance Platform'
 export const size = {
   width: 1200,
   height: 630,
@@ -36,7 +36,7 @@ export default async function Image() {
             lineHeight: 1.2,
           }}
         >
-          Climate Risk Platform
+          Climate & Energy Advisory
         </div>
         <div
           style={{
@@ -47,7 +47,7 @@ export default async function Image() {
             lineHeight: 1.4,
           }}
         >
-          ESG, TCFD, IFRS Reporting & Compliance
+          CBK CRDF, IFRS S1/S2, TCFD & KGFT Compliance for Kenya's Financial Sector
         </div>
       </div>
     ),

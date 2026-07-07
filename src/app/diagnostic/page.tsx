@@ -1531,7 +1531,7 @@ function DiagnosticPage() {
             Start CBK CRDF Report Builder &rarr;
           </a>
           <a
-            href="mailto:partner@cfopartners.fund?subject=Climate%20Risk%20Diagnostic%20Follow-up&body=Hi%2C%0A%0AI've%20completed%20the%20climate%20risk%20readiness%20diagnostic%20and%20would%20like%20to%20discuss%20next%20steps%20for%20our%20institution.%0A%0AInstitution%3A%20%0AContact%3A%20%0A%0AThank%20you."
+            href="mailto:stephen.mutimba@eclimateadvisory.com?subject=Climate%20Risk%20Diagnostic%20Follow-up&body=Hi%2C%0A%0AI've%20completed%20the%20climate%20risk%20readiness%20diagnostic%20and%20would%20like%20to%20discuss%20next%20steps%20for%20our%20institution.%0A%0AInstitution%3A%20%0AContact%3A%20%0A%0AThank%20you."
             className="block bg-white border-2 border-emerald-600 text-emerald-700 hover:bg-emerald-50 text-center font-semibold py-4 px-6 rounded-xl transition-colors"
           >
             Request Follow-up Consultation
@@ -1539,7 +1539,7 @@ function DiagnosticPage() {
         </div>
 
         <div className="text-center text-sm text-gray-500">
-          <p>Questions? Contact us at <strong>partner@cfopartners.fund</strong> or <strong>+254 748 918 910</strong></p>
+          <p>Questions? Contact <strong>Stephen Mutimba</strong> at <strong>stephen.mutimba@eclimateadvisory.com</strong> or <strong>+254 722 721680</strong></p>
         </div>
       </div>
     )
