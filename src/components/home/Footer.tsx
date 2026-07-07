@@ -85,8 +85,11 @@ const Footer: React.FC = () => {
         <div className="border-t border-white/10 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-start gap-6">
             <div className="text-center md:text-left">
-              <p className="text-xl font-serif font-bold mb-2">
+              <p className="text-xl font-serif font-bold mb-1">
                 Climate &amp; Energy Advisory <span className="text-white/60 font-sans font-normal text-base">(C&amp;E)</span>
+              </p>
+              <p className="text-xs uppercase tracking-wider text-gold-300 mb-3">
+                Citadel of Resilience &amp; Sustainability
               </p>
               <p className="text-sm text-white/70 leading-relaxed">
                 2nd Floor, Golden Ivy, Karen Road, Karen<br />
