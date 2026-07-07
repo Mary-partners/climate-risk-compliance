@@ -1,49 +1,67 @@
 import React from 'react'
 import Section from '@/components/ui/Section'
-import SectionHeader from '@/components/ui/SectionHeader'
+import Reveal from '@/components/home/Reveal'
+import Icon, { IconName } from '@/components/home/icons'
 
-const audiences = [
+const audiences: { icon: IconName; title: string; body: string }[] = [
   {
+    icon: 'bank',
     title: 'Banks and Financial Institutions',
-    body: 'Banks, SACCOs, microfinance institutions, digital lenders, fund managers, and other financial institutions are increasingly expected to understand how climate risk affects borrowers, sectors, portfolios, collateral, credit quality, operations, governance, and long-term resilience. We help financial institutions assess their climate risk readiness, design internal climate risk governance structures, map portfolio exposure, create borrower ESG assessment tools, prepare board reports, train their teams, and build implementation roadmaps that are aligned to emerging regulatory and market expectations.',
+    body: 'Banks, SACCOs, microfinance institutions, digital lenders, and fund managers are increasingly expected to understand how climate risk affects borrowers, sectors, portfolios, collateral, and credit quality. We help them assess readiness, design climate risk governance, map portfolio exposure, build borrower ESG assessment tools, and prepare board reports aligned to emerging regulation.',
   },
   {
+    icon: 'building',
     title: 'Listed Companies and Public Interest Entities',
-    body: 'Listed companies and public interest entities are facing growing expectations around ESG disclosure, sustainability reporting, governance transparency, and climate-related financial information. These expectations affect how companies communicate with investors, regulators, lenders, boards, and the public. We support companies to assess their ESG disclosure gaps, prepare for IFRS S1 and S2, develop credible sustainability reports, strengthen board oversight, collect reliable ESG data, and align their reporting with the relevant local and international frameworks.',
+    body: 'Listed companies and public interest entities face growing expectations around ESG disclosure, sustainability reporting, and climate-related financial information. We support them to assess disclosure gaps, prepare for IFRS S1 and S2, develop credible sustainability reports, strengthen board oversight, and align reporting with local and international frameworks.',
   },
   {
+    icon: 'briefcase',
     title: 'SMEs and Growth Companies',
-    body: 'For small and medium enterprises, ESG readiness is becoming part of access to finance, procurement, investment, and partnership opportunities. A growing business may be asked by a bank, an investor, a donor, a large buyer, or an accelerator to show how it manages governance, people, environmental responsibility, climate exposure, and operational risk. We help these businesses understand what ESG means in practical terms, assess their readiness, prepare documentation, improve governance, and build simple reporting systems that support funding, procurement, investor conversations, and long-term resilience.',
+    body: 'For small and medium enterprises, ESG readiness is becoming part of access to finance, procurement, and investment. We help these businesses understand what ESG means in practical terms, assess their readiness, prepare documentation, improve governance, and build simple reporting systems that support funding and long-term resilience.',
   },
   {
+    icon: 'users',
     title: 'Boards and Leadership Teams',
-    body: 'Boards are expected to provide oversight on material risks, and climate risk is increasingly becoming part of that responsibility. Directors do not need technical jargon; they need clear information on exposure, compliance obligations, management readiness, data gaps, financial implications, and the decisions that are required of them. We help boards and leadership teams understand their climate and ESG obligations, review current readiness, define governance responsibilities, establish reporting routines, and make climate risk a genuine part of strategic and risk oversight.',
+    body: 'Boards are expected to provide oversight on material risks, and climate risk is increasingly part of that responsibility. We help boards and leadership teams understand their obligations, review current readiness, define governance responsibilities, establish reporting routines, and make climate risk a genuine part of strategic and risk oversight.',
   },
   {
+    icon: 'trending',
     title: 'Investors, Accelerators, and Development Programmes',
-    body: 'Investors, funders, accelerators, and development partners increasingly need to assess ESG and climate readiness across their portfolios. This is especially important where investees or beneficiaries operate in agriculture, energy, manufacturing, logistics, infrastructure, finance, retail, housing, mobility, or other climate-exposed sectors. We provide ESG readiness scoring, portfolio diagnostics, due diligence tools, capacity-building programmes, and reporting frameworks that help these institutions understand risk and support better decision-making.',
+    body: 'Investors, funders, accelerators, and development partners increasingly need to assess ESG and climate readiness across their portfolios, particularly in climate-exposed sectors. We provide ESG readiness scoring, portfolio diagnostics, due diligence tools, capacity-building programmes, and reporting frameworks that support better decision-making.',
   },
 ]
 
 const WhoWeServe: React.FC = () => {
   return (
     <Section variant="cream">
-      <SectionHeader
-        eyebrow="Who we serve"
-        title="Built for institutions that need practical climate and ESG readiness"
-        description="Climate and ESG requirements do not affect every institution in the same way. We tailor our work to the questions each type of organisation is being asked to answer."
-      />
-      <div className="grid md:grid-cols-2 gap-6">
-        {audiences.map((audience, index) => (
-          <div
-            key={audience.title}
-            className={`bg-white border border-ink-200 rounded-lg p-8 border-t-4 border-t-gold-500 ${
-              index === audiences.length - 1 && audiences.length % 2 !== 0 ? 'md:col-span-2' : ''
-            }`}
-          >
-            <h3 className="text-xl font-bold font-serif text-navy-900 mb-3">{audience.title}</h3>
-            <p className="text-ink-700 leading-relaxed">{audience.body}</p>
+      <Reveal>
+        <div className="grid lg:grid-cols-12 gap-6 lg:gap-10 items-end mb-12">
+          <div className="lg:col-span-7">
+            <div className="text-xs uppercase tracking-wider font-semibold text-gold-600 mb-3">
+              Who we serve
+            </div>
+            <h2 className="text-3xl md:text-4xl font-bold font-serif text-ink-950 leading-tight">
+              Built for institutions that need practical climate and ESG readiness
+            </h2>
           </div>
+          <p className="lg:col-span-5 text-ink-600 leading-relaxed">
+            Climate and ESG requirements do not affect every institution in the same way. We tailor
+            our work to the questions each type of organisation is being asked to answer.
+          </p>
+        </div>
+      </Reveal>
+
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {audiences.map((audience, i) => (
+          <Reveal key={audience.title} delay={i * 70} className="h-full">
+            <div className="group h-full rounded-xl border border-ink-200 bg-white p-7 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:border-gold-400">
+              <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-lg bg-gold-100 text-gold-700 transition-colors group-hover:bg-gold-500 group-hover:text-white">
+                <Icon name={audience.icon} className="w-6 h-6" />
+              </div>
+              <h3 className="text-lg font-bold font-serif text-navy-900 mb-3">{audience.title}</h3>
+              <p className="text-sm text-ink-700 leading-relaxed">{audience.body}</p>
+            </div>
+          </Reveal>
         ))}
       </div>
     </Section>

@@ -1,7 +1,7 @@
 import { Metadata } from 'next'
 import Hero from '@/components/home/Hero'
 import StatsBand from '@/components/home/StatsBand'
-import LogosRow from '@/components/home/LogosRow'
+import RegulatoryDrivers from '@/components/home/RegulatoryDrivers'
 import ProblemStatement from '@/components/home/ProblemStatement'
 import AboutCE from '@/components/home/AboutCE'
 import ClientsBand from '@/components/home/ClientsBand'
@@ -35,7 +35,7 @@ export default function Home() {
     <main>
       <Hero />
       <StatsBand />
-      <LogosRow />
+      <RegulatoryDrivers />
       <ProblemStatement />
       <AboutCE />
       <ClientsBand />
