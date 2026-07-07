@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getPrismaClient } from "@/lib/prisma";
+import { syncDiagnosticToNotion } from "@/lib/notion";
 
 export const dynamic = "force-dynamic";
 
@@ -126,6 +127,17 @@ export async function POST(request: NextRequest) {
         additionalInfo,
         readinessScore,
       },
+    });
+
+    // Mirror the completed diagnostic to Notion (no-op unless configured)
+    await syncDiagnosticToNotion({
+      institutionName,
+      contactName,
+      email,
+      institutionType,
+      role,
+      readinessScore,
+      additionalInfo,
     });
 
     return NextResponse.json({

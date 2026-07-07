@@ -3,7 +3,7 @@ import fs from 'fs'
 import path from 'path'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://climate-risk-compliance.com'
+  const baseUrl = 'https://climate.cfopartners.fund'
 
   const contentDir = path.join(process.cwd(), 'src/content/resources')
   const resourceFiles = fs.readdirSync(contentDir)

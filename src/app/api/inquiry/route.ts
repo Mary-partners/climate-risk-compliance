@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getPrismaClient } from "@/lib/prisma";
+import { syncInquiryToNotion } from "@/lib/notion";
 
 export const dynamic = "force-dynamic";
 
@@ -57,6 +58,16 @@ export async function POST(request: NextRequest) {
         biggestChallenge: body.biggestChallenge ?? null,
         additionalNotes: body.additionalNotes ?? null,
       },
+    });
+
+    // Mirror the inquiry to Notion (no-op unless configured)
+    await syncInquiryToNotion({
+      name,
+      email,
+      organisation,
+      organisationType,
+      biggestChallenge: body.biggestChallenge,
+      additionalNotes: body.additionalNotes,
     });
 
     return NextResponse.json({

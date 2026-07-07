@@ -9,6 +9,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ['/auth', '/diagnostic', '/report', '/tools'],
       },
     ],
-    sitemap: 'https://climate-risk-compliance.com/sitemap.xml',
+    sitemap: 'https://climate.cfopartners.fund/sitemap.xml',
   }
 }

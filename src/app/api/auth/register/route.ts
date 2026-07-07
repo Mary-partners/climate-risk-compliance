@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { getPrismaClient } from "@/lib/prisma";
 import { hashPassword, generateToken } from "@/lib/auth";
+import { syncAccountToNotion } from "@/lib/notion";
 
 export async function POST(request: NextRequest) {
   try {
@@ -62,6 +63,9 @@ export async function POST(request: NextRequest) {
         cbkTier: cbkTier || null,
       },
     });
+
+    // Mirror the new account to Notion (no-op unless configured)
+    await syncAccountToNotion(user);
 
     // Create session
     const token = generateToken();

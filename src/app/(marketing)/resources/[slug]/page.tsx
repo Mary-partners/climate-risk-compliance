@@ -70,7 +70,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
       title: post.title,
       description: post.excerpt,
       type: 'article',
-      url: `https://climate-risk-compliance.com/resources/${post.slug}`,
+      url: `https://climate.cfopartners.fund/resources/${post.slug}`,
       images: ['/og-image.png'],
     },
     twitter: {

@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     title: 'Climate Risk Reporting in Kenya — CBK CRDF, KGFT',
     description: 'Navigate Kenya\'s Climate Risk Disclosure Framework (CRDF) and Kenya Green Finance Taxonomy (KGFT) with comprehensive climate risk reporting tools.',
     type: 'website',
-    url: 'https://climate-risk-compliance.com/climate-risk/kenya',
+    url: 'https://climate.cfopartners.fund/climate-risk/kenya',
     images: ['/og-image.png'],
   },
   twitter: {
