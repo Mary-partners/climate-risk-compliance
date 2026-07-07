@@ -513,13 +513,13 @@ function getSections(mode: 'bank' | 'internal') {
 // SCORING HELPERS
 // ============================================================
 function ragColor(score: number): string {
-  if (score >= 4) return 'text-emerald-600'
+  if (score >= 4) return 'text-forest-600'
   if (score >= 2) return 'text-amber-500'
   return 'text-red-500'
 }
 
 function ragBg(score: number): string {
-  if (score >= 4) return 'bg-emerald-50 border-emerald-200'
+  if (score >= 4) return 'bg-forest-50 border-forest-200'
   if (score >= 2) return 'bg-amber-50 border-amber-200'
   return 'bg-red-50 border-red-200'
 }
@@ -557,7 +557,7 @@ export default function DiagnosticPageWrapper() {
       <Suspense fallback={
         <div className="min-h-screen bg-white flex items-center justify-center">
           <div className="text-center">
-            <div className="w-8 h-8 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin mx-auto mb-3" />
+            <div className="w-8 h-8 border-2 border-forest-500 border-t-transparent rounded-full animate-spin mx-auto mb-3" />
             <p className="text-sm text-gray-500">Loading diagnostic...</p>
           </div>
         </div>
@@ -770,7 +770,7 @@ function DiagnosticPage() {
               onClick={() => setActiveSection(sec.id)}
               className={`w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium transition-all flex items-center justify-between gap-2 ${
                 isActive
-                  ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                  ? 'bg-forest-50 text-forest-700 border border-forest-200'
                   : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 border border-transparent'
               }`}
             >
@@ -917,7 +917,7 @@ function DiagnosticPage() {
                         const scoreVal = oi + 1
                         let optBg = 'bg-gray-50 border-gray-200 hover:border-gray-300 text-gray-600'
                         if (isSelected) {
-                          if (scoreVal >= 4) optBg = 'bg-emerald-50 border-emerald-400 text-emerald-800 ring-1 ring-emerald-400'
+                          if (scoreVal >= 4) optBg = 'bg-forest-50 border-forest-400 text-forest-800 ring-1 ring-forest-400'
                           else if (scoreVal >= 2) optBg = 'bg-amber-50 border-amber-400 text-amber-800 ring-1 ring-amber-400'
                           else optBg = 'bg-red-50 border-red-400 text-red-800 ring-1 ring-red-400'
                         }
@@ -980,12 +980,12 @@ function DiagnosticPage() {
             </div>
             <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
               <div
-                className="h-full bg-emerald-500 rounded-full transition-all duration-500"
+                className="h-full bg-forest-500 rounded-full transition-all duration-500"
                 style={{ width: `${completionPct}%` }}
               />
             </div>
             <div className="flex gap-4 mt-2 text-xs text-gray-500">
-              <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-emerald-500 inline-block" /> Full: {filledFull}</span>
+              <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-forest-500 inline-block" /> Full: {filledFull}</span>
               <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-amber-500 inline-block" /> Partial: {filledPartial}</span>
               <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-red-500 inline-block" /> None: {filledNone}</span>
             </div>
@@ -1007,7 +1007,7 @@ function DiagnosticPage() {
                       {(['full', 'partial', 'none'] as const).map((status) => {
                         const isSelected = val === status
                         let btnStyle = 'bg-gray-50 border-gray-200 text-gray-500 hover:border-gray-300'
-                        if (isSelected && status === 'full') btnStyle = 'bg-emerald-50 border-emerald-400 text-emerald-700 ring-1 ring-emerald-400'
+                        if (isSelected && status === 'full') btnStyle = 'bg-forest-50 border-forest-400 text-forest-700 ring-1 ring-forest-400'
                         if (isSelected && status === 'partial') btnStyle = 'bg-amber-50 border-amber-400 text-amber-700 ring-1 ring-amber-400'
                         if (isSelected && status === 'none') btnStyle = 'bg-red-50 border-red-400 text-red-700 ring-1 ring-red-400'
 
@@ -1137,7 +1137,7 @@ function DiagnosticPage() {
             These are non-negotiable items for CBK CRDF compliance. Each must be addressed.
           </p>
           <div className="flex gap-4 mt-3 text-xs">
-            <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-emerald-500" /> Pass: {passCount}</span>
+            <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-forest-500" /> Pass: {passCount}</span>
             <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-amber-500" /> Partial: {partialCount}</span>
             <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-red-500" /> Fail: {failCount}</span>
           </div>
@@ -1154,7 +1154,7 @@ function DiagnosticPage() {
                 {(['pass', 'partial', 'fail'] as const).map((status) => {
                   const isSelected = val === status
                   let btnStyle = 'bg-gray-50 border-gray-200 text-gray-500 hover:border-gray-300'
-                  if (isSelected && status === 'pass') btnStyle = 'bg-emerald-50 border-emerald-400 text-emerald-700 ring-1 ring-emerald-400'
+                  if (isSelected && status === 'pass') btnStyle = 'bg-forest-50 border-forest-400 text-forest-700 ring-1 ring-forest-400'
                   if (isSelected && status === 'partial') btnStyle = 'bg-amber-50 border-amber-400 text-amber-700 ring-1 ring-amber-400'
                   if (isSelected && status === 'fail') btnStyle = 'bg-red-50 border-red-400 text-red-700 ring-1 ring-red-400'
 
@@ -1347,7 +1347,7 @@ function DiagnosticPage() {
             {roadmapPhases.map((phase, idx) => (
               <div key={idx} className="card">
                 <div className="flex items-center gap-3 mb-3">
-                  <span className="w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center text-sm font-bold flex-shrink-0">
+                  <span className="w-8 h-8 rounded-full bg-forest-100 text-forest-700 flex items-center justify-center text-sm font-bold flex-shrink-0">
                     {idx + 1}
                   </span>
                   <div>
@@ -1358,7 +1358,7 @@ function DiagnosticPage() {
                 <ul className="space-y-2">
                   {phase.items.map((item, ii) => (
                     <li key={ii} className="flex items-start gap-2 text-xs text-gray-600">
-                      <svg className="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                      <svg className="w-4 h-4 text-forest-500 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
                       {item}
@@ -1396,22 +1396,22 @@ function DiagnosticPage() {
           </ul>
         </div>
 
-        <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-5">
-          <h3 className="text-base font-bold text-emerald-800 mb-2">What You&apos;ll Get</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-emerald-700">
-            <div className="flex gap-2"><span className="text-emerald-500 font-bold">&#10003;</span> Readiness score across 6 pillars (1-5 scale)</div>
-            <div className="flex gap-2"><span className="text-emerald-500 font-bold">&#10003;</span> RAG-rated gap analysis (Red / Amber / Green)</div>
-            <div className="flex gap-2"><span className="text-emerald-500 font-bold">&#10003;</span> Prioritised action plan by severity</div>
-            <div className="flex gap-2"><span className="text-emerald-500 font-bold">&#10003;</span> Exportable assessment report (JSON)</div>
-            <div className="flex gap-2"><span className="text-emerald-500 font-bold">&#10003;</span> Benchmarking against peer institutions</div>
-            <div className="flex gap-2"><span className="text-emerald-500 font-bold">&#10003;</span> Direct path to automated CBK CRDF reporting</div>
+        <div className="bg-forest-50 border border-forest-200 rounded-xl p-5">
+          <h3 className="text-base font-bold text-forest-800 mb-2">What You&apos;ll Get</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-forest-700">
+            <div className="flex gap-2"><span className="text-forest-500 font-bold">&#10003;</span> Readiness score across 6 pillars (1-5 scale)</div>
+            <div className="flex gap-2"><span className="text-forest-500 font-bold">&#10003;</span> RAG-rated gap analysis (Red / Amber / Green)</div>
+            <div className="flex gap-2"><span className="text-forest-500 font-bold">&#10003;</span> Prioritised action plan by severity</div>
+            <div className="flex gap-2"><span className="text-forest-500 font-bold">&#10003;</span> Exportable assessment report (JSON)</div>
+            <div className="flex gap-2"><span className="text-forest-500 font-bold">&#10003;</span> Benchmarking against peer institutions</div>
+            <div className="flex gap-2"><span className="text-forest-500 font-bold">&#10003;</span> Direct path to automated CBK CRDF reporting</div>
           </div>
         </div>
 
         <div className="border border-gray-200 rounded-xl p-5">
           <h3 className="text-base font-bold text-gray-900 mb-3">Key Frameworks &amp; Terminology</h3>
           <div className="space-y-3 text-sm">
-            <div className="border-l-3 border-emerald-500 pl-3" style={{borderLeftWidth: 3}}>
+            <div className="border-l-3 border-forest-500 pl-3" style={{borderLeftWidth: 3}}>
               <strong className="text-gray-900">CBK CRDF</strong> <span className="text-gray-400">|</span> <span className="text-gray-500">Climate-Related Disclosures Framework</span>
               <p className="text-gray-500 mt-0.5">CBK&apos;s mandatory reporting framework for all supervised institutions. Covers governance, strategy, risk management, and metrics. Based on TCFD/ISSB structure.</p>
             </div>
@@ -1447,7 +1447,7 @@ function DiagnosticPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {PILLARS.map((p, i) => (
               <div key={p.id} className="flex gap-3 items-start">
-                <span className="flex-shrink-0 w-7 h-7 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center text-xs font-bold">{i + 1}</span>
+                <span className="flex-shrink-0 w-7 h-7 rounded-full bg-forest-100 text-forest-700 flex items-center justify-center text-xs font-bold">{i + 1}</span>
                 <div>
                   <p className="text-sm font-semibold text-gray-900">{p.shortName}</p>
                   <p className="text-xs text-gray-500">{p.description}</p>
@@ -1493,31 +1493,31 @@ function DiagnosticPage() {
           </div>
         )}
 
-        <div className="border border-emerald-200 bg-emerald-50 rounded-xl p-6">
-          <h3 className="text-lg font-bold text-emerald-900 mb-3">Want Us to Help Close the Gaps?</h3>
-          <p className="text-sm text-emerald-800 mb-4">
+        <div className="border border-forest-200 bg-forest-50 rounded-xl p-6">
+          <h3 className="text-lg font-bold text-forest-900 mb-3">Want Us to Help Close the Gaps?</h3>
+          <p className="text-sm text-forest-800 mb-4">
             Our platform automates CBK CRDF reporting, climate data collection, and gap remediation. We can take your diagnostic results and turn them into a compliance programme — so you meet the October 2026 deadline without building everything from scratch.
           </p>
           <div className="space-y-3">
             <div className="flex gap-3 items-start">
-              <span className="text-emerald-600 font-bold text-lg">1</span>
+              <span className="text-forest-600 font-bold text-lg">1</span>
               <div>
-                <p className="text-sm font-semibold text-emerald-900">Gap Remediation Programme</p>
-                <p className="text-xs text-emerald-700">We review your diagnostic results, prioritise the gaps, and build a structured plan to achieve compliance across all 6 pillars.</p>
+                <p className="text-sm font-semibold text-forest-900">Gap Remediation Programme</p>
+                <p className="text-xs text-forest-700">We review your diagnostic results, prioritise the gaps, and build a structured plan to achieve compliance across all 6 pillars.</p>
               </div>
             </div>
             <div className="flex gap-3 items-start">
-              <span className="text-emerald-600 font-bold text-lg">2</span>
+              <span className="text-forest-600 font-bold text-lg">2</span>
               <div>
-                <p className="text-sm font-semibold text-emerald-900">Automated CBK CRDF Reporting</p>
-                <p className="text-xs text-emerald-700">Our report builder auto-populates county hazard data, sector classifications, and generates CBK-compliant Excel templates — no manual spreadsheets.</p>
+                <p className="text-sm font-semibold text-forest-900">Automated CBK CRDF Reporting</p>
+                <p className="text-xs text-forest-700">Our report builder auto-populates county hazard data, sector classifications, and generates CBK-compliant Excel templates — no manual spreadsheets.</p>
               </div>
             </div>
             <div className="flex gap-3 items-start">
-              <span className="text-emerald-600 font-bold text-lg">3</span>
+              <span className="text-forest-600 font-bold text-lg">3</span>
               <div>
-                <p className="text-sm font-semibold text-emerald-900">Ongoing Climate Data Infrastructure</p>
-                <p className="text-xs text-emerald-700">Borrower data collection, PCAF emissions measurement, KGFT portfolio tagging, and board-ready dashboards — all on one platform.</p>
+                <p className="text-sm font-semibold text-forest-900">Ongoing Climate Data Infrastructure</p>
+                <p className="text-xs text-forest-700">Borrower data collection, PCAF emissions measurement, KGFT portfolio tagging, and board-ready dashboards — all on one platform.</p>
               </div>
             </div>
           </div>
@@ -1526,13 +1526,13 @@ function DiagnosticPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <a
             href="/report"
-            className="block bg-emerald-600 hover:bg-emerald-700 text-white text-center font-semibold py-4 px-6 rounded-xl transition-colors"
+            className="block bg-forest-600 hover:bg-forest-700 text-white text-center font-semibold py-4 px-6 rounded-xl transition-colors"
           >
             Start CBK CRDF Report Builder &rarr;
           </a>
           <a
             href="mailto:stephen.mutimba@eclimateadvisory.com?subject=Climate%20Risk%20Diagnostic%20Follow-up&body=Hi%2C%0A%0AI've%20completed%20the%20climate%20risk%20readiness%20diagnostic%20and%20would%20like%20to%20discuss%20next%20steps%20for%20our%20institution.%0A%0AInstitution%3A%20%0AContact%3A%20%0A%0AThank%20you."
-            className="block bg-white border-2 border-emerald-600 text-emerald-700 hover:bg-emerald-50 text-center font-semibold py-4 px-6 rounded-xl transition-colors"
+            className="block bg-white border-2 border-forest-600 text-forest-700 hover:bg-forest-50 text-center font-semibold py-4 px-6 rounded-xl transition-colors"
           >
             Request Follow-up Consultation
           </a>
@@ -1594,7 +1594,7 @@ function DiagnosticPage() {
             <div className="flex items-center gap-4">
               <Link
                 href="/"
-                className="text-gray-400 hover:text-emerald-600 transition-colors"
+                className="text-gray-400 hover:text-forest-600 transition-colors"
               >
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
@@ -1615,7 +1615,7 @@ function DiagnosticPage() {
               <div className="hidden sm:flex items-center gap-2">
                 <div className="w-32 h-2 bg-gray-100 rounded-full overflow-hidden">
                   <div
-                    className="h-full bg-emerald-500 rounded-full transition-all duration-500"
+                    className="h-full bg-forest-500 rounded-full transition-all duration-500"
                     style={{ width: `${progress}%` }}
                   />
                 </div>

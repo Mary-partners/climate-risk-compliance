@@ -653,7 +653,7 @@ export default function ReportBuilderPage() {
                   onClick={() => toggleSector(`A-${sector.code}`)}
                 >
                   <div className="flex items-center gap-3">
-                    <span className="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-700 font-bold text-sm flex items-center justify-center">{sector.code}</span>
+                    <span className="w-8 h-8 rounded-lg bg-forest-100 text-forest-700 font-bold text-sm flex items-center justify-center">{sector.code}</span>
                     <span className="text-sm font-medium text-gray-800">{sector.label}</span>
                   </div>
                   <div className="flex items-center gap-3">
@@ -679,7 +679,7 @@ export default function ReportBuilderPage() {
                             <label key={county} className={`flex items-center gap-1.5 text-xs py-0.5 cursor-pointer ${atLimit ? 'opacity-40' : ''}`}>
                               <input
                                 type="checkbox"
-                                className="rounded border-gray-300 text-emerald-600 focus:ring-emerald-500"
+                                className="rounded border-gray-300 text-forest-600 focus:ring-forest-500"
                                 checked={selected || false}
                                 disabled={atLimit}
                                 onChange={(e) => {
@@ -791,7 +791,7 @@ export default function ReportBuilderPage() {
                         </div>
                         <div className="bg-gray-50 px-4 py-2 flex items-center gap-4 text-[10px] text-gray-500 border-t border-gray-200">
                           <span className="font-medium">Legend:</span>
-                          <span className="flex items-center gap-1"><span className="w-3 h-3 rounded bg-emerald-50 border border-emerald-200"></span> 1-2 Low</span>
+                          <span className="flex items-center gap-1"><span className="w-3 h-3 rounded bg-forest-50 border border-forest-200"></span> 1-2 Low</span>
                           <span className="flex items-center gap-1"><span className="w-3 h-3 rounded bg-amber-50 border border-amber-200"></span> 3 Moderate</span>
                           <span className="flex items-center gap-1"><span className="w-3 h-3 rounded bg-red-50 border border-red-200"></span> 4-5 High</span>
                         </div>
@@ -854,7 +854,7 @@ export default function ReportBuilderPage() {
           <thead>
             <tr className="bg-gray-50 border-b border-gray-200">
               <th rowSpan={2} className="text-left py-3 px-2 text-xs font-semibold text-gray-600 sticky left-0 bg-gray-50 min-w-[160px]">Sector</th>
-              <th colSpan={5} className="text-center py-2 px-2 text-xs font-semibold text-emerald-700 border-b border-emerald-200">PART A: Exposure (Mn KSH)</th>
+              <th colSpan={5} className="text-center py-2 px-2 text-xs font-semibold text-forest-700 border-b border-forest-200">PART A: Exposure (Mn KSH)</th>
               <th colSpan={3} className="text-center py-2 px-2 text-xs font-semibold text-blue-700 border-b border-blue-200">PART B: Emissions</th>
               <th colSpan={3} className="text-center py-2 px-2 text-xs font-semibold text-purple-700 border-b border-purple-200">PART C: Maturity (Mn KSH)</th>
             </tr>
@@ -1000,7 +1000,7 @@ export default function ReportBuilderPage() {
       {/* Business Strategy */}
       <div className="card">
         <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
-          <span className="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-700 font-bold text-sm flex items-center justify-center">1</span>
+          <span className="w-8 h-8 rounded-lg bg-forest-100 text-forest-700 font-bold text-sm flex items-center justify-center">1</span>
           Business Strategy
         </h3>
         <div className="space-y-4">
@@ -1030,39 +1030,39 @@ export default function ReportBuilderPage() {
       {/* Governance */}
       <div className="card">
         <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
-          <span className="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-700 font-bold text-sm flex items-center justify-center">2</span>
+          <span className="w-8 h-8 rounded-lg bg-forest-100 text-forest-700 font-bold text-sm flex items-center justify-center">2</span>
           Governance
         </h3>
         <div className="space-y-4">
           <div>
             <label className="block text-xs font-medium text-gray-600 mb-1">Does the Board have defined responsibilities for climate risk oversight?</label>
             <div className="flex gap-4 mb-2">
-              <label className="flex items-center gap-2 text-sm"><input type="radio" name="gov-q1" className="text-emerald-600" value="Yes" checked={formData.step5.governance.q1 === 'Yes'} onChange={(e) => updateStep5('governance', 'q1', e.target.value)} /> Yes</label>
-              <label className="flex items-center gap-2 text-sm"><input type="radio" name="gov-q1" className="text-emerald-600" value="No" checked={formData.step5.governance.q1 === 'No'} onChange={(e) => updateStep5('governance', 'q1', e.target.value)} /> No</label>
+              <label className="flex items-center gap-2 text-sm"><input type="radio" name="gov-q1" className="text-forest-600" value="Yes" checked={formData.step5.governance.q1 === 'Yes'} onChange={(e) => updateStep5('governance', 'q1', e.target.value)} /> Yes</label>
+              <label className="flex items-center gap-2 text-sm"><input type="radio" name="gov-q1" className="text-forest-600" value="No" checked={formData.step5.governance.q1 === 'No'} onChange={(e) => updateStep5('governance', 'q1', e.target.value)} /> No</label>
             </div>
             <textarea className="input-field text-sm" rows={2} placeholder="Please explain..." value={formData.step5.governance.q1Explain} onChange={(e) => updateStep5('governance', 'q1Explain', e.target.value)} />
           </div>
           <div>
             <label className="block text-xs font-medium text-gray-600 mb-1">Does executive management have designated climate risk responsibilities?</label>
             <div className="flex gap-4 mb-2">
-              <label className="flex items-center gap-2 text-sm"><input type="radio" name="gov-q2" className="text-emerald-600" value="Yes" checked={formData.step5.governance.q2 === 'Yes'} onChange={(e) => updateStep5('governance', 'q2', e.target.value)} /> Yes</label>
-              <label className="flex items-center gap-2 text-sm"><input type="radio" name="gov-q2" className="text-emerald-600" value="No" checked={formData.step5.governance.q2 === 'No'} onChange={(e) => updateStep5('governance', 'q2', e.target.value)} /> No</label>
+              <label className="flex items-center gap-2 text-sm"><input type="radio" name="gov-q2" className="text-forest-600" value="Yes" checked={formData.step5.governance.q2 === 'Yes'} onChange={(e) => updateStep5('governance', 'q2', e.target.value)} /> Yes</label>
+              <label className="flex items-center gap-2 text-sm"><input type="radio" name="gov-q2" className="text-forest-600" value="No" checked={formData.step5.governance.q2 === 'No'} onChange={(e) => updateStep5('governance', 'q2', e.target.value)} /> No</label>
             </div>
             <textarea className="input-field text-sm" rows={2} placeholder="Please explain..." value={formData.step5.governance.q2Explain} onChange={(e) => updateStep5('governance', 'q2Explain', e.target.value)} />
           </div>
           <div>
             <label className="block text-xs font-medium text-gray-600 mb-1">Has the institution provided climate risk training for board and management?</label>
             <div className="flex gap-4 mb-2">
-              <label className="flex items-center gap-2 text-sm"><input type="radio" name="gov-q3" className="text-emerald-600" value="Yes" checked={formData.step5.governance.q3 === 'Yes'} onChange={(e) => updateStep5('governance', 'q3', e.target.value)} /> Yes</label>
-              <label className="flex items-center gap-2 text-sm"><input type="radio" name="gov-q3" className="text-emerald-600" value="No" checked={formData.step5.governance.q3 === 'No'} onChange={(e) => updateStep5('governance', 'q3', e.target.value)} /> No</label>
+              <label className="flex items-center gap-2 text-sm"><input type="radio" name="gov-q3" className="text-forest-600" value="Yes" checked={formData.step5.governance.q3 === 'Yes'} onChange={(e) => updateStep5('governance', 'q3', e.target.value)} /> Yes</label>
+              <label className="flex items-center gap-2 text-sm"><input type="radio" name="gov-q3" className="text-forest-600" value="No" checked={formData.step5.governance.q3 === 'No'} onChange={(e) => updateStep5('governance', 'q3', e.target.value)} /> No</label>
             </div>
             <textarea className="input-field text-sm" rows={2} placeholder="Please explain..." value={formData.step5.governance.q3Explain} onChange={(e) => updateStep5('governance', 'q3Explain', e.target.value)} />
           </div>
           <div>
             <label className="block text-xs font-medium text-gray-600 mb-1">Is climate risk performance linked to remuneration or incentives?</label>
             <div className="flex gap-4 mb-2">
-              <label className="flex items-center gap-2 text-sm"><input type="radio" name="gov-q4" className="text-emerald-600" value="Yes" checked={formData.step5.governance.q4 === 'Yes'} onChange={(e) => updateStep5('governance', 'q4', e.target.value)} /> Yes</label>
-              <label className="flex items-center gap-2 text-sm"><input type="radio" name="gov-q4" className="text-emerald-600" value="No" checked={formData.step5.governance.q4 === 'No'} onChange={(e) => updateStep5('governance', 'q4', e.target.value)} /> No</label>
+              <label className="flex items-center gap-2 text-sm"><input type="radio" name="gov-q4" className="text-forest-600" value="Yes" checked={formData.step5.governance.q4 === 'Yes'} onChange={(e) => updateStep5('governance', 'q4', e.target.value)} /> Yes</label>
+              <label className="flex items-center gap-2 text-sm"><input type="radio" name="gov-q4" className="text-forest-600" value="No" checked={formData.step5.governance.q4 === 'No'} onChange={(e) => updateStep5('governance', 'q4', e.target.value)} /> No</label>
             </div>
             <textarea className="input-field text-sm" rows={2} placeholder="Please explain..." value={formData.step5.governance.q4Explain} onChange={(e) => updateStep5('governance', 'q4Explain', e.target.value)} />
           </div>
@@ -1072,7 +1072,7 @@ export default function ReportBuilderPage() {
       {/* Risk Management */}
       <div className="card">
         <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
-          <span className="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-700 font-bold text-sm flex items-center justify-center">3</span>
+          <span className="w-8 h-8 rounded-lg bg-forest-100 text-forest-700 font-bold text-sm flex items-center justify-center">3</span>
           Risk Management
         </h3>
         <div className="space-y-4">
@@ -1110,7 +1110,7 @@ export default function ReportBuilderPage() {
       {/* Climate Scenarios */}
       <div className="card">
         <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
-          <span className="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-700 font-bold text-sm flex items-center justify-center">4</span>
+          <span className="w-8 h-8 rounded-lg bg-forest-100 text-forest-700 font-bold text-sm flex items-center justify-center">4</span>
           Climate Scenarios
         </h3>
         <div className="space-y-4">
@@ -1149,7 +1149,7 @@ export default function ReportBuilderPage() {
       <div className="card">
         <h3 className="text-base font-semibold text-gray-800 mb-3">Organization Chart Upload</h3>
         <p className="text-gray-400 text-xs mb-3">Upload your climate governance organization chart (optional).</p>
-        <div className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-emerald-400 transition-colors cursor-pointer">
+        <div className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-forest-400 transition-colors cursor-pointer">
           <svg className="w-10 h-10 text-gray-300 mx-auto mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
           </svg>
@@ -1295,7 +1295,7 @@ export default function ReportBuilderPage() {
           {sections.map((s, i) => (
             <div key={s.name} className="card flex items-center gap-4 cursor-pointer" onClick={() => setCurrentStep(i)}>
               <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${
-                s.status === 'complete' ? 'bg-emerald-100 text-emerald-700' :
+                s.status === 'complete' ? 'bg-forest-100 text-forest-700' :
                 s.status === 'partial' ? 'bg-amber-100 text-amber-700' :
                 'bg-gray-100 text-gray-400'
               }`}>
@@ -1369,7 +1369,7 @@ export default function ReportBuilderPage() {
           </button>
         </div>
         {saveFeedback && (
-          <div className="text-sm text-emerald-600 bg-emerald-50 border border-emerald-200 rounded-xl p-3 text-center">
+          <div className="text-sm text-forest-600 bg-forest-50 border border-forest-200 rounded-xl p-3 text-center">
             {saveFeedback}
           </div>
         )}
@@ -1391,7 +1391,7 @@ export default function ReportBuilderPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-4">
-              <a href="/" className="text-gray-400 hover:text-emerald-600 transition-colors flex items-center gap-1 text-sm">
+              <a href="/" className="text-gray-400 hover:text-forest-600 transition-colors flex items-center gap-1 text-sm">
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
                 Back
               </a>
@@ -1408,7 +1408,7 @@ export default function ReportBuilderPage() {
           {/* Progress bar */}
           <div className="w-full bg-gray-100 rounded-full h-2">
             <div
-              className="bg-gradient-to-r from-emerald-500 to-teal-500 h-2 rounded-full transition-all duration-500"
+              className="bg-gradient-to-r from-forest-500 to-teal-500 h-2 rounded-full transition-all duration-500"
               style={{ width: `${progress}%` }}
             />
           </div>
@@ -1436,13 +1436,13 @@ export default function ReportBuilderPage() {
                   key={step}
                   type="button"
                   className={`w-full text-left px-4 py-3 text-sm flex items-center gap-3 border-b border-gray-100 last:border-0 transition-colors ${
-                    i === currentStep ? 'bg-emerald-50 text-emerald-700' : 'hover:bg-gray-50 text-gray-600'
+                    i === currentStep ? 'bg-forest-50 text-forest-700' : 'hover:bg-gray-50 text-gray-600'
                   }`}
                   onClick={() => { setCurrentStep(i); setShowMobileNav(false) }}
                 >
                   <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 ${
-                    i === currentStep ? 'bg-emerald-600 text-white' :
-                    status === 'complete' ? 'bg-emerald-100 text-emerald-700' :
+                    i === currentStep ? 'bg-forest-600 text-white' :
+                    status === 'complete' ? 'bg-forest-100 text-forest-700' :
                     status === 'partial' ? 'bg-amber-100 text-amber-700' :
                     'bg-gray-100 text-gray-400'
                   }`}>{i + 1}</span>
@@ -1467,14 +1467,14 @@ export default function ReportBuilderPage() {
                   type="button"
                   className={`w-full text-left px-3 py-2.5 rounded-xl text-sm flex items-center gap-3 transition-all ${
                     i === currentStep
-                      ? 'bg-emerald-50 text-emerald-700 font-medium shadow-sm'
+                      ? 'bg-forest-50 text-forest-700 font-medium shadow-sm'
                       : 'text-gray-500 hover:text-gray-800 hover:bg-gray-50'
                   }`}
                   onClick={() => setCurrentStep(i)}
                 >
                   <span className={`w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold flex-shrink-0 ${
-                    i === currentStep ? 'bg-emerald-600 text-white' :
-                    status === 'complete' ? 'bg-emerald-100 text-emerald-700' :
+                    i === currentStep ? 'bg-forest-600 text-white' :
+                    status === 'complete' ? 'bg-forest-100 text-forest-700' :
                     status === 'partial' ? 'bg-amber-100 text-amber-700' :
                     'bg-gray-100 text-gray-400'
                   }`}>

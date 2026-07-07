@@ -1,5 +1,63 @@
 import type { Config } from 'tailwindcss'
 
+// C&E Advisory brand palette — navy blue (primary), gold (accent), cream (surface).
+// `forest` is kept as an alias of `navy` and `moss` as an alias of `gold` so that
+// the many existing className references continue to resolve to the new brand colours.
+const navy = {
+  50: '#eef3fa',
+  100: '#d6e2f2',
+  200: '#aec6e4',
+  300: '#7ba2d1',
+  400: '#4d7cb8',
+  500: '#305d99',
+  600: '#24497c',
+  700: '#1d3a63',
+  800: '#182f4f',
+  900: '#122340',
+  950: '#0a1526',
+}
+
+const gold = {
+  50: '#fdf8ec',
+  100: '#f9edc7',
+  200: '#f1d98a',
+  300: '#e7c153',
+  400: '#dcaa30',
+  500: '#c28f22',
+  600: '#a3741d',
+  700: '#7f581b',
+  800: '#69481b',
+  900: '#5a3d1a',
+  950: '#38260f',
+}
+
+const cream = {
+  50: '#fdfcf8',
+  100: '#f8f4ea',
+  200: '#f0e8d6',
+  300: '#e5d7ba',
+  400: '#d5be92',
+  500: '#c4a56c',
+  600: '#b28f57',
+  700: '#94744a',
+  800: '#775f41',
+  900: '#624e39',
+}
+
+const ink = {
+  50: '#f5f7fa',
+  100: '#e7eaf0',
+  200: '#ccd2de',
+  300: '#a6b0c2',
+  400: '#7c889f',
+  500: '#5d6a82',
+  600: '#48546a',
+  700: '#3b4557',
+  800: '#2a303d',
+  900: '#1e2430',
+  950: '#0b0f17',
+}
+
 const config: Config = {
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
@@ -9,56 +67,13 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        forest: {
-          50: '#f1f7f3',
-          100: '#dfeee5',
-          200: '#c1ddcc',
-          300: '#97c5a7',
-          400: '#68a57d',
-          500: '#47895f',
-          600: '#356d4a',
-          700: '#2a573c',
-          800: '#234631',
-          900: '#1d3a29',
-          950: '#0d1f14',
-        },
-        moss: {
-          50: '#f4f6f3',
-          100: '#e6ebe3',
-          200: '#cdd7c9',
-          300: '#aabca4',
-          400: '#849c7d',
-          500: '#66805f',
-          600: '#4f654a',
-          700: '#3f503c',
-          800: '#354133',
-          900: '#2d372d',
-        },
-        cream: {
-          50: '#fdfcfa',
-          100: '#f7f4ec',
-          200: '#ede7d5',
-          300: '#e1d5b4',
-          400: '#d0bb8a',
-          500: '#c2a56a',
-          600: '#b5905d',
-          700: '#97754e',
-          800: '#7a5f44',
-          900: '#644f3a',
-        },
-        ink: {
-          50: '#f6f7f6',
-          100: '#e2e4e3',
-          200: '#c4c9c6',
-          300: '#9fa6a1',
-          400: '#7a847f',
-          500: '#606a65',
-          600: '#4c5450',
-          700: '#3f4542',
-          800: '#353a37',
-          900: '#2e3230',
-          950: '#0a0f0c',
-        },
+        navy,
+        gold,
+        cream,
+        ink,
+        // Backwards-compatible aliases used throughout the existing components.
+        forest: navy,
+        moss: gold,
         signal: {
           amber: {
             50: '#fffbeb',
@@ -84,9 +99,9 @@ const config: Config = {
         lg: '12px',
       },
       boxShadow: {
-        sm: '0 1px 2px 0 rgba(10, 15, 12, 0.05)',
-        md: '0 4px 6px -1px rgba(10, 15, 12, 0.1), 0 2px 4px -1px rgba(10, 15, 12, 0.06)',
-        lg: '0 10px 15px -3px rgba(10, 15, 12, 0.1), 0 4px 6px -2px rgba(10, 15, 12, 0.05)',
+        sm: '0 1px 2px 0 rgba(10, 21, 38, 0.05)',
+        md: '0 4px 6px -1px rgba(10, 21, 38, 0.1), 0 2px 4px -1px rgba(10, 21, 38, 0.06)',
+        lg: '0 10px 15px -3px rgba(10, 21, 38, 0.1), 0 4px 6px -2px rgba(10, 21, 38, 0.05)',
       },
       animation: {
         'fade-in': 'fadeIn 0.6s ease-out',

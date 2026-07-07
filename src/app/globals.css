@@ -11,6 +11,18 @@
   }
 }
 
+@layer utilities {
+  .gradient-text {
+    background-image: linear-gradient(90deg, #122340 0%, #1d3a63 45%, #c28f22 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
 @layer components {
   .card {
     @apply bg-white border border-ink-200 rounded-lg p-6 hover:border-forest-400 hover:shadow-md transition-all duration-300;
