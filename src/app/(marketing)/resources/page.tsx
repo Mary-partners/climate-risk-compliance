@@ -9,9 +9,9 @@ import PageHero from '@/components/inner/PageHero'
 import PageCTA from '@/components/inner/PageCTA'
 
 export const metadata: Metadata = {
-  title: 'Resources — Climate Risk, ESG & Sustainability Insights | C&E',
+  title: 'Insights — Kenya Climate Risk, Green Finance & Disclosure | C&E',
   description:
-    'Plain-language guidance on climate risk, ESG readiness, IFRS S1/S2, CBK requirements, and green finance for boards, CFOs, risk teams, founders, and investors in Kenya.',
+    'Analysis of the regulations, deadlines, and market shifts reshaping climate risk, green finance, and ESG disclosure across Kenya’s financial sector — from the CBK Green Finance Taxonomy and IFRS S2 to the Disaster Risk Financing Strategy 2026–2030.',
 }
 
 interface Post {
@@ -52,14 +52,14 @@ export default function ResourcesPage() {
   return (
     <main>
       <PageHero
-        eyebrow="Resources"
-        title="Plain-language guidance on climate risk, ESG readiness, and sustainability reporting"
-        lead="Our resources are written for boards, chief financial officers, risk teams, compliance officers, founders, investors, and programme teams who need clear guidance on climate risk and ESG requirements — without the jargon."
+        eyebrow="Insights"
+        title="Where Kenya's climate risk and green finance rules are heading — and what they mean for your institution"
+        lead="The regulations, deadlines, and market shifts reshaping climate and ESG in Kenya move quickly. We follow them closely — the CBK Green Finance Taxonomy, IFRS S2, the Disaster Risk Financing Strategy 2026–2030 — and write about what each one changes for banks, SACCOs, insurers, listed companies, and the businesses they finance."
         points={[
-          { icon: 'document', text: 'Practical briefs on the requirements affecting Kenyan institutions' },
-          { icon: 'clipboard', text: 'Readiness checklists for IFRS S1/S2 and ESG' },
-          { icon: 'users', text: 'Board guidance on climate risk oversight' },
-          { icon: 'tag', text: 'A plain-language glossary of key terms' },
+          { icon: 'bank', text: 'What the CBK Green Finance Taxonomy asks of banks' },
+          { icon: 'alert', text: 'The Disaster Risk Financing Strategy 2026–2030' },
+          { icon: 'scale', text: 'IFRS S2 and the 2028 and 2030 assurance deadlines' },
+          { icon: 'trending', text: 'How climate risk turns into credit risk' },
         ]}
       />
 
@@ -71,12 +71,12 @@ export default function ResourcesPage() {
                 Insights &amp; analysis
               </div>
               <h2 className="text-3xl md:text-4xl font-bold font-serif text-ink-950 leading-tight">
-                Latest resources
+                Latest articles
               </h2>
             </div>
             <p className="lg:col-span-5 text-ink-600 leading-relaxed">
-              Practical, plain-language perspectives on the climate risk and ESG expectations taking
-              shape across Kenya and the wider region.
+              Regular reading on the climate risk, green finance, and disclosure landscape shaping
+              Kenya&rsquo;s financial sector.
             </p>
           </div>
         </Reveal>

@@ -124,6 +124,12 @@ const SiteNav: React.FC = () => {
           </div>
 
           <div className="hidden lg:flex items-center gap-6">
+            <Link
+              href="/about"
+              className="text-sm font-medium text-ink-700 hover:text-forest-700 transition-colors"
+            >
+              About
+            </Link>
             {Object.keys(navSections).map((navKey) => (
               <div
                 key={navKey}
@@ -174,7 +180,7 @@ const SiteNav: React.FC = () => {
               href="/resources"
               className="text-sm font-medium text-ink-700 hover:text-forest-700 transition-colors"
             >
-              Resources
+              Insights
             </Link>
             <Link
               href="/auth"
@@ -222,6 +228,13 @@ const SiteNav: React.FC = () => {
         {mobileMenuOpen && (
           <div className="lg:hidden py-4 border-t border-ink-200 transition-all duration-300 ease-in-out">
             <div className="flex flex-col gap-2">
+              <Link
+                href="/about"
+                className="text-sm font-medium text-ink-700 hover:text-forest-700 transition-colors py-2"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                About
+              </Link>
               {Object.keys(navSections).map((navKey) => (
                 <details key={navKey} className="group">
                   <summary className="text-sm font-medium text-ink-700 hover:text-forest-700 transition-colors cursor-pointer py-2 list-none">
@@ -271,7 +284,7 @@ const SiteNav: React.FC = () => {
                 className="text-sm font-medium text-ink-700 hover:text-forest-700 transition-colors py-2"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                Resources
+                Insights
               </Link>
               <Link
                 href="/auth"

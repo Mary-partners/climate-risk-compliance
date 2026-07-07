@@ -9,7 +9,7 @@ const deliverables = [
   'A regulatory and stakeholder exposure map',
   'A gap analysis across governance, data, reporting, and risk management',
   'A practical ninety-day action plan',
-  'A board-level summary written in plain language',
+  'A concise board-level summary the board can act on',
   'A recommended implementation roadmap',
 ]
 

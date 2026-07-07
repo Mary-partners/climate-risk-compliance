@@ -19,7 +19,7 @@ export default function GovernancePage() {
         title="Give your board the oversight of climate and ESG risk that regulators now expect"
         lead="Boards are expected to provide oversight of material risks, and climate risk is increasingly part of that responsibility. Directors do not need technical jargon; they need clear information on exposure, obligations, readiness, and the decisions required of them. We help boards make climate risk a genuine part of strategic and risk oversight."
         points={[
-          { icon: 'users', text: 'Board climate literacy without the technical jargon' },
+          { icon: 'users', text: 'Board climate literacy in the language directors actually use' },
           { icon: 'shield', text: 'Oversight frameworks and clear responsibilities' },
           { icon: 'chart', text: 'Board-ready reporting packs on exposure and progress' },
           { icon: 'check', text: 'Confident disclosure sign-off' },
@@ -41,7 +41,7 @@ export default function GovernancePage() {
         title="Practical tools for directors, committees, and leadership teams"
         intro="We speak to the board, the chief financial officer, the risk team, and management in language each can understand, and we build oversight that fits how your board actually works."
         items={[
-          { icon: 'users', title: 'Board climate literacy', body: 'Focused briefings and training that give directors a clear, jargon-free understanding of climate and ESG risk and their oversight responsibilities.' },
+          { icon: 'users', title: 'Board climate literacy', body: 'Focused briefings and training that give directors a clear, practical understanding of climate and ESG risk and their oversight responsibilities.' },
           { icon: 'shield', title: 'Oversight frameworks', body: 'Clear governance structures that define how climate and ESG risk is escalated, discussed, and owned across the board and its committees.' },
           { icon: 'scale', title: 'Risk committee tooling', body: 'Practical tools and agendas for audit and risk committees so climate risk is reviewed with the same rigour as other material risks.' },
           { icon: 'chart', title: 'Board reporting packs', body: 'Board-ready packs covering exposure, compliance status, key risks, progress, data gaps, and the decisions required — written for directors.' },
