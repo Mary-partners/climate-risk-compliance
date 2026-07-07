@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback, useMemo, Suspense } from 'react'
+import { useState, useEffect, useCallback, useMemo, useRef, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import AuthGate from '@/lib/AuthGate'
@@ -719,6 +719,42 @@ function DiagnosticPage() {
     if (totalQuestions === 0) return 0
     return Math.round((totalAnswered / totalQuestions) * 100)
   }, [totalAnswered, totalQuestions])
+
+  // Persist the completed diagnostic to C&E once the user reaches the dashboard,
+  // so results are captured server-side and visible in the admin dashboard.
+  const submittedRef = useRef(false)
+  useEffect(() => {
+    if (state.activeSection !== 'dashboard') return
+    if (submittedRef.current) return
+    if (totalAnswered === 0) return
+    submittedRef.current = true
+    const payload = {
+      institutionName: state.info.bankName || user?.organisation || 'Unspecified institution',
+      contactName: state.info.lead || user?.name || 'Unspecified',
+      email: user?.email || 'not-provided@unknown.local',
+      role: state.info.sponsor || user?.jobTitle || 'Not specified',
+      institutionType:
+        state.mode === 'internal'
+          ? 'Internal assessment'
+          : user?.organisationType || 'Bank / Financial Institution',
+      readinessScore: Math.round((overallScore / 5) * 100),
+      overallRag: ragLabel(overallScore),
+      answeredCount: totalAnswered,
+      totalQuestions,
+      pillars: pillarScores.map((p) => ({
+        name: p.pillarName,
+        score: Number(p.score.toFixed(2)),
+        rag: p.answered > 0 ? ragLabel(p.score) : 'N/A',
+        answered: p.answered,
+        total: p.total,
+      })),
+    }
+    fetch('/api/diagnostic', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    }).catch(() => {})
+  }, [state.activeSection, totalAnswered]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // Pillar nav score for sidebar badge
   function getPillarNavScore(pillarId: string): number | null {

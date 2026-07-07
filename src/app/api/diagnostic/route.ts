@@ -20,6 +20,12 @@ interface DiagnosticPayload {
   pressingDeadline?: string;
   topChallenges?: string[];
   additionalInfo?: string;
+  // Optional values supplied by the interactive 6-pillar diagnostic client.
+  readinessScore?: number;
+  overallRag?: string;
+  answeredCount?: number;
+  totalQuestions?: number;
+  pillars?: { name: string; score: number; rag: string; answered: number; total: number }[];
 }
 
 function calculateReadinessScore(data: DiagnosticPayload): number {
@@ -76,7 +82,27 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const readinessScore = calculateReadinessScore(body);
+    // Prefer the score computed by the interactive client (0–100); otherwise
+    // fall back to the field-based calculation.
+    const readinessScore =
+      typeof body.readinessScore === "number" && !Number.isNaN(body.readinessScore)
+        ? Math.max(0, Math.min(100, Math.round(body.readinessScore)))
+        : calculateReadinessScore(body);
+
+    // Build a human-readable summary from the pillar breakdown, if provided.
+    let additionalInfo = body.additionalInfo ?? null;
+    if (body.pillars && body.pillars.length > 0) {
+      const parts: string[] = [];
+      if (body.overallRag) parts.push(`Overall RAG: ${body.overallRag}`);
+      if (typeof body.answeredCount === "number" && typeof body.totalQuestions === "number") {
+        parts.push(`Answered ${body.answeredCount}/${body.totalQuestions}`);
+      }
+      const pillarText = body.pillars
+        .map((p) => `${p.name} ${Number(p.score).toFixed(1)}/5 (${p.rag})`)
+        .join("; ");
+      const summary = `${parts.join(" · ")}${parts.length ? " · " : ""}${pillarText}`;
+      additionalInfo = additionalInfo ? `${additionalInfo}\n${summary}` : summary;
+    }
 
     // Save to database
     const prisma = getPrismaClient();
@@ -97,7 +123,7 @@ export async function POST(request: NextRequest) {
         frameworks: body.frameworks ?? [],
         pressingDeadline: body.pressingDeadline ?? null,
         topChallenges: body.topChallenges ?? [],
-        additionalInfo: body.additionalInfo ?? null,
+        additionalInfo,
         readinessScore,
       },
     });
