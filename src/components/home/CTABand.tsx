@@ -24,12 +24,12 @@ const CTABand: React.FC = () => {
         </div>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link href="/diagnostic">
-            <Button variant="primary" size="lg" className="bg-gold-500 hover:bg-gold-600 text-navy-950 w-full sm:w-auto">
+            <Button variant="primary" size="lg" className="!bg-gold-500 hover:!bg-gold-600 !text-navy-950 w-full sm:w-auto">
               Start Your Climate Readiness Diagnostic
             </Button>
           </Link>
           <a href="mailto:stephen.mutimba@eclimateadvisory.com?subject=Compliance%20Review%20Request%20%E2%80%94%20Climate%20%26%20ESG">
-            <Button variant="secondary" size="lg" className="bg-transparent border-white/40 text-white hover:bg-white/10 w-full sm:w-auto">
+            <Button variant="secondary" size="lg" className="!bg-transparent !text-white !border-white/50 hover:!bg-white/10 w-full sm:w-auto">
               Book a Compliance Review
             </Button>
           </a>
