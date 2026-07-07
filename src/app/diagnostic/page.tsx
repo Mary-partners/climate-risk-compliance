@@ -602,7 +602,7 @@ function DiagnosticPage() {
   // Load from localStorage but always start on 'info'
   useEffect(() => {
     try {
-      const saved = localStorage.getItem('climate-diagnostic-state')
+      const saved = localStorage.getItem('ce-diagnostic-state-v2')
       if (saved) {
         const parsed = JSON.parse(saved) as DiagnosticState
         parsed.mode = isInternal ? 'internal' : 'bank'
@@ -617,7 +617,7 @@ function DiagnosticPage() {
   // Save to localStorage
   useEffect(() => {
     try {
-      localStorage.setItem('climate-diagnostic-state', JSON.stringify(state))
+      localStorage.setItem('ce-diagnostic-state-v2', JSON.stringify(state))
     } catch {
       // ignore storage errors
     }
