@@ -50,7 +50,7 @@ const Footer: React.FC = () => {
 
   return (
     <footer className="bg-ink-950 text-white py-16">
-      <div className="max-w-6xl mx-auto px-6">
+      <div className="max-w-screen-2xl mx-auto px-6">
         <div className="grid md:grid-cols-4 gap-8 mb-12">
           {footerSections.map((section) => (
             <div key={section.title}>

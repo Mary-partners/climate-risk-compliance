@@ -198,7 +198,7 @@ export default function AdminPage() {
     <div className="min-h-screen bg-cream-100">
       {/* Header */}
       <header className="bg-navy-950 text-white">
-        <div className="max-w-7xl mx-auto px-6 py-6 flex flex-wrap items-center justify-between gap-4">
+        <div className="max-w-screen-2xl mx-auto px-6 py-6 flex flex-wrap items-center justify-between gap-4">
           <div>
             <div className="flex items-baseline gap-2">
               <span className="text-xl font-serif font-bold">C&amp;E Advisory</span>
@@ -217,7 +217,7 @@ export default function AdminPage() {
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-6 py-8">
+      <main className="max-w-screen-2xl mx-auto px-6 py-8">
         {/* Stat cards */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-8">
           {tabs.map((t) => (

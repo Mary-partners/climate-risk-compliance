@@ -28,7 +28,7 @@ const stats: { icon: IconName; figure: string; label: string; small?: boolean }[
 const StatsBand: React.FC = () => {
   return (
     <section className="bg-navy-900 text-white">
-      <div className="max-w-6xl mx-auto px-6 py-12 md:py-14">
+      <div className="max-w-screen-2xl mx-auto px-6 py-12 md:py-14">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-10">
           {stats.map((stat, i) => (
             <div

@@ -15,7 +15,7 @@ const ProblemStatement: React.FC = () => {
               Climate disclosure is becoming a business requirement, not a public relations exercise
             </h2>
           </div>
-          <div className="lg:col-span-7 space-y-6 text-lg text-ink-700 leading-relaxed">
+          <div className="lg:col-span-7 space-y-6 text-lg text-ink-700 leading-relaxed max-w-3xl">
             <p>
               Across Kenya, climate risk and ESG expectations are beginning to affect how
               institutions are governed, financed, assessed, and trusted. Banks are being expected to

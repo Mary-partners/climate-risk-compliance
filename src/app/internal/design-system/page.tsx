@@ -228,7 +228,7 @@ export default function DesignSystemDemo() {
         <div className="space-y-6">
           <Card variant="muted">
             <p className="text-sm text-ink-700 mb-2">
-              <strong>Section</strong> wraps content with max-w-6xl, horizontal padding, and vertical rhythm. Variants: default (white), cream, forest (dark).
+              <strong>Section</strong> wraps content with max-w-screen-2xl, horizontal padding, and vertical rhythm. Variants: default (white), cream, forest (dark).
             </p>
             <p className="text-sm text-ink-700">
               <strong>SectionHeader</strong> combines Eyebrow + serif H2 + lead paragraph in one component.

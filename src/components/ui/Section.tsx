@@ -29,7 +29,7 @@ const Section: React.FC<SectionProps> = ({
   
   return (
     <Component className={classes} {...props}>
-      <div className="max-w-6xl mx-auto px-6">
+      <div className="max-w-screen-2xl mx-auto px-6">
         {children}
       </div>
     </Component>

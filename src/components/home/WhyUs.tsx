@@ -15,7 +15,7 @@ const WhyUs: React.FC = () => {
               A practical, finance-aware, and governance-led approach
             </h2>
           </div>
-          <div className="lg:col-span-7 space-y-5 text-lg text-ink-700 leading-relaxed">
+          <div className="lg:col-span-7 space-y-5 text-lg text-ink-700 leading-relaxed max-w-3xl">
             <p>
               We understand that climate risk and ESG reporting cannot be treated as a side project.
               For Kenyan and African institutions, these requirements sit inside a wider business
@@ -48,7 +48,7 @@ const WhyUs: React.FC = () => {
               Many ESG solutions begin with frameworks. We begin with the institution.
             </h2>
           </div>
-          <div className="lg:col-span-7 space-y-5 text-lg text-ink-700 leading-relaxed">
+          <div className="lg:col-span-7 space-y-5 text-lg text-ink-700 leading-relaxed max-w-3xl">
             <p>
               We look at your business model, your regulatory exposure, your financing needs, your
               governance structure, your data maturity, your climate exposure, and the stakeholders

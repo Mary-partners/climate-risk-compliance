@@ -1388,7 +1388,7 @@ export default function ReportBuilderPage() {
     <div className="min-h-screen bg-white">
       {/* ─── HEADER ─── */}
       <header className="bg-white border-b border-gray-200 sticky top-0 z-50 backdrop-blur-md bg-white/90">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+        <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-4">
               <a href="/" className="text-gray-400 hover:text-forest-600 transition-colors flex items-center gap-1 text-sm">
@@ -1455,7 +1455,7 @@ export default function ReportBuilderPage() {
       </div>
 
       {/* ─── MAIN LAYOUT ─── */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex gap-8">
+      <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex gap-8">
         {/* Desktop Sidebar */}
         <aside className="hidden lg:block w-64 flex-shrink-0">
           <nav className="sticky top-[130px] space-y-1">

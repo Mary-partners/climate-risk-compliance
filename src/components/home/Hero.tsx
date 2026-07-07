@@ -14,7 +14,7 @@ const Hero: React.FC = () => {
         }}
         aria-hidden="true"
       />
-      <div className="relative max-w-6xl mx-auto px-6 py-16 md:py-24">
+      <div className="relative max-w-screen-2xl mx-auto px-6 py-16 md:py-24">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Left: message */}
           <div>

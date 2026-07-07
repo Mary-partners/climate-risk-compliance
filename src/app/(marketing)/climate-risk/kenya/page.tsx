@@ -36,7 +36,7 @@ export default function KenyaPage() {
 
   return (
     <main>
-      <div className="max-w-6xl mx-auto px-6">
+      <div className="max-w-screen-2xl mx-auto px-6">
         <Breadcrumbs items={breadcrumbItems} />
       </div>
       <KenyaHero />
